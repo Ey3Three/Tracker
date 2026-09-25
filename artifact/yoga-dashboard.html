@@ -127,6 +127,10 @@
   .big-log .tick { font-size: 1.4rem; line-height: 1; }
   .sync { font-size: .75rem; color: #a1a1aa; text-align: center; min-height: 1em; }
   .sync.local { color: #fbbf24; }
+  .sync-actions { display: flex; justify-content: center; gap: 12px; align-items: center; font-size: .78rem; }
+  .retry { border: 1px solid #71717a; background: transparent; color: #fff; border-radius: 999px; padding: 3px 12px; cursor: pointer; font-size: .78rem; }
+  .notion-link { color: #d4d4d8; }
+  .big-log:disabled { opacity: .6; cursor: progress; }
 
   /* ---------- Stats ---------- */
   .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; padding: 22px 28px; background: var(--surface-3); }
@@ -191,6 +195,7 @@
   .month { font-weight: 700; min-width: 150px; text-align: center; }
   .ghost { border: 2px solid var(--border); background: var(--surface); border-radius: 999px; padding: 5px 12px; font-size: .78rem; font-weight: 700; cursor: pointer; }
   .ghost:hover { border-color: var(--border-strong); }
+  a.ghost { color: var(--text); text-decoration: none; display: inline-flex; align-items: center; }
   .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
   .dh { text-align: center; font-size: .7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; padding: 6px 0; }
   .day {
@@ -305,7 +310,8 @@
     <div class="today-box">
       <div class="today-label" id="todayLabel">Today</div>
       <button class="big-log" id="bigLog" type="button"><span class="tick">＋</span><span id="bigLogText">Log today's practice</span></button>
-      <div class="sync" id="syncNote">Connecting…</div>
+      <div class="sync" id="syncNote">Connecting to Notion…</div>
+      <div class="sync-actions"><button class="retry" id="retrySync" type="button" hidden>Retry</button><a class="notion-link" href="https://app.notion.com/p/173da0eb6b0e81af8b9ad117ab202af5" target="_blank" rel="noopener">Open Notion page ↗</a></div>
     </div>
   </header>
 
@@ -415,7 +421,15 @@
   const DURS = [30, 45, 60, 75, 90];
   const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const WK = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  const LOCAL_KEY = 'yogaJourney.localLogs';
+  PAIN_AREAS.splice(2, 0, 'Shoulder irritation');
+  const CACHE_KEY = 'yogaJourney.notionCache';
+  // Notion: 🧘 Yoga Practice Logs, reached through the viewer's Notion connector.
+  const NOTION = 'Notion';
+  const LOGS_DS = '64535ba1-2538-48c7-a720-e2d9ffd814e9';
+  const LOGS_VIEW = 'view://9f7e3e6d-5e09-44ef-9bef-4e0f6369f3df';
+  const STATS_PAGE = 'https://app.notion.com/p/3e6da0eb6b0e8185ad1fff27301f49f4';
+  const NOTION_MOOD = { energized: '⚡ Energized', peaceful: '😌 Peaceful', strong: '💪 Strong', open: '🤸 Open', tired: '😴 Tired' };
+  const MOOD_FROM_NOTION = Object.fromEntries(Object.entries(NOTION_MOOD).map(([k, v]) => [v, k]));
 
   // ---------- dates (local time) ----------
   const pad = n => String(n).padStart(2, '0');
@@ -431,74 +445,172 @@
 
   // ---------- state ----------
   const S = {
-    logs: new Map(),           // date -> log
+    logs: new Map(),           // date -> log (log.pageId = Notion page)
     view: new Date(),
     editingDate: null,         // date of the log being edited (null = new)
     form: blankForm(),
     q: '', styleF: '', monthF: '',
-    db: null, mode: 'loading', readOnly: false
+    mcp: null,
+    mode: 'loading',           // loading | live | cached | offline
+    problem: null,             // { text, retry } when Notion can't be reached
+    syncedAt: null, busy: false
   };
   function blankForm() {
-    return { style: 'Vinyasa', mood: null, intensity: null, peaks: [], pain: false, painAreas: [], severity: null };
+    return { style: null, mood: null, intensity: null, peaks: [], pain: false, painAreas: [], severity: null };
   }
 
-  // ---------- storage ----------
-  function loadLocal() {
-    try { const a = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch { return []; }
+  // ---------- Notion ----------
+  const arr = v => Array.isArray(v) ? v : (typeof v === 'string' && v.startsWith('[')) ? (() => { try { return JSON.parse(v); } catch { return []; } })() : [];
+  const text = v => typeof v === 'string' ? v.replace(/<br\s*\/?>/gi, '\n') : '';
+  const pageIdOf = url => { const m = String(url || '').match(/([0-9a-f]{32})/i); return m ? m[1] : null; };
+
+  function fromRow(r) {
+    const date = typeof r['date:Date:start'] === 'string' ? r['date:Date:start'].slice(0, 10) : null;
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+    return {
+      date,
+      pageId: pageIdOf(r.url), url: r.url,
+      duration: typeof r['Duration (min)'] === 'number' ? r['Duration (min)'] : null,
+      style: r.Style || null,
+      mood: MOOD_FROM_NOTION[r.Mood] || null,
+      intensity: r.Intensity ? Number(r.Intensity) : null,
+      peaks: arr(r['Skills / Peak Poses']),
+      pain: r['Pain?'] === '__YES__',
+      painAreas: arr(r['Pain Areas']),
+      severity: typeof r['Pain Severity (1-10)'] === 'number' ? r['Pain Severity (1-10)'] : null,
+      painNotes: text(r['Pain Notes']),
+      notes: text(r.Notes),
+      linked: arr(r.Stats).length > 0
+    };
   }
-  function saveLocal() {
-    try { localStorage.setItem(LOCAL_KEY, JSON.stringify([...S.logs.values()])); } catch {}
+  function toProps(l, forCreate) {
+    const d = parse(l.date);
+    const p = {
+      'Session': `${d.getMonth() + 1}/${d.getDate()}`,
+      'date:Date:start': l.date, 'date:Date:is_datetime': 0,
+      'Duration (min)': l.duration,
+      '75+ min': l.duration >= 75 ? '__YES__' : '__NO__',
+      'Style': l.style,
+      'Mood': l.mood ? NOTION_MOOD[l.mood] : null,
+      'Intensity': l.intensity ? String(l.intensity) : null,
+      'Skills / Peak Poses': l.peaks,
+      'Pain?': l.pain ? '__YES__' : '__NO__',
+      'Pain Areas': l.painAreas,
+      'Pain Severity (1-10)': l.severity,
+      'Pain Notes': l.painNotes,
+      'Notes': l.notes,
+      'Stats': [STATS_PAGE]
+    };
+    if (forCreate) Object.keys(p).forEach(k => { if (p[k] === null) delete p[k]; });
+    return p;
   }
+
+  // What each connector failure means for the viewer, and what fixes it.
+  function describe(e) {
+    const code = e && e.code;
+    if (code === 'needs_reauth') return 'Your Notion connection expired. Reconnect Notion in claude.ai Settings → Connectors, then reload.';
+    if (code === 'server_not_connected') return 'Notion isn’t connected. Add Notion in claude.ai Settings → Connectors, then reload.';
+    if (code === 'selection_required') return 'You have more than one Notion connection. Choose one when Claude asks, then reload.';
+    if (code === 'not_in_manifest') return 'Notion access is turned off for this page. Allow Notion for this page, then reload.';
+    if (code === 'blocked_by_policy' || code === 'approval_required') return 'Your organization’s settings block this page from using Notion.';
+    if (code === 'tool_error') return 'Notion refused the request: ' + (e.message || 'unknown error');
+    if (code === 'server_unavailable' || code === 'rate_limited') return 'Notion isn’t responding right now.';
+    return 'Couldn’t reach Notion.';
+  }
+  const canRetry = e => !e || !['needs_reauth', 'server_not_connected', 'not_in_manifest', 'blocked_by_policy', 'approval_required'].includes(e.code);
+
+  async function readAll() {
+    const rows = [];
+    let cursor = null;
+    for (let page = 0; page < 30; page++) {
+      const input = { data: { mode: 'view', view_url: LOGS_VIEW, page_size: 100 } };
+      if (cursor) input.data.start_cursor = cursor;
+      const res = await S.mcp.callTool(NOTION, 'notion-query-data-sources', input, { cache: false });
+      const p = res && res.payload;
+      if (!p || !Array.isArray(p.results)) throw { code: 'tool_error', message: 'Unexpected response from Notion.' };
+      rows.push(...p.results);
+      if (!p.has_more || !p.next_cursor) break;
+      cursor = p.next_cursor;
+    }
+    return rows;
+  }
+
+  async function refresh(quiet) {
+    if (!S.mcp) return;
+    if (!quiet) { S.problem = null; syncNote('Syncing with Notion…'); }
+    try {
+      const rows = await readAll();
+      const list = rows.map(fromRow).filter(Boolean);
+      setLogs(list);
+      S.mode = 'live'; S.problem = null; S.syncedAt = new Date();
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(list)); } catch {}
+    } catch (e) {
+      S.problem = { text: describe(e), retry: canRetry(e) };
+      if (S.mode !== 'live') S.mode = S.logs.size ? 'cached' : 'offline';
+    }
+    syncNote();
+  }
+
   function setLogs(list) {
-    S.logs = new Map();
-    list.forEach(l => { if (l && /^\d{4}-\d{2}-\d{2}$/.test(l.date)) S.logs.set(l.date, l); });
+    const next = new Map();
+    list.forEach(l => { if (l && !next.has(l.date)) next.set(l.date, l); });
+    S.logs = next;
     renderAll();
   }
+
   async function writeLog(log, oldDate) {
-    if (S.mode === 'db') {
-      try {
-        await S.db.doc('logs/' + log.date).set(log);
-        if (oldDate && oldDate !== log.date) await S.db.doc('logs/' + oldDate).delete();
-        return true;
-      } catch (e) { return handleWriteError(e); }
+    if (!S.mcp || S.mode === 'offline') { toast('Connect Notion to save. ' + (S.problem ? S.problem.text : '')); return false; }
+    const existing = S.logs.get(oldDate || log.date);
+    S.busy = true; syncNote('Saving to Notion…');
+    try {
+      if (existing && existing.pageId) {
+        await S.mcp.callTool(NOTION, 'notion-update-page', { page_id: existing.pageId, command: 'update_properties', properties: toProps(log, false) });
+        log.pageId = existing.pageId; log.url = existing.url;
+      } else {
+        const res = await S.mcp.callTool(NOTION, 'notion-create-pages', { parent: { data_source_id: LOGS_DS }, pages: [{ properties: toProps(log, true) }] });
+        const pg = res && res.payload && Array.isArray(res.payload.pages) ? res.payload.pages[0] : null;
+        if (pg) { log.pageId = String(pg.id || '').replace(/-/g, '') || pageIdOf(pg.url); log.url = pg.url; }
+      }
+      log.linked = true;
+      if (oldDate && oldDate !== log.date) S.logs.delete(oldDate);
+      S.logs.set(log.date, log);
+      renderAll();
+      S.busy = false; syncNote();
+      setTimeout(() => refresh(true), 1500);
+      return true;
+    } catch (e) {
+      // A failed write may still have reached Notion; re-read before the viewer tries again.
+      S.busy = false;
+      toast(describe(e) + ' It may still have saved, so check the journal before trying again.');
+      refresh(true);
+      return false;
     }
-    if (oldDate && oldDate !== log.date) S.logs.delete(oldDate);
-    S.logs.set(log.date, log); saveLocal(); renderAll();
-    return true;
   }
-  async function removeLog(date) {
-    if (S.mode === 'db') {
-      try { await S.db.doc('logs/' + date).delete(); return true; } catch (e) { return handleWriteError(e); }
-    }
-    S.logs.delete(date); saveLocal(); renderAll(); return true;
-  }
-  function handleWriteError(e) {
-    if (e && e.code === 'invalid_argument') {
-      S.readOnly = true; syncNote();
-      toast('You can view this tracker but not change it.');
-    } else if (e && e.code === 'quota_exceeded') {
-      toast('Storage is full. Delete a few old logs, then try again.');
-    } else {
-      toast('That didn’t save. Check your connection and try again.');
-    }
-    return false;
-  }
-  function syncNote() {
+
+  function syncNote(msg) {
     const n = $('syncNote');
-    n.classList.toggle('local', S.mode === 'local');
-    n.textContent = S.mode === 'db' ? (S.readOnly ? 'View only' : 'Synced across your devices')
-      : S.mode === 'local' ? 'Saving on this device only' : 'Connecting…';
-    $('save').disabled = S.readOnly;
+    const t = S.syncedAt ? S.syncedAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '';
+    n.classList.toggle('local', !!S.problem || S.mode !== 'live');
+    n.textContent = msg || (S.problem ? S.problem.text
+      : S.mode === 'live' ? `Synced with Notion · ${t}`
+      : S.mode === 'loading' ? 'Connecting to Notion…' : 'Showing your last synced copy');
+    $('retrySync').hidden = !(S.problem && S.problem.retry);
+    $('save').disabled = S.mode === 'offline' || S.mode === 'loading' || S.busy;
+    $('bigLog').disabled = S.mode === 'offline' || S.mode === 'loading' || S.busy;
   }
+
   async function connect() {
-    let db = null;
-    try { db = window.claude && window.claude.use ? await window.claude.use('db') : null; } catch { db = null; }
-    if (!db) { S.mode = 'local'; syncNote(); setLogs(loadLocal()); return; }
-    S.db = db; S.mode = 'db'; syncNote();
-    db.collection('logs').onSnapshot(
-      snap => setLogs(snap.docs.map(d => d.data())),
-      () => { S.mode = 'local'; syncNote(); setLogs(loadLocal()); toast('Lost connection to your synced logs. Showing this device’s copy.'); }
-    );
+    try { const c = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]'); if (Array.isArray(c) && c.length) { setLogs(c); S.mode = 'cached'; } } catch {}
+    syncNote();
+    let mcp = null;
+    try { mcp = window.claude && window.claude.use ? await window.claude.use('mcp') : null; } catch { mcp = null; }
+    if (!mcp) {
+      S.mode = S.logs.size ? 'cached' : 'offline';
+      S.problem = { text: 'Open this page in Claude to connect your Notion logs.', retry: false };
+      syncNote(); renderEntries(); return;
+    }
+    S.mcp = mcp;
+    await refresh();
   }
 
   // ---------- stats ----------
@@ -642,10 +754,10 @@
     // style mix, last 30 days
     const since = key(add(new Date(), -29));
     const counts = {};
-    S.logs.forEach(l => { if (l.date >= since && l.date <= t) counts[l.style || 'Other'] = (counts[l.style || 'Other'] || 0) + 1; });
+    S.logs.forEach(l => { if (l.date >= since && l.date <= t) counts[l.style || 'No style'] = (counts[l.style || 'No style'] || 0) + 1; });
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
     const names = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
-    const shade = n => STYLE_SHADES[Math.max(0, STYLES.indexOf(n)) % STYLE_SHADES.length];
+    const shade = n => STYLES.includes(n) ? STYLE_SHADES[STYLES.indexOf(n)] : '#e4e4e7';
     $('mixBar').innerHTML = total ? names.map(n => `<div title="${esc(n)}: ${counts[n]}" style="width:${100 * counts[n] / total}%;background:${shade(n)}"></div>`).join('') : '';
     $('mixLegend').innerHTML = total ? names.map(n => `<span><i style="background:${shade(n)}"></i>${esc(n)} ${counts[n]}</span>`).join('') : '<span>No sessions in the last 30 days yet.</span>';
   }
@@ -672,7 +784,7 @@
     $('count').textContent = n ? (list.length === n ? `${n} log${n === 1 ? '' : 's'}` : `Showing ${list.length} of ${n}`) : '';
     const box = $('entries');
     if (!list.length) {
-      box.innerHTML = `<div class="empty">${n ? 'No logs match your search.' : S.mode === 'loading' ? 'Loading your logs…' : 'No logs yet. Tap “Log today’s practice” to start.'}</div>`;
+      box.innerHTML = `<div class="empty">${n ? 'No logs match your search.' : S.mode === 'loading' ? 'Loading your logs…' : (S.mode === 'offline' ? 'Connect Notion to see your logs.' : 'No logs yet. Tap “Log today’s practice” to start.')}</div>`;
       return;
     }
     box.innerHTML = '';
@@ -700,22 +812,10 @@
         ${l.painNotes ? `<div class="e-notes">${esc(l.painNotes)}</div>` : ''}
         <div class="e-actions">
           <button class="ghost" type="button" data-a="edit">Edit</button>
-          <button class="ghost danger" type="button" data-a="del">Delete</button>
+          ${l.url ? `<a class="ghost link" href="${esc(l.url.split('?')[0])}" target="_blank" rel="noopener">Open in Notion ↗</a>` : ''}
+          ${l.linked === false ? '<span class="tag pain">Not counted in Notion stats</span>' : ''}
         </div>`;
       el.querySelector('[data-a="edit"]').addEventListener('click', () => { pick(l.date, true); $('formTitle').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
-      const del = el.querySelector('[data-a="del"]');
-      del.addEventListener('click', async () => {
-        if (S.readOnly) return;
-        if (del.dataset.armed !== 'true') {
-          del.dataset.armed = 'true'; del.textContent = 'Tap again to delete';
-          setTimeout(() => { if (del.isConnected) { del.dataset.armed = 'false'; del.textContent = 'Delete'; } }, 3500);
-          return;
-        }
-        if (await removeLog(l.date)) {
-          if (S.editingDate === l.date) pick($('fDate').value, false);
-          toast('Log deleted');
-        }
-      });
       box.appendChild(el);
     });
   }
@@ -736,7 +836,7 @@
 
   function renderForm() {
     const f = S.form;
-    chipGroup('cStyle', STYLES.map(s => [s, esc(s)]), v => f.style === v, v => { f.style = v; });
+    chipGroup('cStyle', STYLES.map(s => [s, esc(s)]), v => f.style === v, v => { f.style = f.style === v ? null : v; });
     chipGroup('cMood', Object.entries(MOODS).map(([k, [e, l]]) => [k, `<span>${e}</span>${l}`]), v => f.mood === v, v => { f.mood = f.mood === v ? null : v; });
     chipGroup('cInt', [1, 2, 3, 4, 5].map(n => [n, String(n)]), v => f.intensity === v, v => { f.intensity = f.intensity === v ? null : v; });
     chipGroup('cPeak', PEAKS.map(p => [p, esc(p)]), v => f.peaks.includes(v), v => { f.peaks = toggleIn(f.peaks, v); }, 'small');
@@ -765,7 +865,7 @@
     $('fDate').value = k;
     S.editingDate = l ? k : null;
     S.form = l ? {
-      style: l.style || 'Vinyasa', mood: l.mood || null, intensity: l.intensity || null,
+      style: l.style || null, mood: l.mood || null, intensity: l.intensity || null,
       peaks: [...(l.peaks || [])], pain: !!l.pain, painAreas: [...(l.painAreas || [])], severity: l.severity || null
     } : blankForm();
     $('fDur').value = l && l.duration ? l.duration : '';
@@ -791,7 +891,7 @@
 
   async function onSave(e) {
     e.preventDefault();
-    if (S.readOnly) return;
+    if (S.busy) return;
     const log = collect();
     if (!log.date) return toast('Pick a date first.');
     if (log.date > today()) return toast('You can only log days that have happened.');
@@ -810,9 +910,9 @@
   async function quickLogToday() {
     const t = today();
     if (S.logs.has(t)) { pick(t, true); $('formTitle').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-    if (S.readOnly) return;
+    if (S.busy) return;
     const before = stats().weekCount;
-    const log = { date: t, duration: null, style: 'Vinyasa', mood: null, intensity: null, peaks: [], pain: false, painAreas: [], severity: null, painNotes: '', notes: '', updatedAt: new Date().toISOString() };
+    const log = { date: t, duration: null, style: null, mood: null, intensity: null, peaks: [], pain: false, painAreas: [], severity: null, painNotes: '', notes: '', updatedAt: new Date().toISOString() };
     if (!(await writeLog(log, null))) return;
     S.logs.set(t, log);
     renderAll(); pick(t, true);
@@ -830,6 +930,7 @@
 
   // ---------- events ----------
   $('bigLog').addEventListener('click', quickLogToday);
+  $('retrySync').addEventListener('click', () => refresh(false));
   $('prev').addEventListener('click', () => { S.view = new Date(S.view.getFullYear(), S.view.getMonth() - 1, 1); renderCal(); });
   $('next').addEventListener('click', () => { S.view = new Date(S.view.getFullYear(), S.view.getMonth() + 1, 1); renderCal(); });
   $('toToday').addEventListener('click', () => pick(today(), true));
@@ -841,7 +942,11 @@
   $('q').addEventListener('input', e => { S.q = e.target.value.trim().toLowerCase(); renderEntries(); });
   $('fStyleF').addEventListener('change', e => { S.styleF = e.target.value; renderEntries(); });
   $('fMonthF').addEventListener('change', e => { S.monthF = e.target.value; renderEntries(); });
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) { renderAll(); } });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) return;
+    renderAll();
+    if (S.mcp && !S.busy && (!S.syncedAt || Date.now() - S.syncedAt > 60000)) refresh(true);
+  });
 
   // ---------- start ----------
   pick(today(), true);
