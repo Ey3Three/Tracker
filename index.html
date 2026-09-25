@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yoga Practice Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1a1a1a;
+      --bg-grad: #2d2d2d;
+      --surface: #ffffff;
+      --surface-2: #f9fafb;
+      --surface-3: #f3f4f6;
+      --border: #e5e7eb;
+      --border-strong: #6b7280;
+      --text: #000000;
+      --text-2: #374151;
+      --muted: #6b7280;
+      --faint: #d1d5db;
+      --accent: #000000;
+      --accent-text: #ffffff;
+      --practiced: #1f2937;
+      --practiced-2: #374151;
+      --good: #15803d;
+      --warn: #b45309;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0b0b0b; --bg-grad: #161616;
+        --surface: #18181b; --surface-2: #1f1f23; --surface-3: #111113;
+        --border: #2e2e33; --border-strong: #71717a;
+        --text: #f4f4f5; --text-2: #d4d4d8; --muted: #a1a1aa; --faint: #52525b;
+        --accent: #f4f4f5; --accent-text: #000000;
+        --practiced: #e4e4e7; --practiced-2: #a1a1aa;
+        --good: #4ade80; --warn: #fbbf24;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0b0b0b; --bg-grad: #161616;
+      --surface: #18181b; --surface-2: #1f1f23; --surface-3: #111113;
+      --border: #2e2e33; --border-strong: #71717a;
+      --text: #f4f4f5; --text-2: #d4d4d8; --muted: #a1a1aa; --faint: #52525b;
+      --accent: #f4f4f5; --accent-text: #000000;
+      --practiced: #e4e4e7; --practiced-2: #a1a1aa;
+      --good: #4ade80; --warn: #fbbf24;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-grad) 100%);
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    button { font-family: inherit; }
+
+    .main-container { padding: 20px; }
+    .content-wrapper {
+      max-width: 1200px; margin: 0 auto;
+      background: var(--surface);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #000000 0%, #2d2d2d 100%);
+      padding: 36px 30px 30px; text-align: center; color: #fff;
+      border-bottom: 3px solid #6b7280; position: relative;
+    }
+    .header h1 { margin: 0 0 8px; font-size: 2.4rem; font-weight: 700; letter-spacing: -1px; }
+    .header .sub { margin: 0; font-size: 1.05rem; color: #d1d5db; }
+    .header .sutra { margin: 10px auto 0; max-width: 560px; font-size: 0.85rem; color: #9ca3af; font-style: italic; }
+    .goal-indicator {
+      margin-top: 16px; padding: 10px 22px;
+      background: rgba(107,114,128,0.3); border: 2px solid #6b7280;
+      border-radius: 20px; display: inline-block; font-weight: 600;
+    }
+    .theme-toggle {
+      position: absolute; top: 14px; right: 14px;
+      background: rgba(255,255,255,0.1); color: #fff; border: 1px solid #6b7280;
+      border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 0.8rem;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 16px; padding: 26px 30px; background: var(--surface-3);
+    }
+    .stat-card {
+      background: var(--surface); padding: 18px 14px; border-radius: 15px; text-align: center;
+      border: 2px solid var(--border); transition: transform .2s ease, border-color .2s ease;
+    }
+    .stat-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+    .stat-number { font-size: 2rem; font-weight: 700; color: var(--text); line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .stat-unit { font-size: 0.9rem; font-weight: 600; color: var(--muted); }
+    .stat-label { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 6px; }
+    .stat-hint { color: var(--muted); font-size: 0.75rem; margin-top: 4px; min-height: 1em; }
+
+    /* Progress panels */
+    .progress-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+      padding: 0 30px 26px; background: var(--surface-3);
+    }
+    .panel {
+      background: var(--surface); border: 2px solid var(--border); border-radius: 15px; padding: 18px 20px;
+    }
+    .panel-title { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+    .panel-title h3 { margin: 0; font-size: 1rem; }
+    .panel-title span { color: var(--muted); font-size: 0.85rem; }
+    .week-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .wd {
+      text-align: center; padding: 8px 0; border-radius: 10px; font-size: 0.75rem; font-weight: 600;
+      border: 2px solid var(--border); color: var(--muted);
+    }
+    .wd.goal { border-style: dashed; border-color: var(--border-strong); }
+    .wd.done { background: var(--practiced); border-color: var(--practiced); border-style: solid; color: var(--surface); }
+    .wd.today { outline: 2px solid var(--text); outline-offset: 2px; }
+    .wd .dot { display: block; font-size: 1rem; line-height: 1.2; }
+    .week-msg { margin-top: 12px; font-size: 0.9rem; color: var(--text-2); }
+    .bar { height: 12px; background: var(--surface-3); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
+    .bar > div { height: 100%; background: var(--practiced); border-radius: 999px; transition: width .4s ease; }
+    .bar-meta { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
+    .weeks-strip { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+    .wk { width: 22px; height: 22px; border-radius: 6px; background: var(--surface-3); border: 1px solid var(--border); }
+    .wk.l1 { background: var(--practiced-2); opacity: .45; }
+    .wk.l2 { background: var(--practiced-2); opacity: .7; }
+    .wk.l3 { background: var(--practiced); }
+    .wk.cur { outline: 2px solid var(--border-strong); outline-offset: 1px; }
+
+    /* Main */
+    .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding: 30px; }
+    .section { background: var(--surface-2); padding: 24px; border-radius: 15px; border: 2px solid var(--border); min-width: 0; }
+    .section h2 { margin: 0 0 18px; font-size: 1.4rem; }
+
+    .calendar-header { display: flex; justify-content: center; align-items: center; margin-bottom: 18px; }
+    .month-nav { display: flex; align-items: center; gap: 12px; }
+    .nav-btn {
+      background: var(--accent); color: var(--accent-text); border: none;
+      width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.1rem;
+    }
+    .nav-btn:hover { transform: scale(1.08); }
+    .today-btn {
+      background: transparent; color: var(--text); border: 2px solid var(--border); border-radius: 999px;
+      padding: 6px 12px; cursor: pointer; font-size: 0.8rem; font-weight: 600;
+    }
+    .current-month { font-size: 1.15rem; font-weight: 600; min-width: 150px; text-align: center; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .day-header { text-align: center; font-weight: 600; color: var(--muted); padding: 8px 2px; font-size: 0.75rem; text-transform: uppercase; }
+    .day-cell {
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      border-radius: 10px; cursor: pointer; font-weight: 500; position: relative;
+      background: var(--surface); border: 2px solid var(--border); font-size: 0.9rem; color: var(--text);
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .day-cell:hover { transform: scale(1.05); border-color: var(--border-strong); }
+    .day-cell.preferred-day { border-style: dashed; border-color: var(--border-strong); }
+    .day-cell.other-month { color: var(--faint); }
+    .day-cell.future { cursor: default; opacity: .6; }
+    .day-cell.future:hover { transform: none; }
+    .day-cell.today { outline: 3px solid var(--text); outline-offset: 1px; font-weight: 700; }
+    .day-cell.practiced {
+      background: linear-gradient(135deg, var(--practiced-2) 0%, var(--practiced) 100%);
+      color: var(--surface); font-weight: 700; border: 2px solid var(--practiced);
+    }
+    .day-cell.practiced::after { content: '🧘'; position: absolute; top: 1px; right: 3px; font-size: 0.6rem; }
+    .day-cell.selected { box-shadow: 0 0 0 3px var(--border-strong); }
+    .legend { display: flex; gap: 14px; margin-top: 14px; flex-wrap: wrap; font-size: 0.8rem; color: var(--muted); }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-box { width: 18px; height: 18px; border-radius: 5px; }
+    .cal-tip { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
+
+    /* Form */
+    .log-form { background: var(--surface); padding: 20px; border-radius: 12px; border: 2px solid var(--border); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { margin-bottom: 14px; min-width: 0; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.88rem; }
+    .form-group input, .form-group textarea, .form-group select, .search-bar input, .filters select {
+      width: 100%; padding: 11px; border: 2px solid var(--faint); border-radius: 8px;
+      font-size: 1rem; font-family: inherit; background: var(--surface); color: var(--text);
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus,
+    .search-bar input:focus, .filters select:focus { outline: none; border-color: var(--border-strong); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .mood-selector { display: flex; gap: 8px; flex-wrap: wrap; }
+    .mood-btn {
+      padding: 8px 12px; border: 2px solid var(--faint); background: var(--surface); color: var(--text);
+      border-radius: 20px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;
+    }
+    .mood-btn .emo { font-size: 1.1rem; }
+    .mood-btn:hover { border-color: var(--border-strong); }
+    .mood-btn.selected { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+    .editing-banner {
+      display: none; background: var(--surface-3); border: 1px dashed var(--border-strong); border-radius: 8px;
+      padding: 8px 12px; margin-bottom: 14px; font-size: 0.85rem; color: var(--text-2);
+    }
+    .editing-banner.show { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .link-btn { background: none; border: none; color: var(--text); text-decoration: underline; cursor: pointer; font-size: 0.85rem; }
+    .btn-row { display: flex; gap: 10px; }
+    .save-btn {
+      flex: 1; background: var(--accent); color: var(--accent-text); border: none;
+      padding: 14px; border-radius: 10px; font-size: 1.05rem; font-weight: 600; cursor: pointer;
+    }
+    .save-btn:hover { opacity: .9; }
+    .quick-btn {
+      background: transparent; color: var(--text); border: 2px solid var(--accent);
+      padding: 14px; border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    }
+
+    /* Journal */
+    .database-section { grid-column: 1 / -1; }
+    .journal-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .journal-head h2 { margin: 0; }
+    .data-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .small-btn {
+      background: var(--surface); color: var(--text); border: 2px solid var(--border); border-radius: 8px;
+      padding: 7px 12px; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    }
+    .small-btn:hover { border-color: var(--border-strong); }
+    .search-bar { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .result-count { color: var(--muted); font-size: 0.85rem; margin-bottom: 12px; }
+    .entries-list { display: grid; gap: 14px; }
+    .entry-card { background: var(--surface); padding: 18px 20px; border-radius: 12px; border: 2px solid var(--border); }
+    .entry-card:hover { border-color: var(--border-strong); }
+    .entry-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .entry-date { font-weight: 600; font-size: 1.05rem; }
+    .entry-meta { color: var(--muted); font-weight: 500; font-size: 0.88rem; margin-top: 3px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag { background: var(--surface-3); border: 1px solid var(--border); border-radius: 999px; padding: 1px 9px; font-size: 0.78rem; color: var(--text-2); }
+    .tag.off { border-style: dashed; }
+    .entry-mood { font-size: 1.5rem; }
+    .entry-notes { color: var(--text-2); line-height: 1.6; margin-top: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .entry-notes.empty { color: var(--muted); font-style: italic; }
+    .entry-actions { display: flex; gap: 8px; margin-top: 14px; }
+    .empty-state { text-align: center; padding: 36px; color: var(--muted); }
+    .empty-state-icon { font-size: 2.6rem; margin-bottom: 8px; }
+
+    .toast {
+      position: fixed; top: 20px; right: 20px; padding: 13px 22px; max-width: calc(100vw - 40px);
+      background: #000; color: #fff; border: 2px solid #6b7280; border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; animation: slideIn .25s ease;
+    }
+    @keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: none; opacity: 1; } }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+    @media (max-width: 968px) {
+      .stats { grid-template-columns: repeat(3, 1fr); }
+      .progress-row, .main-content { grid-template-columns: 1fr; }
+      .header h1 { font-size: 2rem; }
+    }
+    @media (max-width: 640px) {
+      .main-container { padding: 0; }
+      .content-wrapper { border-radius: 0; }
+      .header { padding: 44px 16px 24px; }
+      .stats { grid-template-columns: repeat(2, 1fr); padding: 16px; gap: 10px; }
+      .stats .stat-card:first-child { grid-column: 1 / -1; }
+      .progress-row { padding: 0 16px 16px; }
+      .main-content { padding: 16px; gap: 16px; }
+      .section { padding: 16px; }
+      .form-row, .search-bar { grid-template-columns: 1fr; }
+      .calendar-grid { gap: 4px; }
+      .day-cell { font-size: 0.8rem; border-radius: 8px; }
+      .btn-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<div class="main-container">
+  <div class="content-wrapper">
+    <header class="header">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light or dark theme">◐ Theme</button>
+      <h1>🧘 Yoga Journey</h1>
+      <p class="sub">Track your mindful practice</p>
+      <p class="sutra">“Practice becomes firmly grounded when attended to for a long time, without break and with all earnestness.” — Yoga Sutra 1.14</p>
+      <div class="goal-indicator">Goal: 3–4 days per week · Mon, Wed, Fri (+ Sun)</div>
+    </header>
+
+    <section class="stats" aria-label="Practice statistics">
+      <div class="stat-card">
+        <div class="stat-number" id="totalDays">0</div>
+        <div class="stat-label">Total Days</div>
+        <div class="stat-hint" id="totalHint"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number"><span id="currentStreak">0</span> <span class="stat-unit">wk</span></div>
+        <div class="stat-label">Current Streak</div>
+        <div class="stat-hint" id="streakHint"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number"><span id="longestStreak">0</span> <span class="stat-unit">wk</span></div>
+        <div class="stat-label">Best Streak</div>
+        <div class="stat-hint" id="bestHint"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="thisMonth">0</div>
+        <div class="stat-label">This Month</div>
+        <div class="stat-hint" id="monthHint"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="consistency">–</div>
+        <div class="stat-label">Goal Weeks</div>
+        <div class="stat-hint" id="consistencyHint"></div>
+      </div>
+    </section>
+
+    <section class="progress-row">
+      <div class="panel">
+        <div class="panel-title"><h3>This Week</h3><span id="weekCount">0 / 3</span></div>
+        <div class="week-days" id="weekDays"></div>
+        <div class="week-msg" id="weekMsg"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title"><h3 id="monthPanelTitle">Monthly Progress</h3><span id="monthPct">0%</span></div>
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="monthBarWrap"><div id="monthBar" style="width:0%"></div></div>
+        <div class="bar-meta"><span id="monthDone">0 sessions</span><span id="monthTarget">Target 0</span></div>
+        <div class="weeks-strip" id="weeksStrip" aria-label="Last 12 weeks"></div>
+        <div class="bar-meta"><span>Last 12 weeks</span><span>darker = more sessions</span></div>
+      </div>
+    </section>
+
+    <div class="main-content">
+      <section class="section calendar-section">
+        <div class="calendar-header">
+          <div class="month-nav">
+            <button class="nav-btn" id="prevMonth" type="button" aria-label="Previous month">‹</button>
+            <div class="current-month" id="currentMonth"></div>
+            <button class="nav-btn" id="nextMonth" type="button" aria-label="Next month">›</button>
+            <button class="today-btn" id="todayBtn" type="button">Today</button>
+          </div>
+        </div>
+        <div class="calendar-grid" id="calendar"></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-box" style="background: linear-gradient(135deg, var(--practiced-2), var(--practiced));"></div><span>Practiced</span></div>
+          <div class="legend-item"><div class="legend-box" style="background: var(--surface); border: 2px dashed var(--border-strong);"></div><span>Goal day</span></div>
+          <div class="legend-item"><div class="legend-box" style="background: var(--surface); outline: 2px solid var(--text); outline-offset: -2px;"></div><span>Today</span></div>
+        </div>
+        <div class="cal-tip">Tap any day to log it — or open its entry if you already practiced.</div>
+      </section>
+
+      <section class="section log-section">
+        <h2 id="logTitle">Today's Practice</h2>
+        <form class="log-form" id="logForm" novalidate>
+          <div class="editing-banner" id="editingBanner">
+            <span id="editingText">Editing an existing log</span>
+            <button type="button" class="link-btn" id="cancelEdit">Back to today</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="practiceDate">Date</label>
+              <input type="date" id="practiceDate" required>
+            </div>
+            <div class="form-group">
+              <label for="duration">Duration (min)</label>
+              <input type="number" id="duration" min="1" max="300" placeholder="45" inputmode="numeric">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="style">Practice style</label>
+            <select id="style">
+              <option value="Vinyasa">Vinyasa</option>
+              <option value="Functional Flow">Functional Flow</option>
+              <option value="Ashtanga">Ashtanga</option>
+              <option value="Yin">Yin</option>
+              <option value="Restorative">Restorative</option>
+              <option value="Mobility / Strength">Mobility / Strength</option>
+              <option value="Meditation / Pranayama">Meditation / Pranayama</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label id="moodLabel">How did you feel?</label>
+            <div class="mood-selector" id="moodSelector" role="radiogroup" aria-labelledby="moodLabel"></div>
+          </div>
+          <div class="form-group">
+            <label for="notes">Session notes</label>
+            <textarea id="notes" placeholder="Poses and sequence, what felt open or tight, cues that landed, insights…"></textarea>
+          </div>
+          <div class="btn-row">
+            <button type="submit" class="save-btn" id="saveBtn">✨ Save Practice Log</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="section database-section">
+        <div class="journal-head">
+          <h2>Practice Journal</h2>
+          <div class="data-actions">
+            <button type="button" class="small-btn" id="exportBtn">⬇ Export backup</button>
+            <button type="button" class="small-btn" id="exportCsvBtn">⬇ CSV</button>
+            <button type="button" class="small-btn" id="importBtn">⬆ Import</button>
+            <input type="file" id="importFile" accept="application/json,.json" class="sr-only">
+          </div>
+        </div>
+        <div class="search-bar">
+          <input type="search" id="searchInput" placeholder="🔍 Search notes, poses, styles, dates…" aria-label="Search practice logs">
+          <div class="filters"><select id="styleFilter" aria-label="Filter by style"><option value="">All styles</option></select></div>
+          <div class="filters"><select id="monthFilter" aria-label="Filter by month"><option value="">All months</option></select></div>
+        </div>
+        <div class="result-count" id="resultCount"></div>
+        <div class="entries-list" id="entriesList"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  const STORAGE_KEY = 'yogaTracker.v1';
+  const THEME_KEY = 'yogaTracker.theme';
+  const GOAL_MIN = 3;
+  const GOAL_MAX = 4;
+  // JS getDay(): 0 = Sun … 6 = Sat
+  const CORE_DAYS = [1, 3, 5];      // Mon, Wed, Fri
+  const BONUS_DAY = 0;              // Sun (optional 4th)
+  const GOAL_DAYS = [...CORE_DAYS, BONUS_DAY];
+
+  const MOODS = {
+    energized: { emoji: '⚡', label: 'Energized' },
+    peaceful:  { emoji: '😌', label: 'Peaceful' },
+    strong:    { emoji: '💪', label: 'Strong' },
+    flexible:  { emoji: '🤸', label: 'Open' },
+    tired:     { emoji: '😴', label: 'Tired' }
+  };
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  // Weeks run Monday → Sunday so the optional Sunday closes out the week.
+  const WEEK_LABELS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+  // ---------- date helpers (always local time, never UTC) ----------
+  const pad = n => String(n).padStart(2, '0');
+  const dateKey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const parseKey = k => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); };
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const startOfWeek = d => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); return addDays(x, -((x.getDay() + 6) % 7)); };
+  const weekKey = d => dateKey(startOfWeek(d));
+  const todayKey = () => dateKey(new Date());
+  const formatLong = k => parseKey(k).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const formatShort = k => parseKey(k).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+  // ---------- storage ----------
+  const store = {
+    load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const data = raw ? JSON.parse(raw) : [];
+        return Array.isArray(data) ? data.filter(validEntry).map(normalize) : [];
+      } catch { return []; }
+    },
+    save(entries) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); return true; }
+      catch { return false; }
+    }
+  };
+
+  function validEntry(e) {
+    return e && typeof e.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(e.date);
+  }
+  function normalize(e) {
+    return {
+      id: e.id || e.__backendId || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8)),
+      date: e.date,
+      duration: Number(e.duration) > 0 ? Math.round(Number(e.duration)) : null,
+      style: typeof e.style === 'string' ? e.style : '',
+      mood: MOODS[e.mood] ? e.mood : null,
+      notes: typeof e.notes === 'string' ? e.notes : '',
+      createdAt: e.createdAt || e.timestamp || new Date().toISOString(),
+      updatedAt: e.updatedAt || e.timestamp || new Date().toISOString()
+    };
+  }
+
+  // ---------- state ----------
+  const state = {
+    entries: store.load(),
+    viewDate: new Date(),
+    selectedMood: null,
+    editingId: null,
+    search: '',
+    styleFilter: '',
+    monthFilter: ''
+  };
+
+  const $ = id => document.getElementById(id);
+  const byDate = () => {
+    const m = new Map();
+    state.entries.forEach(e => m.set(e.date, e));
+    return m;
+  };
+
+  function persist() {
+    if (!store.save(state.entries)) toast('Could not save to this browser’s storage. Export a backup to be safe.');
+    renderAll();
+  }
+
+  // ---------- stats ----------
+  function computeStats() {
+    const dates = [...new Set(state.entries.map(e => e.date))].sort();
+    const now = new Date();
+    const tKey = todayKey();
+    const pastDates = dates.filter(d => d <= tKey);
+
+    // sessions per week (keyed by Monday)
+    const perWeek = new Map();
+    pastDates.forEach(d => { const wk = weekKey(parseKey(d)); perWeek.set(wk, (perWeek.get(wk) || 0) + 1); });
+
+    const thisWeekKey = weekKey(now);
+    const thisWeekCount = perWeek.get(thisWeekKey) || 0;
+
+    // Current streak = consecutive weeks meeting the 3-day minimum.
+    // The in-progress week never breaks the streak; it only adds once the goal is hit.
+    let current = 0;
+    let cursor = startOfWeek(now);
+    if (thisWeekCount >= GOAL_MIN) current++;
+    cursor = addDays(cursor, -7);
+    while ((perWeek.get(dateKey(cursor)) || 0) >= GOAL_MIN) { current++; cursor = addDays(cursor, -7); }
+
+    // Best streak across all weeks from first log to now.
+    let best = 0, run = 0, goalWeeks = 0, totalWeeks = 0;
+    if (pastDates.length) {
+      let wk = startOfWeek(parseKey(pastDates[0]));
+      const end = startOfWeek(now);
+      while (wk <= end) {
+        const k = dateKey(wk);
+        const count = perWeek.get(k) || 0;
+        const isCurrent = k === thisWeekKey;
+        if (count >= GOAL_MIN) { run++; best = Math.max(best, run); }
+        else if (!isCurrent) run = 0;
+        // consistency: completed weeks, plus this week only once it's already met
+        if (!isCurrent || count >= GOAL_MIN) { totalWeeks++; if (count >= GOAL_MIN) goalWeeks++; }
+        wk = addDays(wk, 7);
+      }
+    }
+
+    // Month
+    const y = now.getFullYear(), m = now.getMonth();
+    const monthPrefix = `${y}-${pad(m + 1)}`;
+    const monthCount = pastDates.filter(d => d.startsWith(monthPrefix)).length;
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
+    let monthTarget = 0, monthMax = 0;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const wd = new Date(y, m, d).getDay();
+      if (CORE_DAYS.includes(wd)) monthTarget++;
+      if (GOAL_DAYS.includes(wd)) monthMax++;
+    }
+
+    const minutes = state.entries.reduce((s, e) => s + (e.duration || 0), 0);
+
+    return {
+      total: pastDates.length, minutes, current, best, perWeek, thisWeekKey, thisWeekCount,
+      monthCount, monthTarget, monthMax, goalWeeks, totalWeeks
+    };
+  }
+
+  // ---------- rendering ----------
+  function renderStats() {
+    const s = computeStats();
+    $('totalDays').textContent = s.total;
+    $('totalHint').textContent = s.minutes ? `${(s.minutes / 60).toFixed(s.minutes >= 600 ? 0 : 1)} hrs on the mat` : '';
+    $('currentStreak').textContent = s.current;
+    $('streakHint').textContent = s.current ? 'weeks hitting 3+' : 'hit 3 this week to start';
+    $('longestStreak').textContent = s.best;
+    $('bestHint').textContent = s.best && s.current >= s.best ? '🔥 you’re at your best' : (s.best ? `${s.best - s.current} wk to tie` : '');
+    $('thisMonth').textContent = s.monthCount;
+    $('monthHint').textContent = `of ${s.monthTarget} goal days`;
+    $('consistency').textContent = s.totalWeeks ? `${Math.round(100 * s.goalWeeks / s.totalWeeks)}%` : '–';
+    $('consistencyHint').textContent = s.totalWeeks ? `${s.goalWeeks} of ${s.totalWeeks} weeks` : 'no weeks yet';
+
+    // Week panel
+    const monday = parseKey(s.thisWeekKey);
+    const dates = byDate();
+    const tKey = todayKey();
+    const wrap = $('weekDays');
+    wrap.innerHTML = '';
+    for (let i = 0; i < 7; i++) {
+      const d = addDays(monday, i);
+      const k = dateKey(d);
+      const el = document.createElement('div');
+      el.className = 'wd';
+      if (GOAL_DAYS.includes(d.getDay())) el.classList.add('goal');
+      if (dates.has(k)) el.classList.add('done');
+      if (k === tKey) el.classList.add('today');
+      const mark = dates.has(k) ? '✓' : (CORE_DAYS.includes(d.getDay()) ? '○' : (d.getDay() === BONUS_DAY ? '+' : '·'));
+      el.innerHTML = `<span class="dot">${mark}</span>${WEEK_LABELS[i]}`;
+      el.title = `${formatLong(k)}${dates.has(k) ? ' — practiced' : ''}`;
+      wrap.appendChild(el);
+    }
+    $('weekCount').textContent = `${s.thisWeekCount} / ${GOAL_MIN}${s.thisWeekCount >= GOAL_MIN ? ' ✓' : ''}`;
+    $('weekMsg').textContent = weekMessage(s.thisWeekCount);
+
+    // Month panel
+    const now = new Date();
+    $('monthPanelTitle').textContent = `${MONTHS[now.getMonth()]} Progress`;
+    const pct = s.monthTarget ? Math.min(100, Math.round(100 * s.monthCount / s.monthTarget)) : 0;
+    $('monthBar').style.width = pct + '%';
+    $('monthBarWrap').setAttribute('aria-valuenow', pct);
+    $('monthPct').textContent = pct + '%';
+    $('monthDone').textContent = `${s.monthCount} session${s.monthCount === 1 ? '' : 's'}`;
+    $('monthTarget').textContent = `Target ${s.monthTarget} (max ${s.monthMax})`;
+
+    // 12-week strip
+    const strip = $('weeksStrip');
+    strip.innerHTML = '';
+    for (let i = 11; i >= 0; i--) {
+      const wk = addDays(parseKey(s.thisWeekKey), -7 * i);
+      const k = dateKey(wk);
+      const c = s.perWeek.get(k) || 0;
+      const el = document.createElement('div');
+      el.className = 'wk' + (c >= GOAL_MIN ? ' l3' : c === 2 ? ' l2' : c === 1 ? ' l1' : '') + (i === 0 ? ' cur' : '');
+      el.title = `Week of ${formatShort(k)}: ${c} session${c === 1 ? '' : 's'}`;
+      strip.appendChild(el);
+    }
+  }
+
+  function weekMessage(count) {
+    const dow = new Date().getDay();
+    if (count > GOAL_MAX) return 'You’re past your 4-day max — rest is part of the practice. 🌙';
+    if (count === GOAL_MAX) return 'All 4 days done. Beautiful week — enjoy the rest. 🌟';
+    if (count >= GOAL_MIN) return 'Goal met! Sunday is a bonus if your body wants it. 🎉';
+    const left = GOAL_MIN - count;
+    // remaining goal days this week (including today)
+    const remaining = GOAL_DAYS.filter(d => {
+      const idx = (d + 6) % 7, todayIdx = (dow + 6) % 7;
+      return idx >= todayIdx;
+    }).length;
+    if (remaining < left) return `${left} to go — any open day counts. Keep the week alive. 💪`;
+    return `${left} more session${left === 1 ? '' : 's'} to hit your weekly goal.`;
+  }
+
+  function renderCalendar() {
+    const cal = $('calendar');
+    const v = state.viewDate;
+    $('currentMonth').textContent = `${MONTHS[v.getMonth()]} ${v.getFullYear()}`;
+    cal.innerHTML = WEEK_LABELS.map(l => `<div class="day-header">${l}</div>`).join('');
+
+    const first = new Date(v.getFullYear(), v.getMonth(), 1);
+    const start = startOfWeek(first);
+    const dates = byDate();
+    const tKey = todayKey();
+    const selKey = $('practiceDate').value;
+
+    for (let i = 0; i < 42; i++) {
+      const d = addDays(start, i);
+      if (i >= 35 && d.getMonth() !== v.getMonth()) break; // skip empty 6th row
+      const k = dateKey(d);
+      const cell = document.createElement('button');
+      cell.type = 'button';
+      cell.className = 'day-cell';
+      cell.textContent = d.getDate();
+      if (d.getMonth() !== v.getMonth()) cell.classList.add('other-month');
+      if (GOAL_DAYS.includes(d.getDay())) cell.classList.add('preferred-day');
+      if (k === tKey) cell.classList.add('today');
+      if (k > tKey) cell.classList.add('future');
+      if (dates.has(k)) cell.classList.add('practiced');
+      if (k === selKey) cell.classList.add('selected');
+      cell.setAttribute('aria-label', `${formatLong(k)}${dates.has(k) ? ', practiced' : ''}`);
+      cell.addEventListener('click', () => {
+        if (k > tKey) { toast('That day hasn’t happened yet 🙂'); return; }
+        selectDate(k, true);
+      });
+      cal.appendChild(cell);
+    }
+  }
+
+  function renderFilters() {
+    const styles = [...new Set(state.entries.map(e => e.style).filter(Boolean))].sort();
+    const months = [...new Set(state.entries.map(e => e.date.slice(0, 7)))].sort().reverse();
+    const sf = $('styleFilter'), mf = $('monthFilter');
+    sf.innerHTML = '<option value="">All styles</option>' + styles.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+    mf.innerHTML = '<option value="">All months</option>' + months.map(m => {
+      const [y, mo] = m.split('-').map(Number);
+      return `<option value="${m}">${MONTHS[mo - 1]} ${y}</option>`;
+    }).join('');
+    if (!styles.includes(state.styleFilter)) state.styleFilter = '';
+    if (!months.includes(state.monthFilter)) state.monthFilter = '';
+    sf.value = state.styleFilter;
+    mf.value = state.monthFilter;
+  }
+
+  function renderEntries() {
+    const list = $('entriesList');
+    const q = state.search;
+    const filtered = state.entries.filter(e => {
+      if (state.styleFilter && e.style !== state.styleFilter) return false;
+      if (state.monthFilter && !e.date.startsWith(state.monthFilter)) return false;
+      if (!q) return true;
+      const hay = [e.notes, e.date, e.style, e.mood ? MOODS[e.mood].label : '', formatLong(e.date)].join(' ').toLowerCase();
+      return q.split(/\s+/).every(t => hay.includes(t));
+    }).sort((a, b) => b.date.localeCompare(a.date));
+
+    const total = state.entries.length;
+    $('resultCount').textContent = total ? (filtered.length === total ? `${total} log${total === 1 ? '' : 's'}` : `Showing ${filtered.length} of ${total} logs`) : '';
+
+    if (!filtered.length) {
+      list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📓</div>
+        <p>${total ? 'No logs match your search.' : 'No practice logs yet. Log your first session above!'}</p></div>`;
+      return;
+    }
+
+    list.innerHTML = '';
+    filtered.forEach(e => {
+      const card = document.createElement('article');
+      card.className = 'entry-card';
+      const offDay = !GOAL_DAYS.includes(parseKey(e.date).getDay());
+      const mood = e.mood ? MOODS[e.mood] : null;
+      card.innerHTML = `
+        <div class="entry-header">
+          <div>
+            <div class="entry-date">${esc(formatLong(e.date))}</div>
+            <div class="entry-meta">
+              ${e.duration ? `<span>${e.duration} min</span>` : ''}
+              ${e.style ? `<span class="tag">${esc(e.style)}</span>` : ''}
+              ${offDay ? '<span class="tag off">bonus day</span>' : ''}
+            </div>
+          </div>
+          ${mood ? `<div class="entry-mood" title="${mood.label}">${mood.emoji}</div>` : ''}
+        </div>
+        <div class="entry-notes${e.notes ? '' : ' empty'}">${e.notes ? esc(e.notes) : 'No notes added'}</div>
+        <div class="entry-actions">
+          <button type="button" class="small-btn" data-act="edit">✏️ Edit</button>
+          <button type="button" class="small-btn" data-act="delete">🗑️ Delete</button>
+        </div>`;
+      card.querySelector('[data-act="edit"]').addEventListener('click', () => {
+        selectDate(e.date, true);
+        $('logTitle').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      card.querySelector('[data-act="delete"]').addEventListener('click', () => deleteEntry(e.id));
+      list.appendChild(card);
+    });
+  }
+
+  function renderMoods() {
+    const wrap = $('moodSelector');
+    wrap.innerHTML = '';
+    Object.entries(MOODS).forEach(([key, m]) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'mood-btn' + (state.selectedMood === key ? ' selected' : '');
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', state.selectedMood === key);
+      b.innerHTML = `<span class="emo">${m.emoji}</span>${m.label}`;
+      b.addEventListener('click', () => {
+        state.selectedMood = state.selectedMood === key ? null : key;
+        renderMoods();
+      });
+      wrap.appendChild(b);
+    });
+  }
+
+  function renderAll() {
+    renderStats();
+    renderCalendar();
+    renderFilters();
+    renderEntries();
+  }
+
+  // ---------- form ----------
+  function selectDate(k, jumpCalendar) {
+    const existing = byDate().get(k);
+    $('practiceDate').value = k;
+    if (existing) {
+      state.editingId = existing.id;
+      $('duration').value = existing.duration || '';
+      $('style').value = existing.style || 'Vinyasa';
+      $('notes').value = existing.notes;
+      state.selectedMood = existing.mood;
+    } else {
+      state.editingId = null;
+      $('duration').value = '';
+      $('notes').value = '';
+      state.selectedMood = null;
+    }
+    if (jumpCalendar) {
+      const d = parseKey(k);
+      state.viewDate = new Date(d.getFullYear(), d.getMonth(), 1);
+    }
+    updateFormChrome();
+    renderMoods();
+    renderCalendar();
+  }
+
+  function updateFormChrome() {
+    const k = $('practiceDate').value;
+    const isToday = k === todayKey();
+    $('logTitle').textContent = isToday ? 'Today’s Practice' : (k ? `Practice · ${formatShort(k)}` : 'Log a Practice');
+    const banner = $('editingBanner');
+    if (state.editingId) {
+      banner.classList.add('show');
+      $('editingText').textContent = `Editing your ${formatShort(k)} log`;
+      $('saveBtn').textContent = '💾 Update Practice Log';
+    } else {
+      banner.classList.remove('show');
+      $('saveBtn').textContent = '✨ Save Practice Log';
+    }
+  }
+
+  function saveFromForm(ev) {
+    ev.preventDefault();
+    const date = $('practiceDate').value;
+    if (!date) { toast('Pick a date first.'); return; }
+    if (date > todayKey()) { toast('You can only log days that have happened.'); return; }
+    const durRaw = $('duration').value.trim();
+    const duration = durRaw ? parseInt(durRaw, 10) : null;
+    if (durRaw && (!(duration > 0) || duration > 300)) { toast('Duration should be between 1 and 300 minutes.'); return; }
+
+    const now = new Date().toISOString();
+    const data = { date, duration, style: $('style').value, mood: state.selectedMood, notes: $('notes').value.trim() };
+    // One log per day: saving on a date that already has a log updates it.
+    const existing = state.entries.find(e => e.id === state.editingId) || state.entries.find(e => e.date === date);
+    if (existing) {
+      // if the date was changed onto another logged day, drop that one to keep one-per-day
+      state.entries = state.entries.filter(e => e === existing || e.date !== date);
+      Object.assign(existing, data, { updatedAt: now });
+      toast('Practice log updated ✓');
+    } else {
+      state.entries.push(normalize({ ...data, createdAt: now, updatedAt: now }));
+      const s = computeStats();
+      toast(s.thisWeekCount === GOAL_MIN && weekKey(parseKey(date)) === s.thisWeekKey
+        ? 'Weekly goal reached! 🎉' : 'Practice logged! 🧘');
+    }
+    persist();
+    selectDate(date, false);
+  }
+
+  function deleteEntry(id) {
+    const e = state.entries.find(x => x.id === id);
+    if (!e) return;
+    if (!confirm(`Delete your log for ${formatLong(e.date)}? This can’t be undone.`)) return;
+    state.entries = state.entries.filter(x => x.id !== id);
+    if (state.editingId === id) state.editingId = null;
+    persist();
+    selectDate($('practiceDate').value || todayKey(), false);
+    toast('Practice log deleted');
+  }
+
+  // ---------- import / export ----------
+  function download(name, content, type) {
+    const blob = new Blob([content], { type });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  }
+
+  function exportJson() {
+    if (!state.entries.length) { toast('Nothing to export yet.'); return; }
+    download(`yoga-journal-${todayKey()}.json`, JSON.stringify(state.entries, null, 2), 'application/json');
+  }
+
+  function exportCsv() {
+    if (!state.entries.length) { toast('Nothing to export yet.'); return; }
+    const cell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const rows = [['Date', 'Weekday', 'Duration (min)', 'Style', 'Mood', 'Notes']];
+    [...state.entries].sort((a, b) => a.date.localeCompare(b.date)).forEach(e => rows.push([
+      e.date, parseKey(e.date).toLocaleDateString('en-US', { weekday: 'long' }),
+      e.duration ?? '', e.style, e.mood ? MOODS[e.mood].label : '', e.notes
+    ]));
+    download(`yoga-journal-${todayKey()}.csv`, rows.map(r => r.map(cell).join(',')).join('\n'), 'text/csv');
+  }
+
+  function importJson(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        const incoming = (Array.isArray(data) ? data : data.entries || []).filter(validEntry).map(normalize);
+        if (!incoming.length) { toast('No practice logs found in that file.'); return; }
+        const map = byDate();
+        let added = 0, updated = 0;
+        incoming.forEach(e => {
+          const cur = map.get(e.date);
+          if (!cur) { map.set(e.date, e); added++; }
+          else if ((e.updatedAt || '') > (cur.updatedAt || '')) { map.set(e.date, { ...e, id: cur.id }); updated++; }
+        });
+        state.entries = [...map.values()];
+        persist();
+        toast(`Imported ${added} new${updated ? `, updated ${updated}` : ''} log${added + updated === 1 ? '' : 's'}.`);
+      } catch {
+        toast('That file isn’t a valid backup.');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // ---------- utils ----------
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  let toastTimer;
+  function toast(msg) {
+    document.querySelectorAll('.toast').forEach(t => t.remove());
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.setAttribute('role', 'status');
+    t.textContent = msg;
+    document.body.appendChild(t);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.remove(), 3000);
+  }
+
+  function applyTheme(theme) {
+    if (theme) document.documentElement.setAttribute('data-theme', theme);
+    else document.documentElement.removeAttribute('data-theme');
+  }
+
+  // ---------- events ----------
+  function bind() {
+    $('prevMonth').addEventListener('click', () => { state.viewDate = new Date(state.viewDate.getFullYear(), state.viewDate.getMonth() - 1, 1); renderCalendar(); });
+    $('nextMonth').addEventListener('click', () => { state.viewDate = new Date(state.viewDate.getFullYear(), state.viewDate.getMonth() + 1, 1); renderCalendar(); });
+    $('todayBtn').addEventListener('click', () => selectDate(todayKey(), true));
+    $('logForm').addEventListener('submit', saveFromForm);
+    $('practiceDate').addEventListener('change', e => { if (e.target.value) selectDate(e.target.value, true); });
+    $('cancelEdit').addEventListener('click', () => selectDate(todayKey(), true));
+    $('searchInput').addEventListener('input', e => { state.search = e.target.value.trim().toLowerCase(); renderEntries(); });
+    $('styleFilter').addEventListener('change', e => { state.styleFilter = e.target.value; renderEntries(); });
+    $('monthFilter').addEventListener('change', e => { state.monthFilter = e.target.value; renderEntries(); });
+    $('exportBtn').addEventListener('click', exportJson);
+    $('exportCsvBtn').addEventListener('click', exportCsv);
+    $('importBtn').addEventListener('click', () => $('importFile').click());
+    $('importFile').addEventListener('change', e => { if (e.target.files[0]) importJson(e.target.files[0]); e.target.value = ''; });
+    $('themeToggle').addEventListener('click', () => {
+      const dark = getComputedStyle(document.documentElement).getPropertyValue('--surface').trim() !== '#ffffff';
+      const next = dark ? 'light' : 'dark';
+      applyTheme(next);
+      try { localStorage.setItem(THEME_KEY, next); } catch {}
+    });
+    // keep "today" correct if the tab stays open past midnight
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) renderAll(); });
+    // sync if the tracker is open in another tab
+    window.addEventListener('storage', e => { if (e.key === STORAGE_KEY) { state.entries = store.load(); renderAll(); } });
+  }
+
+  // ---------- init ----------
+  try { applyTheme(localStorage.getItem(THEME_KEY)); } catch {}
+  bind();
+  renderMoods();
+  selectDate(todayKey(), true);
+  renderAll();
+})();
+</script>
+</body>
+</html>
