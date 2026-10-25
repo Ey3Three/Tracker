@@ -278,10 +278,77 @@
   @keyframes pop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
+  .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .sec-head h2 { margin: 0; }
+  .sub-note { color: var(--muted); font-size: .82rem; }
+  .gap-top { margin-top: 18px; }
+  .timer { display: grid; grid-template-columns: minmax(0, 170px) 1fr; gap: 20px; align-items: center; margin-top: 16px; }
+  .ring-wrap { position: relative; width: 100%; max-width: 170px; aspect-ratio: 1; }
+  .ring { width: 100%; height: 100%; display: block; }
+  .ring-track { stroke: var(--surface-3); }
+  .ring-fill { stroke: var(--mark); transition: stroke-dashoffset .2s linear; }
+  .ring-fill.rest { stroke: var(--good); }
+  .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .t-time { font-size: 2.1rem; font-weight: 800; }
+  .t-phase { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .t-info { display: grid; gap: 8px; min-width: 0; }
+  .t-now { font-size: 1.12rem; font-weight: 800; overflow-wrap: anywhere; }
+  .t-next, .t-cue { color: var(--muted); font-size: .86rem; }
+  .t-cue { font-style: italic; }
+  .t-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .t-controls .save { padding: 10px 24px; }
+  .log-timer { justify-self: start; }
+  .t-edit { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+  .t-edit summary { cursor: pointer; font-weight: 700; font-size: .86rem; }
+  .t-edit[open] { display: grid; gap: 12px; }
+  .t-edit input[type="text"], .t-edit input[type="number"] {
+    width: 100%; padding: 9px 10px; border-radius: 8px; border: 2px solid var(--faint);
+    background: var(--surface); color: var(--text); font: inherit; font-size: .95rem;
+  }
+  .row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .check { display: flex; gap: 8px; align-items: center; font-size: .86rem; }
+  .goals { display: grid; gap: 12px; }
+  .goal { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 14px; display: grid; gap: 10px; }
+  .goal-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .goal-name { font-weight: 800; }
+  .ladder { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .76rem; }
+  .step { padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+  .step.done { background: var(--mark-2); color: var(--surface); border-color: var(--mark-2); }
+  .step.cur { background: var(--mark); color: var(--surface); border-color: var(--mark); font-weight: 700; }
+  .arrow { color: var(--faint); }
+  .goal-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+  .spark { width: 120px; height: 28px; display: block; margin-bottom: 4px; }
+  .spark .line { stroke: var(--mark); fill: none; stroke-width: 2; }
+  .spark .area { fill: var(--mark); opacity: .12; stroke: none; }
+  .spark circle { fill: var(--mark); }
+  .goal-meta { font-size: .78rem; color: var(--muted); }
+  .goal-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .goal-check { display: grid; gap: 12px; }
+  .gc-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+  .gc-name { font-size: .84rem; font-weight: 700; }
+  .gc-step { font-size: .74rem; color: var(--muted); font-weight: 500; }
+  .gc-row input { grid-column: 1 / -1; padding: 8px 10px; border-radius: 8px; border: 2px solid var(--faint); background: var(--surface); color: var(--text); font: inherit; font-size: .9rem; }
+  .lab .hint { font-weight: 500; color: var(--muted); font-size: .76rem; }
+  .insight { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .hbars { display: grid; gap: 6px; }
+  .hb { display: grid; grid-template-columns: minmax(0, 110px) 1fr 24px; gap: 8px; align-items: center; font-size: .8rem; }
+  .hb .track { height: 10px; border-radius: 999px; background: var(--surface-3); overflow: hidden; display: block; }
+  .hb .fill { display: block; height: 100%; background: var(--mark); border-radius: 999px; }
+  .hbars.pain .fill { background: var(--bad); }
+  .hb .n { text-align: right; color: var(--muted); }
+  .pain-split { margin-top: 12px; font-size: .86rem; color: var(--text-2); }
+  .questions { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 8px; max-height: 360px; overflow-y: auto; }
+  .questions li { display: grid; grid-template-columns: auto 1fr; gap: 10px; font-size: .9rem; line-height: 1.45; }
+  .q-date { border: 0; background: none; color: var(--muted); font-size: .75rem; cursor: pointer; padding: 2px 0; text-decoration: underline; white-space: nowrap; }
+  .empty-mini { color: var(--muted); font-size: .85rem; }
+  .tag.felt { border-color: var(--border-strong); }
+  .e-q { font-size: .9rem; }
+
   @media (max-width: 980px) {
     .stats { grid-template-columns: repeat(3, 1fr); }
     .progress { grid-template-columns: 1fr; }
     .main { grid-template-columns: 1fr; }
+    .insight { grid-template-columns: 1fr; }
   }
   @media (max-width: 640px) {
     body { padding-inline: 0; padding-block: 0; }
@@ -296,6 +363,11 @@
     .row2, .search { grid-template-columns: 1fr; }
     .cal { gap: 4px; }
     .day { font-size: .78rem; border-radius: 8px; }
+    .timer { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .t-info { justify-items: center; width: 100%; }
+    .t-controls { justify-content: center; }
+    .log-timer { justify-self: center; }
+    .hb { grid-template-columns: minmax(0, 90px) 1fr 22px; }
   }
 </style>
 
@@ -344,6 +416,54 @@
   </section>
 
   <div class="main">
+    <section class="section" id="timerSection">
+      <div class="sec-head"><h2>Practice Timer</h2><span class="sub-note num" id="timerTotal"></span></div>
+      <div class="chips" id="tPresets" role="group" aria-label="Timer protocols"></div>
+      <div class="timer">
+        <div class="ring-wrap">
+          <svg viewBox="0 0 120 120" class="ring" aria-hidden="true">
+            <circle class="ring-track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+            <circle class="ring-fill" id="tRing" cx="60" cy="60" r="52" fill="none" stroke-width="8" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+          </svg>
+          <div class="ring-center"><div class="t-time num" id="tTime">0:30</div><div class="t-phase" id="tPhase">Ready</div></div>
+        </div>
+        <div class="t-info" aria-live="polite">
+          <div class="t-now" id="tNow">—</div>
+          <div class="t-next" id="tNext"></div>
+          <div class="t-cue" id="tCue"></div>
+          <div class="bar" aria-hidden="true"><div id="tBar" style="width:0%"></div></div>
+          <div class="t-controls">
+            <button class="save" type="button" id="tStart">Start</button>
+            <button class="ghost" type="button" id="tSkip">Skip</button>
+            <button class="ghost" type="button" id="tReset">Reset</button>
+          </div>
+          <button class="ghost log-timer" type="button" id="tLog" hidden>Log this session →</button>
+        </div>
+      </div>
+      <details class="t-edit" id="tEdit">
+        <summary>Edit protocol</summary>
+        <div class="field"><label for="tPoses">Poses (comma-separated)</label><input id="tPoses" type="text"></div>
+        <div class="row3">
+          <div class="field"><label for="tSets">Sets</label><input id="tSets" type="number" min="1" max="10" inputmode="numeric"></div>
+          <div class="field"><label for="tHold">Hold (sec)</label><input id="tHold" type="number" min="5" max="600" inputmode="numeric"></div>
+          <div class="field"><label for="tRest">Rest (sec)</label><input id="tRest" type="number" min="0" max="600" inputmode="numeric"></div>
+        </div>
+        <label class="check"><input type="checkbox" id="tSides"> Both sides (left, then right)</label>
+        <div class="field"><label for="tCueIn">Breath cue</label><input id="tCueIn" type="text"></div>
+      </details>
+    </section>
+
+    <section class="section" id="goalsSection">
+      <div class="sec-head"><h2>Pose Goals</h2><span class="sub-note" id="goalCount"></span></div>
+      <div class="goals" id="goals"></div>
+      <details class="t-edit" id="goalAdd">
+        <summary>Add a goal</summary>
+        <div class="field"><label for="gPose">Pose</label><input id="gPose" type="text" placeholder="e.g. Hanumanasana"></div>
+        <div class="field"><label for="gLadder">Progression (separate steps with →)</label><input id="gLadder" type="text" placeholder="Half split → Blocks under hips → Full split"></div>
+        <button class="save" type="button" id="gSave">Add goal</button>
+      </details>
+    </section>
+
     <section class="section">
       <div class="cal-head">
         <button class="nav" id="prev" type="button" aria-label="Previous month">‹</button>
@@ -381,6 +501,8 @@
         <div class="field"><div class="lab">How did you feel?</div><div class="chips" id="cMood" role="group" aria-label="Mood"></div></div>
         <div class="field"><div class="lab">Intensity</div><div class="chips" id="cInt" role="group" aria-label="Intensity 1 to 5"></div></div>
         <div class="field"><div class="lab">Skills / Peak Poses</div><div class="chips" id="cPeak" role="group" aria-label="Peak poses"></div></div>
+        <div class="field"><div class="lab">Where did you feel it?</div><div class="chips" id="cFelt" role="group" aria-label="Where you felt it"></div></div>
+        <div class="field" id="goalCheckField" hidden><div class="lab">Pose goal check-in <span class="hint">ability 1–5</span></div><div class="goal-check" id="goalCheck"></div></div>
         <div class="field">
           <div class="chips"><button type="button" class="chip pain" id="painToggle" aria-pressed="false">Pain or irritation?</button></div>
           <div class="pain-box" id="painBox" hidden>
@@ -390,8 +512,24 @@
           </div>
         </div>
         <div class="field"><label for="fNotes">Session notes</label><textarea id="fNotes" placeholder="Sequence, cues that landed, what felt open or tight, insights…"></textarea></div>
+        <div class="field"><label for="fQuestions">Questions to explore</label><textarea id="fQuestions" style="min-height:60px" placeholder="One per line, e.g. How do we get the most out of lunges?"></textarea></div>
         <button class="save" id="save" type="submit">Save practice</button>
       </form>
+    </section>
+
+    <section class="section insight">
+      <div class="panel">
+        <div class="panel-head"><h3>Where you feel it</h3><span>last 30 days</span></div>
+        <div class="hbars" id="feltBars"></div>
+        <div class="panel-head gap-top"><h3>Pain</h3><span>last 30 days</span></div>
+        <div class="hbars pain" id="painBars"></div>
+        <div class="pain-split" id="painSplit"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Explore</h3><span id="qCount"></span></div>
+        <ul class="questions" id="questions"></ul>
+        <button class="ghost" type="button" id="qCopy">Copy all questions</button>
+      </div>
     </section>
 
     <section class="section journal">
@@ -428,6 +566,10 @@
   const LOGS_DS = '64535ba1-2538-48c7-a720-e2d9ffd814e9';
   const LOGS_VIEW = 'view://9f7e3e6d-5e09-44ef-9bef-4e0f6369f3df';
   const STATS_PAGE = 'https://app.notion.com/p/3e6da0eb6b0e8185ad1fff27301f49f4';
+  const GOALS_DS = '9c80a666-4208-4707-871c-8c7567c7aa3e';
+  const GOALS_VIEW = 'view://75f7a5dc-b936-42e5-b4ee-8c91ee6e757c';
+  const GOALS_CACHE = 'yogaJourney.goalsCache';
+  const FELT = ['Feet', 'Ankles', 'Calves', 'Hamstrings', 'Quads/Hip flexors', 'Inner thigh', 'Outer hip', 'Glutes', 'Hips', 'SI joint', 'Low back', 'Core', 'Obliques', 'Upper back', 'Chest', 'Shoulders', 'Lats', 'Wrists', 'Neck'];
   const NOTION_MOOD = { energized: '⚡ Energized', peaceful: '😌 Peaceful', strong: '💪 Strong', open: '🤸 Open', tired: '😴 Tired' };
   const MOOD_FROM_NOTION = Object.fromEntries(Object.entries(NOTION_MOOD).map(([k, v]) => [v, k]));
 
@@ -453,10 +595,11 @@
     mcp: null,
     mode: 'loading',           // loading | live | cached | offline
     problem: null,             // { text, retry } when Notion can't be reached
-    syncedAt: null, busy: false
+    syncedAt: null, busy: false,
+    goals: [], goalsProblem: null, questionsText: ''
   };
   function blankForm() {
-    return { style: null, mood: null, intensity: null, peaks: [], pain: false, painAreas: [], severity: null };
+    return { style: null, mood: null, intensity: null, peaks: [], pain: false, painAreas: [], severity: null, felt: [], goals: {} };
   }
 
   // ---------- Notion ----------
@@ -480,7 +623,11 @@
       severity: typeof r['Pain Severity (1-10)'] === 'number' ? r['Pain Severity (1-10)'] : null,
       painNotes: text(r['Pain Notes']),
       notes: text(r.Notes),
-      linked: arr(r.Stats).length > 0
+      linked: arr(r.Stats).length > 0,
+      felt: arr(r['Felt It']),
+      questions: text(r.Questions),
+      goals: parseRatings(text(r['Goal Ratings'])),
+      noteLinks: arr(r['Practice Notes'])
     };
   }
   function toProps(l, forCreate) {
@@ -499,7 +646,10 @@
       'Pain Severity (1-10)': l.severity,
       'Pain Notes': l.painNotes,
       'Notes': l.notes,
-      'Stats': [STATS_PAGE]
+      'Stats': [STATS_PAGE],
+      'Felt It': l.felt || [],
+      'Questions': l.questions || '',
+      'Goal Ratings': formatRatings(l.goals)
     };
     if (forCreate) Object.keys(p).forEach(k => { if (p[k] === null) delete p[k]; });
     return p;
@@ -539,9 +689,12 @@
     if (!S.mcp) return;
     if (!quiet) { S.problem = null; syncNote('Syncing with Notion…'); }
     try {
-      const rows = await readAll();
+      const [rows, gr] = await Promise.all([readAll(), readGoals().then(g => ({ g }), e => ({ e }))]);
+      if (gr.g) { S.goals = gr.g; S.goalsProblem = null; try { localStorage.setItem(GOALS_CACHE, JSON.stringify(gr.g)); } catch {} }
+      else S.goalsProblem = 'Pose goals: ' + describe(gr.e);
       const list = rows.map(fromRow).filter(Boolean);
       setLogs(list);
+      renderForm();
       S.mode = 'live'; S.problem = null; S.syncedAt = new Date();
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(list)); } catch {}
     } catch (e) {
@@ -600,6 +753,7 @@
   }
 
   async function connect() {
+    try { const g = JSON.parse(localStorage.getItem(GOALS_CACHE) || '[]'); if (Array.isArray(g)) S.goals = g; } catch {}
     try { const c = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]'); if (Array.isArray(c) && c.length) { setLogs(c); S.mode = 'cached'; } } catch {}
     syncNote();
     let mcp = null;
@@ -647,7 +801,7 @@
   }
 
   // ---------- render ----------
-  function renderAll() { renderHeader(); renderStats(); renderCal(); renderFilters(); renderEntries(); }
+  function renderAll() { renderHeader(); renderStats(); renderCal(); renderFilters(); renderEntries(); renderGoals(); renderInsights(); }
 
   function renderHeader() {
     const t = today(), done = S.logs.has(t);
@@ -777,7 +931,7 @@
       if (S.styleF && l.style !== S.styleF) return false;
       if (S.monthF && !l.date.startsWith(S.monthF)) return false;
       if (!S.q) return true;
-      const hay = [l.notes, l.painNotes, l.style, l.date, long(l.date), (l.peaks || []).join(' '), (l.painAreas || []).join(' '), l.mood && MOODS[l.mood] ? MOODS[l.mood][1] : ''].join(' ').toLowerCase();
+      const hay = [l.notes, l.painNotes, l.style, l.date, long(l.date), (l.peaks || []).join(' '), (l.painAreas || []).join(' '), (l.felt || []).join(' '), l.questions || '', Object.keys(l.goals || {}).join(' '), l.mood && MOODS[l.mood] ? MOODS[l.mood][1] : ''].join(' ').toLowerCase();
       return S.q.split(/\s+/).every(w => hay.includes(w));
     }).sort((a, b) => b.date.localeCompare(a.date));
     const n = S.logs.size;
@@ -803,6 +957,8 @@
               ${l.intensity ? `<span class="tag num">Intensity ${l.intensity}/5</span>` : ''}
               ${(l.peaks || []).map(p => `<span class="tag">${esc(p)}</span>`).join('')}
               ${l.pain ? `<span class="tag pain">Pain${l.severity ? ' ' + l.severity + '/10' : ''}${(l.painAreas || []).length ? ': ' + esc(l.painAreas.join(', ')) : ''}</span>` : ''}
+              ${(l.felt || []).length ? `<span class="tag felt">Felt: ${esc(l.felt.join(', '))}</span>` : ''}
+              ${Object.entries(l.goals || {}).filter(([, v]) => v.ability).map(([p, v]) => `<span class="tag">🎯 ${esc(p)} ${v.ability}/5</span>`).join('')}
               ${bonus ? '<span class="tag bonus">bonus day</span>' : ''}
             </div>
           </div>
@@ -810,9 +966,11 @@
         </div>
         <div class="e-notes${l.notes ? '' : ' none'}">${l.notes ? esc(l.notes) : 'No notes added'}</div>
         ${l.painNotes ? `<div class="e-notes">${esc(l.painNotes)}</div>` : ''}
+        ${l.questions ? `<div class="e-notes e-q"><strong>Questions:</strong> ${esc(l.questions)}</div>` : ''}
         <div class="e-actions">
           <button class="ghost" type="button" data-a="edit">Edit</button>
           ${l.url ? `<a class="ghost link" href="${esc(l.url.split('?')[0])}" target="_blank" rel="noopener">Open in Notion ↗</a>` : ''}
+          ${(l.noteLinks || []).map((u, i, all) => `<a class="ghost link" href="${esc(String(u).split('?')[0])}" target="_blank" rel="noopener">📝 Practice note${all.length > 1 ? ' ' + (i + 1) : ''} ↗</a>`).join('')}
           ${l.linked === false ? '<span class="tag pain">Not counted in Notion stats</span>' : ''}
         </div>`;
       el.querySelector('[data-a="edit"]').addEventListener('click', () => { pick(l.date, true); $('formTitle').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
@@ -842,6 +1000,8 @@
     chipGroup('cPeak', PEAKS.map(p => [p, esc(p)]), v => f.peaks.includes(v), v => { f.peaks = toggleIn(f.peaks, v); }, 'small');
     chipGroup('cPainAreas', PAIN_AREAS.map(p => [p, esc(p)]), v => f.painAreas.includes(v), v => { f.painAreas = toggleIn(f.painAreas, v); }, 'small pain');
     chipGroup('cSev', [1,2,3,4,5,6,7,8,9,10].map(n => [n, String(n)]), v => f.severity === v, v => { f.severity = f.severity === v ? null : v; }, 'small pain');
+    chipGroup('cFelt', FELT.map(p => [p, esc(p)]), v => f.felt.includes(v), v => { f.felt = toggleIn(f.felt, v); }, 'small');
+    renderGoalCheck();
     $('painToggle').setAttribute('aria-pressed', String(f.pain));
     $('painBox').hidden = !f.pain;
     const dq = $('durQuick'); dq.innerHTML = '';
@@ -866,11 +1026,13 @@
     S.editingDate = l ? k : null;
     S.form = l ? {
       style: l.style || null, mood: l.mood || null, intensity: l.intensity || null,
-      peaks: [...(l.peaks || [])], pain: !!l.pain, painAreas: [...(l.painAreas || [])], severity: l.severity || null
+      peaks: [...(l.peaks || [])], pain: !!l.pain, painAreas: [...(l.painAreas || [])], severity: l.severity || null,
+      felt: [...(l.felt || [])], goals: JSON.parse(JSON.stringify(l.goals || {}))
     } : blankForm();
     $('fDur').value = l && l.duration ? l.duration : '';
     $('fNotes').value = l ? l.notes || '' : '';
     $('fPainNotes').value = l ? l.painNotes || '' : '';
+    $('fQuestions').value = l ? l.questions || '' : '';
     if (jump) { const d = parse(k); S.view = new Date(d.getFullYear(), d.getMonth(), 1); }
     renderForm(); renderCal();
   }
@@ -885,6 +1047,9 @@
       pain: f.pain, painAreas: f.pain ? f.painAreas : [], severity: f.pain ? f.severity : null,
       painNotes: f.pain ? $('fPainNotes').value.trim() : '',
       notes: $('fNotes').value.trim(),
+      felt: f.felt, goals: f.goals,
+      questions: $('fQuestions').value.trim(),
+      noteLinks: (S.logs.get(S.editingDate || date) || {}).noteLinks || [],
       updatedAt: new Date().toISOString()
     };
   }
@@ -912,7 +1077,7 @@
     if (S.logs.has(t)) { pick(t, true); $('formTitle').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
     if (S.busy) return;
     const before = stats().weekCount;
-    const log = { date: t, duration: null, style: null, mood: null, intensity: null, peaks: [], pain: false, painAreas: [], severity: null, painNotes: '', notes: '', updatedAt: new Date().toISOString() };
+    const log = { date: t, duration: null, style: null, mood: null, intensity: null, peaks: [], pain: false, painAreas: [], severity: null, painNotes: '', notes: '', felt: [], goals: {}, questions: '', updatedAt: new Date().toISOString() };
     if (!(await writeLog(log, null))) return;
     S.logs.set(t, log);
     renderAll(); pick(t, true);
@@ -928,6 +1093,340 @@
     clearTimeout(toastTimer); toastTimer = setTimeout(() => t.remove(), 3200);
   }
 
+  // ---------- pose goals ----------
+  // Goal check-ins live on each log as readable text: "Forearm Stand 3/5 (restriction: shoulders); Lotus 4/5"
+  function parseRatings(s) {
+    const out = {};
+    String(s || '').split(/\s*;\s*/).forEach(part => {
+      const m = part.trim().match(/^(.+?)\s+([1-5])\/5(?:\s*\(restriction:\s*(.*)\))?$/i);
+      if (m) out[m[1].trim()] = { ability: Number(m[2]), restriction: (m[3] || '').trim() };
+    });
+    return out;
+  }
+  function formatRatings(g) {
+    return Object.entries(g || {}).filter(([, v]) => v && v.ability).map(([pose, v]) => {
+      const r = String(v.restriction || '').replace(/;/g, ',').trim();
+      return `${pose.replace(/[;()]/g, ',')} ${v.ability}/5${r ? ` (restriction: ${r})` : ''}`;
+    }).join('; ');
+  }
+  function goalFromRow(r) {
+    const steps = String(r.Ladder || '').split(/\s*(?:→|->)\s*/).map(s => s.trim()).filter(Boolean);
+    return {
+      pageId: pageIdOf(r.url), url: r.url,
+      pose: r.Pose || 'Untitled pose',
+      steps: steps.length ? steps : [r.Pose || 'Goal'],
+      step: Math.max(1, Math.round(Number(r['Current Step']) || 1)),
+      status: r.Status || 'Active',
+      focus: text(r.Focus)
+    };
+  }
+  async function readGoals() {
+    const res = await S.mcp.callTool(NOTION, 'notion-query-data-sources', { data: { mode: 'view', view_url: GOALS_VIEW, page_size: 100 } }, { cache: false });
+    const p = res && res.payload;
+    if (!p || !Array.isArray(p.results)) throw { code: 'tool_error', message: 'Unexpected response from Notion.' };
+    return p.results.map(goalFromRow);
+  }
+  const activeGoals = () => S.goals.filter(g => g.status === 'Active');
+  const stepName = g => g.steps[Math.min(g.step, g.steps.length) - 1] || '';
+
+  async function goalWrite(fn, okMsg) {
+    if (!S.mcp || S.mode === 'offline') { toast('Connect Notion to change goals.'); return false; }
+    if (S.busy) return false;
+    S.busy = true; syncNote('Saving to Notion…');
+    try { await fn(); toast(okMsg); return true; }
+    catch (e) { toast(describe(e) + ' It may still have saved, so check Pose Goals before trying again.'); return false; }
+    finally { S.busy = false; syncNote(); renderGoals(); renderForm(); setTimeout(() => refresh(true), 1200); }
+  }
+  function stepUp(g) {
+    const last = g.step >= g.steps.length;
+    return goalWrite(async () => {
+      await S.mcp.callTool(NOTION, 'notion-update-page', { page_id: g.pageId, command: 'update_properties', properties: last ? { 'Status': 'Achieved' } : { 'Current Step': g.step + 1 } });
+      if (last) g.status = 'Achieved'; else g.step += 1;
+    }, last ? `${g.pose} achieved! 🎉` : `${g.pose}: on to “${g.steps[g.step]}”`);
+  }
+  async function addGoal() {
+    const pose = $('gPose').value.trim(), ladder = $('gLadder').value.trim();
+    if (!pose) return toast('Name the pose first.');
+    const ok = await goalWrite(async () => {
+      const props = { 'Pose': pose, 'Ladder': ladder || pose, 'Current Step': 1, 'Status': 'Active', 'date:Started:start': today(), 'date:Started:is_datetime': 0 };
+      const res = await S.mcp.callTool(NOTION, 'notion-create-pages', { parent: { data_source_id: GOALS_DS }, pages: [{ properties: props }] });
+      const pg = res && res.payload && Array.isArray(res.payload.pages) ? res.payload.pages[0] : null;
+      S.goals.push(goalFromRow({ ...props, url: pg ? pg.url : '' }));
+    }, `Added ${pose}`);
+    if (ok) { $('gPose').value = ''; $('gLadder').value = ''; $('goalAdd').open = false; }
+  }
+
+  function ratingHistory(pose) {
+    return [...S.logs.values()].filter(l => l.goals && l.goals[pose] && l.goals[pose].ability)
+      .sort((a, b) => a.date.localeCompare(b.date)).map(l => ({ date: l.date, ...l.goals[pose] }));
+  }
+  function spark(points) {
+    const w = 120, h = 28, pad = 3;
+    const xs = i => pad + i * (w - 2 * pad) / (points.length - 1);
+    const ys = v => h - pad - (v - 1) * (h - 2 * pad) / 4;
+    const line = points.map((p, i) => `${i ? 'L' : 'M'}${xs(i).toFixed(1)},${ys(p.ability).toFixed(1)}`).join(' ');
+    const area = `${line} L${xs(points.length - 1).toFixed(1)},${h - pad} L${xs(0).toFixed(1)},${h - pad} Z`;
+    const last = points[points.length - 1];
+    return `<svg class="spark" viewBox="0 0 ${w} ${h}" role="img" aria-label="Ability ratings over time"><path class="area" d="${area}"/><path class="line" d="${line}"/><circle cx="${xs(points.length - 1).toFixed(1)}" cy="${ys(last.ability).toFixed(1)}" r="3"/></svg>`;
+  }
+  function renderGoals() {
+    const box = $('goals'), active = activeGoals();
+    $('goalCount').textContent = `${active.length} active · aim for 3 a month`;
+    if (S.goalsProblem && !S.goals.length) { box.innerHTML = `<div class="empty-mini">${esc(S.goalsProblem)}</div>`; renderPresets(); return; }
+    box.innerHTML = active.length ? '' : '<div class="empty-mini">No active goals. Add one below.</div>';
+    active.forEach(g => {
+      const hist = ratingHistory(g.pose), last = hist[hist.length - 1], atEnd = g.step >= g.steps.length;
+      const el = document.createElement('div');
+      el.className = 'goal';
+      el.innerHTML = `
+        <div class="goal-top"><span class="goal-name">${esc(g.pose)}</span><span class="goal-meta num">Step ${Math.min(g.step, g.steps.length)} of ${g.steps.length}</span></div>
+        <div class="ladder">${g.steps.map((s, i) => `${i ? '<span class="arrow">→</span>' : ''}<span class="step${i + 1 < g.step ? ' done' : i + 1 === g.step ? ' cur' : ''}">${esc(s)}</span>`).join('')}</div>
+        ${g.focus ? `<div class="goal-meta">${esc(g.focus)}</div>` : ''}
+        <div class="goal-foot">
+          <div>${hist.length >= 2 ? spark(hist) : ''}<div class="goal-meta">${last ? `Last check-in ${esc(short(last.date))}: ${last.ability}/5${last.restriction ? ' · restriction: ' + esc(last.restriction) : ''}` : 'No check-ins yet. Rate it when you log a session.'}</div></div>
+          <div class="goal-actions"><button class="ghost" type="button" data-a="up">${atEnd ? 'Mark achieved ✓' : 'Step up ↑'}</button>${g.url ? `<a class="ghost" href="${esc(g.url.split('?')[0])}" target="_blank" rel="noopener">Notion ↗</a>` : ''}</div>
+        </div>`;
+      el.querySelector('[data-a="up"]').addEventListener('click', () => stepUp(g));
+      box.appendChild(el);
+    });
+    renderPresets();
+  }
+  function renderGoalCheck() {
+    const box = $('goalCheck'), f = S.form;
+    const poses = [...new Set([...activeGoals().map(g => g.pose), ...Object.keys(f.goals || {})])];
+    $('goalCheckField').hidden = !poses.length;
+    const sig = poses.join('|');
+    if (box.dataset.sig !== sig) {
+      box.dataset.sig = sig;
+      box.innerHTML = poses.map((p, i) => {
+        const g = S.goals.find(x => x.pose === p);
+        return `<div class="gc-row"><span class="gc-name">${esc(p)}${g ? ` <span class="gc-step">· ${esc(stepName(g))}</span>` : ''}</span><div class="chips" data-gc="${i}" role="group" aria-label="${esc(p)} ability, 1 to 5"></div><input type="text" data-gr="${i}" placeholder="Where is the restriction?" aria-label="${esc(p)} restriction"></div>`;
+      }).join('');
+      box.querySelectorAll('input[data-gr]').forEach(inp => inp.addEventListener('input', () => {
+        const p = poses[+inp.dataset.gr], gs = S.form.goals;
+        gs[p] = { ...(gs[p] || {}), restriction: inp.value };
+      }));
+    }
+    poses.forEach((p, i) => {
+      const cur = (S.form.goals || {})[p] || {};
+      const chips = box.querySelector(`[data-gc="${i}"]`);
+      chips.innerHTML = '';
+      [1, 2, 3, 4, 5].forEach(n => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'chip small'; b.textContent = n;
+        b.setAttribute('aria-pressed', String(cur.ability === n));
+        b.addEventListener('click', () => {
+          const gs = S.form.goals;
+          gs[p] = { ...(gs[p] || {}), ability: (gs[p] || {}).ability === n ? null : n };
+          renderGoalCheck();
+        });
+        chips.appendChild(b);
+      });
+      const inp = box.querySelector(`[data-gr="${i}"]`);
+      if (document.activeElement !== inp) inp.value = cur.restriction || '';
+    });
+  }
+
+  // ---------- body + questions ----------
+  function renderInsights() {
+    const t = today(), since = key(add(new Date(), -29));
+    const recent = [...S.logs.values()].filter(l => l.date >= since && l.date <= t);
+    const bars = (id, counts, empty) => {
+      const names = Object.keys(counts).sort((a, b) => counts[b] - counts[a]).slice(0, 8);
+      const max = Math.max(1, ...names.map(n => counts[n]));
+      $(id).innerHTML = names.length
+        ? names.map(n => `<div class="hb"><span>${esc(n)}</span><span class="track"><span class="fill" style="width:${(100 * counts[n] / max).toFixed(0)}%"></span></span><span class="n num">${counts[n]}</span></div>`).join('')
+        : `<div class="empty-mini">${empty}</div>`;
+    };
+    const felt = {}, pain = {};
+    recent.forEach(l => {
+      (l.felt || []).forEach(a => { felt[a] = (felt[a] || 0) + 1; });
+      if (l.pain) ((l.painAreas || []).length ? l.painAreas : ['Area not noted']).forEach(a => { pain[a] = (pain[a] || 0) + 1; });
+    });
+    bars('feltBars', felt, 'Tap “Where did you feel it?” when you log, and it builds up here.');
+    bars('painBars', pain, 'No pain noted in the last 30 days.');
+    const longS = recent.filter(l => (l.duration || 0) >= 75), shortS = recent.filter(l => l.duration && l.duration < 75);
+    const pc = list => list.filter(l => l.pain).length;
+    $('painSplit').innerHTML = (longS.length || shortS.length)
+      ? `Pain on <strong class="num">${pc(longS)} of ${longS.length}</strong> sessions of 75+ min, and <strong class="num">${pc(shortS)} of ${shortS.length}</strong> shorter ones.`
+      : '';
+
+    const qs = [];
+    [...S.logs.values()].sort((a, b) => b.date.localeCompare(a.date)).forEach(l => {
+      const lines = String(l.questions || '').split('\n').map(s => s.trim()).filter(Boolean);
+      String(l.notes || '').split(/\n|(?<=\?)\s+/).map(s => s.trim()).filter(s => s.endsWith('?')).forEach(s => lines.push(s));
+      const seen = new Set();
+      lines.forEach(q => { const k = q.toLowerCase(); if (!seen.has(k)) { seen.add(k); qs.push({ q, date: l.date }); } });
+    });
+    $('qCount').textContent = qs.length ? `${qs.length} question${qs.length === 1 ? '' : 's'}` : '';
+    const ul = $('questions');
+    ul.innerHTML = qs.length ? '' : '<li class="empty-mini">Questions you add when you log show up here.</li>';
+    qs.forEach(({ q, date }) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<button class="q-date" type="button" aria-label="Open the ${esc(long(date))} log">${esc(short(date))}</button><span>${esc(q)}</span>`;
+      li.querySelector('button').addEventListener('click', () => { pick(date, true); $('formTitle').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+      ul.appendChild(li);
+    });
+    S.questionsText = qs.map(x => `${short(x.date)}: ${x.q}`).join('\n');
+    $('qCopy').hidden = !qs.length;
+  }
+
+  // ---------- timer ----------
+  const TIMER_KEY = 'yogaJourney.timer';
+  const PRESETS = [
+    { id: 'four30', name: '4 poses × 30s', poses: ['Forward Fold', 'Low Lunge', 'Down Dog', 'Lotus'], sets: 1, hold: 30, rest: 10, sides: false, cue: 'Inhale press and lift · Exhale maintain' },
+    { id: 'forearm', name: 'Forearm Stand 4 × 30s', poses: ['Forearm Stand'], sets: 4, hold: 30, rest: 60, sides: false, cue: 'Set 1 at the wall, then freestanding while you’re fresh' },
+    { id: 'standing', name: 'Standing 4 × 30s, both sides', poses: ['Low Lunge', 'Warrior 1', 'Side Angle', 'Warrior 3'], sets: 1, hold: 30, rest: 10, sides: true, cue: 'Press down, lift up' }
+  ];
+  const T = { p: null, queue: [], i: 0, endAt: 0, left: 0, lastSec: 0, running: false, done: false, workSecs: 0, ctx: null, lock: null, tick: null };
+  const fmt = s => { s = Math.max(0, Math.ceil(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+
+  function loadProtocol() {
+    try { const s = JSON.parse(localStorage.getItem(TIMER_KEY) || 'null'); if (s && Array.isArray(s.poses) && s.poses.length) return s; } catch {}
+    return { ...PRESETS[0], poses: [...PRESETS[0].poses] };
+  }
+  function saveProtocol() { try { localStorage.setItem(TIMER_KEY, JSON.stringify(T.p)); } catch {} }
+  function goalPreset() {
+    const poses = activeGoals().map(g => g.pose);
+    return poses.length ? { id: 'goals', name: 'My pose goals', poses, sets: 3, hold: 30, rest: 30, sides: false, cue: 'Where do you feel it?' } : null;
+  }
+  function buildQueue(p) {
+    const q = [], sides = p.sides ? ['Left', 'Right'] : [null];
+    p.poses.forEach((pose, pi) => {
+      for (let s = 1; s <= p.sets; s++) sides.forEach((side, si) => {
+        q.push({ kind: 'work', pose, set: s, side, secs: p.hold });
+        const lastOne = pi === p.poses.length - 1 && s === p.sets && si === sides.length - 1;
+        if (p.rest > 0 && !lastOne) q.push({ kind: 'rest', secs: p.rest });
+      });
+    });
+    return q;
+  }
+  const workLabel = w => `${w.pose}${T.p.sets > 1 ? ` · Set ${w.set} of ${T.p.sets}` : ''}${w.side ? ` · ${w.side} side` : ''}`;
+  const elapsed = () => T.queue.slice(0, T.i).reduce((a, x) => a + x.secs, 0) + (T.queue[T.i] ? T.queue[T.i].secs - T.left : 0);
+
+  function renderPresets() {
+    const box = $('tPresets');
+    const list = [...PRESETS, goalPreset()].filter(Boolean);
+    box.innerHTML = '';
+    list.forEach(pr => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip small'; b.textContent = pr.name;
+      b.setAttribute('aria-pressed', String(T.p && T.p.id === pr.id));
+      b.addEventListener('click', () => {
+        if (T.running) return toast('Pause the timer before switching protocols.');
+        T.p = { ...pr, poses: [...pr.poses] };
+        fillEditor(); saveProtocol(); resetTimer(); renderPresets();
+      });
+      box.appendChild(b);
+    });
+  }
+  function fillEditor() {
+    $('tPoses').value = T.p.poses.join(', ');
+    $('tSets').value = T.p.sets; $('tHold').value = T.p.hold; $('tRest').value = T.p.rest;
+    $('tSides').checked = !!T.p.sides; $('tCueIn').value = T.p.cue || '';
+  }
+  function readEditor() {
+    if (T.running) pauseTimer();
+    const clamp = (v, lo, hi, d) => { v = parseInt(v, 10); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d; };
+    T.p = {
+      id: null, name: 'Custom',
+      poses: $('tPoses').value.split(',').map(s => s.trim()).filter(Boolean),
+      sets: clamp($('tSets').value, 1, 10, 1), hold: clamp($('tHold').value, 5, 600, 30), rest: clamp($('tRest').value, 0, 600, 10),
+      sides: $('tSides').checked, cue: $('tCueIn').value.trim()
+    };
+    saveProtocol(); resetTimer(); renderPresets();
+  }
+  function renderTimer() {
+    const q = T.queue, cur = q[T.i];
+    const total = q.reduce((a, x) => a + x.secs, 0);
+    $('timerTotal').textContent = q.length ? `${fmt(total)} total · ${q.filter(x => x.kind === 'work').length} holds` : '';
+    const C = 2 * Math.PI * 52, frac = cur ? T.left / cur.secs : (T.done ? 0 : 1);
+    const ring = $('tRing');
+    ring.setAttribute('stroke-dasharray', C.toFixed(1));
+    ring.setAttribute('stroke-dashoffset', (C * (1 - frac)).toFixed(1));
+    ring.classList.toggle('rest', !!cur && cur.kind === 'rest');
+    const fresh = !!cur && T.i === 0 && T.left === cur.secs;
+    $('tTime').textContent = T.done ? 'Done' : fmt(cur ? T.left : 0);
+    $('tPhase').textContent = T.done ? 'Session complete' : !cur ? 'Add poses' : cur.kind === 'rest' ? 'Rest' : T.running ? 'Hold' : fresh ? 'Ready' : 'Paused';
+    $('tNow').textContent = T.done ? `Nice work: ${fmt(T.workSecs)} of holds` : cur ? (cur.kind === 'work' ? workLabel(cur) : 'Rest') : 'Add a pose to the protocol';
+    const nxt = q.slice(T.i + 1).find(x => x.kind === 'work');
+    $('tNext').textContent = T.done || !cur ? '' : nxt ? `Next: ${workLabel(nxt)}` : 'Last hold';
+    $('tCue').textContent = T.p.cue || '';
+    $('tBar').style.width = (total ? 100 * Math.min(total, elapsed()) / total : 0).toFixed(1) + '%';
+    $('tStart').textContent = T.running ? 'Pause' : T.done ? 'Start again' : fresh ? 'Start' : 'Resume';
+    $('tSkip').disabled = T.done || !cur;
+    $('tLog').hidden = !(T.done || T.workSecs >= 60);
+  }
+  function resetTimer() {
+    stopTick();
+    T.queue = buildQueue(T.p); T.i = 0; T.left = T.queue[0] ? T.queue[0].secs : 0;
+    T.running = false; T.done = false; T.workSecs = 0;
+    renderTimer();
+  }
+  function beep(freq, dur) {
+    try {
+      if (!T.ctx) return;
+      const o = T.ctx.createOscillator(), g = T.ctx.createGain(), t0 = T.ctx.currentTime;
+      o.frequency.value = freq; o.connect(g); g.connect(T.ctx.destination);
+      g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.25, t0 + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      o.start(t0); o.stop(t0 + dur + 0.02);
+    } catch {}
+  }
+  async function startTimer() {
+    if (T.done) resetTimer();
+    if (!T.queue.length) return toast('Add at least one pose to the protocol.');
+    try { T.ctx = T.ctx || new (window.AudioContext || window.webkitAudioContext)(); if (T.ctx.state === 'suspended') await T.ctx.resume(); } catch { T.ctx = null; }
+    try { if (navigator.wakeLock && !T.lock) T.lock = await navigator.wakeLock.request('screen'); } catch { T.lock = null; }
+    T.running = true; T.endAt = Date.now() + T.left * 1000; T.lastSec = Math.ceil(T.left);
+    beep(660, 0.15);
+    clearInterval(T.tick); T.tick = setInterval(tick, 200);
+    renderTimer();
+  }
+  function stopTick() {
+    clearInterval(T.tick); T.tick = null;
+    if (T.lock) { T.lock.release().catch(() => {}); T.lock = null; }
+  }
+  function pauseTimer() { T.running = false; stopTick(); renderTimer(); }
+  function tick() {
+    const cur = T.queue[T.i];
+    if (!cur || !T.running) return;
+    const prev = T.left;
+    T.left = Math.max(0, (T.endAt - Date.now()) / 1000);
+    if (cur.kind === 'work') T.workSecs += Math.max(0, prev - T.left);
+    const s = Math.ceil(T.left);
+    if (s !== T.lastSec && s > 0 && s <= 3) beep(520, 0.08);
+    T.lastSec = s;
+    if (T.left <= 0) advance(); else renderTimer();
+  }
+  function advance() {
+    T.i++;
+    const nxt = T.queue[T.i];
+    if (!nxt) { T.running = false; T.done = true; T.left = 0; stopTick(); beep(990, 0.45); renderTimer(); return; }
+    T.left = nxt.secs; T.endAt = Date.now() + nxt.secs * 1000; T.lastSec = Math.ceil(nxt.secs);
+    beep(nxt.kind === 'work' ? 880 : 440, 0.2);
+    renderTimer();
+  }
+  function skipTimer() {
+    if (!T.queue[T.i]) return;
+    if (T.running) { advance(); return; }
+    T.i++;
+    const n = T.queue[T.i];
+    if (!n) { T.done = true; T.left = 0; } else T.left = n.secs;
+    renderTimer();
+  }
+  function logTimerSession() {
+    const mins = Math.max(1, Math.round(elapsed() / 60));
+    pick(today(), true);
+    if (!$('fDur').value) $('fDur').value = mins;
+    T.p.poses.forEach(p => { if (PEAKS.includes(p) && !S.form.peaks.includes(p)) S.form.peaks.push(p); });
+    const line = `Timer: ${T.p.poses.join(', ')} · ${T.p.sets > 1 ? T.p.sets + ' sets × ' : ''}${T.p.hold}s${T.p.sides ? ' each side' : ''}`;
+    const notes = $('fNotes');
+    if (!notes.value.includes(line)) notes.value = notes.value ? `${notes.value}\n${line}` : line;
+    renderForm();
+    $('formTitle').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    toast('Timer details added below. Check them, then save.');
+  }
+
   // ---------- events ----------
   $('bigLog').addEventListener('click', quickLogToday);
   $('retrySync').addEventListener('click', () => refresh(false));
@@ -939,6 +1438,16 @@
   $('fDur').addEventListener('input', renderForm);
   $('painToggle').addEventListener('click', () => { S.form.pain = !S.form.pain; renderForm(); });
   $('form').addEventListener('submit', onSave);
+  $('tStart').addEventListener('click', () => (T.running ? pauseTimer() : startTimer()));
+  $('tSkip').addEventListener('click', skipTimer);
+  $('tReset').addEventListener('click', resetTimer);
+  $('tLog').addEventListener('click', logTimerSession);
+  ['tPoses', 'tSets', 'tHold', 'tRest', 'tSides', 'tCueIn'].forEach(id => $(id).addEventListener('change', readEditor));
+  $('gSave').addEventListener('click', addGoal);
+  $('qCopy').addEventListener('click', () => {
+    const fail = () => toast('Couldn’t copy. Select the list and copy it instead.');
+    try { navigator.clipboard.writeText(S.questionsText || '').then(() => toast('Questions copied'), fail); } catch { fail(); }
+  });
   $('q').addEventListener('input', e => { S.q = e.target.value.trim().toLowerCase(); renderEntries(); });
   $('fStyleF').addEventListener('change', e => { S.styleF = e.target.value; renderEntries(); });
   $('fMonthF').addEventListener('change', e => { S.monthF = e.target.value; renderEntries(); });
@@ -949,6 +1458,9 @@
   });
 
   // ---------- start ----------
+  T.p = loadProtocol();
+  fillEditor();
+  resetTimer();
   pick(today(), true);
   renderAll();
   syncNote();
