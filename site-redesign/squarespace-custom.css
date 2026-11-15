@@ -1,0 +1,126 @@
+/* ==========================================================================
+   Eye Three — custom CSS for Squarespace 7.1
+   Paste into: Website > Pages > Custom Code > Custom CSS
+
+   PLAN: every rule here needs only the Custom CSS panel. Squarespace's help
+   article "Add custom code to your site" lists the CSS editor on all plans,
+   Personal included. If the panel is locked on your account, skip this file:
+   the build guide gets you the full layout without it.
+   Nothing here needs Code Injection or JavaScript (those need Core, Plus,
+   Advanced, or the legacy Business/Commerce plans).
+
+   STATUS: written against your live pages' class names but not tested in your
+   editor, because I can't log in. Paste one numbered piece at a time and
+   check the page before adding the next.
+
+   Each piece is optional. The site works without any of them.
+   ========================================================================== */
+
+
+/* 1. HEADINGS WRAP EVENLY ---------------------------------------------------
+   Stops a headline leaving one short word on its last line.
+   Editor can't do this. Plan: any (Custom CSS). */
+h1, h2, h3 { text-wrap: balance; }
+
+
+/* 2. NAVIGATION UNDERLINE ON HOVER ------------------------------------------
+   The editor underlines only the current page. This adds the same accent
+   underline when hovering any link. Plan: any (Custom CSS). */
+.header-nav-item a {
+  padding-bottom: 6px;
+  border-bottom: 2px solid transparent;
+  transition: border-color .2s;
+}
+.header-nav-item a:hover,
+.header-nav-item--active a {
+  border-bottom-color: #c9a45c;
+  background-image: none; /* removes the built-in underline so there is only one */
+}
+
+
+/* 3. BUTTON HOVER -----------------------------------------------------------
+   Filled buttons turn to an outline on hover. The editor has no hover
+   settings. Plan: any (Custom CSS). */
+.sqs-block-button-element,
+.form-submit-button {
+  transition: background-color .2s, color .2s, border-color .2s;
+  border: 1px solid #c9a45c !important;
+}
+.sqs-block-button-element:hover,
+.form-submit-button:hover {
+  background-color: transparent !important;
+  color: currentColor !important;
+  opacity: 1 !important;
+}
+/* On white or cream sections the outlined hover text must stay dark. */
+.white .sqs-block-button-element:hover,
+.white-bold .sqs-block-button-element:hover,
+.light .sqs-block-button-element:hover,
+.light-bold .sqs-block-button-element:hover { color: #0b0b0b !important; }
+.black .sqs-block-button-element:hover,
+.black-bold .sqs-block-button-element:hover,
+.dark .sqs-block-button-element:hover,
+.dark-bold .sqs-block-button-element:hover { color: #ffffff !important; }
+
+
+/* 4. HERO GRADIENT ----------------------------------------------------------
+   The editor's image overlay is one flat tint. This replaces it with a
+   gradient that is dark only behind the text, so the photo stays visible.
+
+   Setup: in each hero section, turn on Background > Overlay (any opacity above
+   0) so Squarespace outputs the overlay layer. Then replace the IDs below.
+   How to find a section ID: open the live page, right-click the hero,
+   Inspect, and look for data-section-id="..." on the <section> tag.
+
+   Homepage hero today is 6903ad97daddd14541fee896.
+   Intensive hero today is 6aaf17fc1bb1bb7c5e4ef9f5.
+   If you rebuild a section from scratch it gets a new ID.
+   Plan: any (Custom CSS). */
+
+/* Homepage: text sits bottom-left, so darken from the bottom up. */
+section[data-section-id="6903ad97daddd14541fee896"] .section-background-overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,.05) 30%, rgba(0,0,0,.82) 78%, rgba(0,0,0,.92) 100%) !important;
+  opacity: 1 !important;
+}
+/* Intensive: text sits on the right, so darken from left to right. */
+section[data-section-id="6aaf17fc1bb1bb7c5e4ef9f5"] .section-background-overlay {
+  background: linear-gradient(90deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.72) 62%, rgba(0,0,0,.82) 100%) !important;
+  opacity: 1 !important;
+}
+/* Private sessions: text sits on the left. Add the section ID once the page exists.
+section[data-section-id="PASTE-PRIVATE-HERO-ID"] .section-background-overlay {
+  background: linear-gradient(270deg, rgba(0,0,0,.2) 0%, rgba(0,0,0,.72) 62%, rgba(0,0,0,.84) 100%) !important;
+  opacity: 1 !important;
+}
+*/
+
+
+/* 5. LARGE PRICE NUMERALS ---------------------------------------------------
+   Makes "$125" and "$100" display-sized on the private sessions page without
+   changing Heading 1 everywhere else. In the editor, set each price as
+   Heading 1 inside the prices section, then paste that section's ID.
+   Plan: any (Custom CSS).
+section[data-section-id="PASTE-PRICES-SECTION-ID"] h1 {
+  font-size: clamp(54px, 6vw, 80px);
+  line-height: 1;
+}
+*/
+
+
+/* 6. /free AS A FOCUSED LANDING PAGE (optional) ------------------------------
+   Hides the navigation on /free only, so the sign-up form is the only way
+   forward. The logo still links home.
+   Find the page ID: open /free on the live site, right-click, Inspect, and
+   read the id on the <body> tag (it looks like collection-6903aa51...).
+   Plan: any (Custom CSS). Doing this per page with Code Injection instead
+   would need Core or higher, which is why it is done here by page ID.
+#PASTE-FREE-COLLECTION-ID .header-nav,
+#PASTE-FREE-COLLECTION-ID .header-burger,
+#PASTE-FREE-COLLECTION-ID .header-actions { display: none !important; }
+*/
+
+
+/* 7. SQUARE FORM FIELDS -----------------------------------------------------
+   Your Site Styles currently set form fields to the pill shape. Change that
+   in the editor first: Site Styles > Forms > Field shape > Square.
+   No CSS is needed for this one; it is listed so you don't go looking. */
