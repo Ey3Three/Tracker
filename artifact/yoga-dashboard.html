@@ -382,6 +382,83 @@
   .tab-fields { display: grid; gap: 10px; }
   .cal-tip { margin-top: 8px; font-size: .78rem; color: var(--muted); }
 
+
+  /* ---------- Character (hero) ---------- */
+  .hero-main { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 22px; align-items: center; min-width: 0; }
+  .avatar-wrap { position: relative; width: 132px; height: 196px; display: grid; place-items: center; }
+  .aura { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .aura ellipse { fill: none; }
+  .aura .pulse { animation: auraPulse 3.2s ease-in-out infinite; transform-origin: 66px 98px; }
+  @keyframes auraPulse { 0%, 100% { opacity: .35; transform: scale(1); } 50% { opacity: .9; transform: scale(1.04); } }
+  .avatar { position: relative; height: 172px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,0,0,.6)); }
+  .lvl-badge {
+    position: absolute; bottom: 0; right: 6px; min-width: 34px; height: 34px; padding: 0 8px; border-radius: 999px;
+    background: #ffffff; color: #000; font-weight: 800; font-size: .95rem; display: grid; place-items: center;
+    border: 3px solid #dc2626; box-shadow: 0 2px 8px rgba(0,0,0,.5);
+  }
+  .char { display: grid; gap: 10px; min-width: 0; }
+  .app-name { font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; color: #a1a1aa; font-weight: 700; }
+  .char-top { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .char-top h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; letter-spacing: -1px; }
+  .char-title { color: #d4d4d8; font-weight: 600; font-size: .92rem; }
+  .bars { display: grid; gap: 7px; max-width: 460px; }
+  .gbar { display: grid; grid-template-columns: 52px minmax(0, 1fr) 82px; gap: 10px; align-items: center; font-size: .78rem; }
+  .gbar-l { font-weight: 700; color: #d4d4d8; letter-spacing: .04em; }
+  .gbar-t { height: 12px; border-radius: 999px; background: rgba(255,255,255,.12); overflow: hidden; display: block; border: 1px solid rgba(255,255,255,.18); }
+  .gbar-f { display: block; height: 100%; width: 0; border-radius: 999px; transition: width .6s ease; }
+  .gbar-n { color: #a1a1aa; text-align: right; white-space: nowrap; }
+  .gbar.xp .gbar-f { background: #ffffff; }
+  .gbar.prana .gbar-f { background: #9ca3af; }
+  .gbar.prana.glow .gbar-f { background: #e5e7eb; box-shadow: 0 0 10px rgba(255,255,255,.8); }
+  .gbar.body .gbar-f { background: #dc2626; }
+  .gbar.body.low .gbar-l, .gbar.body.low .gbar-n { color: #f87171; }
+  .counters { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: .86rem; color: #d4d4d8; }
+  .counters b { color: #fff; }
+  .counter-btn { background: none; border: 0; padding: 0; color: inherit; font: inherit; cursor: pointer; text-decoration: underline dotted rgba(255,255,255,.4); text-underline-offset: 3px; }
+  .recent-badges { display: flex; gap: 8px; flex-wrap: wrap; min-height: 0; }
+  .rb { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.2); font-size: .76rem; color: #e4e4e7; }
+  .quest-line { font-size: .8rem; color: #a1a1aa; }
+  .body-tip { font-size: .8rem; color: #fca5a5; }
+  .xp-pop {
+    position: fixed; left: 50%; top: 76px; transform: translateX(-50%); z-index: 60;
+    background: #fff; color: #000; border: 3px solid #dc2626; border-radius: 999px; padding: 8px 18px; font-weight: 800;
+    box-shadow: 0 8px 24px rgba(0,0,0,.4); animation: pop .35s ease-out;
+  }
+  @keyframes pop { from { transform: translate(-50%, -10px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+
+  /* ---------- Rest token offer ---------- */
+  .token-offer { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: var(--surface-2); border: 2px dashed var(--border-strong); border-radius: 15px; padding: 14px 16px; }
+  .token-offer p { margin: 0; font-size: .9rem; color: var(--text-2); }
+  .token-offer .acts { display: flex; gap: 8px; }
+
+  /* ---------- Quest + badges ---------- */
+  .quest-theme { margin: 0 0 12px; color: var(--text-2); font-size: .9rem; line-height: 1.45; }
+  .qbar { height: 10px; border-radius: 999px; background: var(--surface-3); overflow: hidden; margin-bottom: 14px; border: 1px solid var(--border); }
+  .qbar > div { height: 100%; background: var(--mark); border-radius: 999px; }
+  .blocks { display: grid; gap: 10px; }
+  .block { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 12px 14px; display: grid; gap: 8px; }
+  .block.active { border-color: var(--border-strong); }
+  .block-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .block-name { font-weight: 800; font-size: .92rem; }
+  .block-dates { font-size: .76rem; color: var(--muted); }
+  .conds { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+  .conds li { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; font-size: .82rem; align-items: baseline; }
+  .conds .ok { color: var(--good); font-weight: 800; }
+  .conds .no { color: var(--bad); font-weight: 800; }
+  .conds .wait { color: var(--muted); }
+  .conds .n { color: var(--muted); }
+  .state-chip.bad { background: var(--bad-bg); color: var(--bad); }
+  .badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+  .badge { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 10px 8px; text-align: center; display: grid; gap: 4px; justify-items: center; }
+  .badge .bi { font-size: 1.6rem; line-height: 1; }
+  .badge .bn { font-size: .74rem; font-weight: 700; }
+  .badge .bd { font-size: .68rem; color: var(--muted); }
+  .badge.locked { opacity: .45; }
+  .badge.locked .bi { filter: grayscale(1); }
+  .badge.earned { border-color: var(--border-strong); }
+  .xp-break { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; font-size: .82rem; color: var(--text-2); margin-top: 14px; }
+  .xp-break span:nth-child(even) { text-align: right; font-weight: 700; }
+
   @media (max-width: 980px) {
     .stats { grid-template-columns: repeat(3, 1fr); }
     .progress { grid-template-columns: 1fr; }
@@ -406,6 +483,11 @@
     .timer { grid-template-columns: 1fr; justify-items: center; text-align: center; }
     .tabs { padding: 8px 12px; }
     .hero .sutra { display: none; }
+    .hero-main { gap: 14px; }
+    .avatar-wrap { width: 92px; height: 150px; }
+    .avatar { height: 128px; }
+    .lvl-badge { min-width: 28px; height: 28px; font-size: .8rem; right: 0; }
+    .gbar { grid-template-columns: 44px minmax(0, 1fr) 74px; gap: 8px; font-size: .72rem; }
     .tabs [role="tab"] { padding: 8px 12px; font-size: .86rem; }
     .view { padding: 16px; gap: 16px; }
     .glance { grid-template-columns: repeat(2, 1fr); }
@@ -418,10 +500,29 @@
 
 <div class="app">
   <header class="hero">
-    <div>
-      <h1>🧘 Yoga Journey</h1>
-      <p class="sutra">“Practice becomes firmly grounded when attended to for a long time, without break and with all earnestness.” Yoga Sutra 1.14</p>
-      <div class="goal-pill">Goal: 3–4 days a week · Mon, Wed, Fri (+ Sun)</div>
+    <div class="hero-main">
+      <div class="avatar-wrap">
+        <svg class="aura" id="aura" viewBox="0 0 132 196" aria-hidden="true"></svg>
+        <img class="avatar" alt="Your avatar" src="data:image/webp;base64,UklGRsZFAABXRUJQVlA4WAoAAAAQAAAAhAAAowEAQUxQSDgcAAAB/yckSPD/eGtEpO4TbiTJjZvdITLC/38wQUC+8oj+T4BO22H1l+1orSJG7nCJW8KBmjnjoLULdXPZ9m1lVrar8xKS6IFE+UFGtOChbFDVDXJ2vXQfMi/IQfsjGNHQSIreWlJopAsHHALyGT6Nf6Ci/iLNmGm2jojO3sm2pr4wHLRtJEgxf9i3O3P3TyAiJqCjtoKJft/FbsiqnSxoqbV9i8oK3V0HFRo6+SKHysnFCCn3VDIpNVKUrkRm8hyho0eiNTxcoKne9gP/6WTGK8sXXjWyK1nZaCdfJ5o+muV50YZtexpJkvV8UhQMMzPzLDMzMzMzw+GzzMzMu8M808zVVV1c1QVZVV2VVVmVzBmJERmREdb7I8IO2VZd1/6MiAnAhP3/IUm2Pt9fpFFViXI1aqqt6mPbtm3b5vZc7n3v3ivfu7Rt+47VXf//b5Hx/0fcych9REwA/y3sDBRyzA0E3S5kJW4KAM4GnGe4D7cBcxC9BHj7pxxcO7QImLfw9C94wzNX5x5etPQZAj3p6uj23Xf/wyt+4MueHNz8rwFOL/5fV98gk02/4y+wxJme8SnqfeIVBcCthiMDzwtAP7A4/bsSmPy/0bCkufDa936iEEDEFJxBgF3+Vv/03OAAMr/2IrxPWcGLPbgTLr3nTkCUuu7/i8dEjHLXT29b8AYT7e//g1/8vu/7lu/5iT+lqKNoZDof+s6jaf6rn/M3P01xdyM7xvYLnwZKl9rGuf/99QekYtXNY2uN5pYx+OC/o2CULHPAEmXGU/7AI96ooPhzfJIKet+95SFQzWi/hKXHvOf4jzwE94pQ8CX4xMgQn/4yZFQ3MH4NJYbdV//iM4MpVAgxMWNKCl+50z1zk7/QRNUBDsknpOCVHm6dcOO//hZRYTlugZLR4t1+2+86tH4WVymwnT7pFONv//Tnj3jgIqLqB4VSUV60/gNR9cDqGC4ZKooOd2356iHOTZBSxz0EauCz38Wnw/NdOGppX58QxyvmTHUQ734SlpB3KaOGgdnnf5eRSs+XKqgOGL++4pOBHVFGLYNdfj+WCM83KKgeiD/EJwIeVVaXzD+IpcHzhZ+LUVP58Lu4JIjvIqsN4uhjZAmw8Kwvwajz+3o+AY4veVkg1Edu5R5Uv8C34xbfQ6iJQuDOCRfq5vTqL4Y/7JPVBMPxCFa3Bl/0NGYe/gJCLQL/8VEyWz6DauZ5C/zVC1+WUcvMffD7txCHnrBQL2MfvTv/hJqKKwV/JzWfh9XtnZ/7QX4cqwcMpvB/eu+3usGxH+KVvbqIgzto8LpnYNTddnkjMtUjFIc0HEb95fRqskavWwecfTwuBWR8GY1bvy9UA3EeRxJd9sYXwUf+cL0ODqexNJi+He3+87OfjFVPMEmE8Yxx6d/5FrJG9eR41cuwFHh+Vn19AV9HHf9gkRd8Lz4B4jk3pZM8+7VY5QKHH4QHsQS0+H7t6Rd5S6cG4q13w9abcPUr+CtlrdfzyT3q+PwHW9LP4GsneEh6P3wBtXzV6kOmd2C1A+7WxqfA9xF8DZ7F+9D7UmB8/qNfyz5+mRoafd7zD+tfi69fqYzvoerBS5+e/czzSKOZYfwMoIrJeO6zCFgaFo1fBqxiBgefhBypaapCgUceMhxpNX4S1/yVToXEufdBdy8tBR/E1g41UUWEcX4eWtsoJWL47u7fT+xWxnCcWIWxFUsK8L0v+9N9PSranYXrS2f+68QvYqRV2Sr0gZ2sNHH532AcvCfBjl6PwL8toZICRyfg7c/BYQmSdVeBhU3KFpfnyF72ZXgjRT5rAr/8OqwcNcLRJsav0SDJxmVCeOY7llA5nLw02zT+LlWB9689h8M/8G9kpXT672b5A8ZP4hPlrn35T+3+IH/0FY8SogW3/Ml/1eCXfvZnG1iaCHbmB5hi+1WfhEVDr/z55/R9+6/+inS7tQKv/vpnyigxuLO/cIT9WLJk4VbrSz+ZIEoNrv+3f3ET59MkC8EuffXZMqPkYLb5H/9qOJ8esxDWX/7WGTLKl8z23v8ZhvdpMW9h9va34USjkgpO/Q99GjifDnPGCz/0KjyigqqqH9R/1ycbzqfBeeOZv7SERxXiESz1g/rvfRs4XzepcMZzfmVSIRTGI1uS+kHb7/p0w7w3q4vJA86zfui7IDhPLRWchTt+73QAPEGVk8XgdCbXvuZLINCgtgrO+ic+evrSegBHqJZi4NxTnntcRAg0qLWCM7KNm3ccOd3Cq0LC+y/7wAzA+65B/TN5g2z6HX+3YK4ygud9HYgumSeRkrxs9R/+BG/VUJy/9goRFaJZJZm79YW4SjiTR1ugRSMr+O7P4iogNMBFY4dM/wNXmtFqg5H261hZmrtJ6uXO3UEop+AOLHUYd2amMsTutA/JA87hyij4DiL9mTv+USye2Ps3fzvA+MPg47X4uAduh5n72EcsmuBXPLstyG/9NC7epafiK0Fx7eX1GS/oBFaj8wJiXc5NfEUYj59H1aPQvYGtCLF9RF1sX0ArgsBTsXpg0l8dziE1i1nhrEoxweuBHVYHjOp7BrfTg8giNW4r+xGR+7eVEtu3lQ4WawO7jexgiiKWdDvZxoi8totWx0Ys0dzgNrpE9IfvxleFcQPF6m2gVeE8mcjGU3Z9hXxuLHgVkVUpPudpmcVQmDwDrQzjDZ+Mi2HcPOu2Mgh8LRZDvJjIKv1k17cIkfOsUuNNLyaC4uwmWiH47Fot3HEGWyWR59fzOCKr9YhYDa7hK2avFVXJ2Wa1Gmd3qaTIbMXAZEJlMTlAK0Wx2ENVjPGknpCIKFXDuUKNgy61ukQ4I+pRHcMhqmF7LAlibBrFGFUTXZzKgfFvnkf1g195gBCjVw1O1wH7xg8RaifbemyHqO06turpcoT6B06sbcTyahNqFDMcanvVzfgIs3Fa1NirA64wfpZQM7nNB5jGK0Ibr1bUM0l4ENWNKze5skRMo0YXQZ5pOEFD9Qo8Ehqzt1AEgSo1IsD2JDy+Qs09p4DVSE7lfRHE8gy2eo5QK1lzYIyKNiLAYgfPw6hWgTMLwBNRVIdFEKdx4jgN1UkcoREY2/UazVRD3HNY4MwMdfIGp1Hg/AUiiBrdaPIbJ5CsfaxezJ8k4Dgco1ANfrTA+XELeB6hzoFLGyaMu/AaQfTbNXSqwUdxEDjT9aqPcwQHgaNHGQUGvRrGleQXP4BAnB+nPl5wFkA+e2gksTlFeQq9bVQh8KFZH0AuO1wjtHyWAIh7+14j+MbpKsaVoor87t8jAOMwVhvn5jICAscfJhQj8kIqv5DQygs8OmZhQDyx61SXyGE8g553YiPAE4l5zrOp/kEcw6ZWqI24iA0JfOyqC8WMa2fccizub6A8+ewcytlZp65exEk0RH7jAiqmOH80yhHHxFYFlhfItbCOagL/PUEYAqwyqvNqKj4Lp+rGJsphmbqKrbvIXB9JHHeDMiKPo6rYauXBSm2gcwtPLUa4dIUM87NXsQrQwxhurKHa7EYyN0cL7cfkiON5VKWMom3qu4cyutgIwEvwFDwT5//F10jk9hhZXOpFJSI3qbGPFXhyjVxWiHHmPAn5+gGqlpEvno7VZj+ekUWI/b2UceGwDhWAp1PfJxuZGg3nMplniBH6WIHhEhUFSlkEeCqeuowTI98ZLVG7RaYiiLPEMueYOvcKzVBtiiInRICNMUrsoghZnmivsbztdk4/gtjaL1MshtS5lwdFa2lEb5Czh40E460yWFMtnSJmSwOdAUp1MI2iyIBS+cGDKEKrSFEsUXeNpOhmjO6spabUulmk3VqizhCVQacTAdbLoE9UhJURVBvaJEWziUZyNnNqXS0iltdppWBlPgLMUwO8mtgp8vAJXpdseWYZXWzgZR2qu4WVIiGwtOJ2CpiPAAOSRR3cvEnIK2x5nG7W1ShFymqZ3HAaJs7OUU0UOZ11BVdGvZcxhhsXu2FZgMfgCXGraapmqftQJXGIfOcxLK+4qZgINnWWUM1T66PJLZ5GOYEnoCXa30ZlOMaImA0znkoYJfDonA/DxO75JYK9y1gCDuGqdYeJNbwqGPeRbzxux1laBS6QFo8vm1fq5DW7jBjcqXcRcuCYqKUBHo0ngpu7k1hpERuAdmcUcbTbUE7gWSyzeFYRExgfRpVuMVRst1CecRUx3Hj807GlOnUJS4jxtnmVnWHQ2qW4XOt4AfH4ImiZQu+VKGXjjxCrZNiwTneEwPGxAs5Nlv0ZhJTjHViWHJtoWAgjwIM0EordJ6GlMi5soDLg/JSFIhgPkNQI8r17CCTYP71ksH8+x2/eiwrRPcEXRLZXLHD0Isp40igul0LrSVjKcT+u2F6g3OgWg4doFDkistzOIZ6CR6YtFBC7J3gJ7KEcrzsJJAPHaMmMxxGU8usfQwVgxyk32hQNnLmMcuTjx2JLJo4mZDoewBXqWgJ2ColHeo082Fhn+Sf7KGWc2zJVwHM/Ite4uo6WTLF7PQdmHicU2QEvsWKBm6cJeeIKgWV3jnK8wRGUJ3Ywki1U5MEtrzxnF2+AfTyFeByfB+tkdinoOIWRH7mAls44tqBU4OyWqcBmThvLkds9QsiTj643gDiakD1/hWLKyRdXbqI8mGw1AKxNUEo+O0bIEatk7hUIHOn7AmJ7wPKL3rkcjKu4HGM3p1/AcRkj37iuqKUjcCUrcD5zGga9nF6e3N4JQgE4IrL8zmlyxdQ6BUfQMFifQwWcPVIotogZsDaF8mLOLZKBi+sUVNARloTz7aiUXHaGECVTnMMrD6ZHuCQcTsl13MCidFLGPEa+mG+SxrUpyhBXcHmWs4YPc0yhQkcdWQLk7fNVNk2JTs4B5bLuxAg3CKQw8qgK65vknUk5pxPQ3iwEOygJzhaeAa1N8g/xMphkdDsUjexgSRAHxAzRb6LEgMxejvNgu4hi92JjXBi6Uoj/Ib2XMuZz4HavENPTjbG9Rt6dGQuoDJ4oEK0IjMekcjgm1+lkjJM5jyUKX0Tstd2SIDrzCmdQzlpOK0eceiNW5CZOGiNXUcq4+diE0ckxVBZ7v4Ly4KAxnNM5zjeHoQyU48m1+HU/LZ/jTGlKZ0a68Pe+Ihbk+pz9eYjffHvm8saNIdbxMgtH30WUi4M1hcknKVdkqzFgSlQJfHo7pKCd087AeP3FaAsw3kaJEAcDZ9Hi0VswMrs53RyF4cspEaN5g8wGlPHc9aicfs4QTwHH+AKsj2nO8RAtOI/CSTtbOVNyxXE/qKTfQsnoDFhU0GVyxT5e5hxU2BxS3jWaUrS6JdCfowzYIXM3C8xKxA7xkZBJFQDrJyqP8TJnXOH2SQls8ggUS/esVMHZQCUnD2aJsbkSPVRATG0NMZ6ByoP+RA9VYZ1S7c2jAtDvUipaPXLFeN+JwadQycZzn0olxyVuXKN4t1MGRR5sYAw9UI3Oqd1qDEoQs4XEaJyabVToV2znxg5WnmijBWcLKwCjGVoQOzM0RBowcishtrutNlVsk2xQvDNIjbqUmw08mzCgarC21Wq1UQVaZeKlCBQSuX18IXD4vQTjk54UjMF9FXCau52+qGKnRIFPBDCXUg4CxLvfhRmvfAnDVAFxwHXVqISV4M/5JJy4cgYv8VDm+LSOAmCsntk09LTXVUg8y3r7D2IV6A8xXvE8EH/8BwzfvYotAPerz6BfaCHxppx+BeBACPv2UcW8tzcCrn+yKROIJwpU4vk2BUB8tqZBvJxBY7cS2s2cq0Q359UIlq8918Tgv1BQahw4rQDG53DfwNMRg9uVaK33ZBUwmggQL4HAyexrkRHc1AdRGZ5flQbe/NaTAI7hnQqIGysZ1VhieAPEvU/9CgzEnasFSccbml5Ytu/nHhl3fbpYZWByvd+gkusIMBbIGtP/+TPPzgz5/n9gKRzvJ4Djh7/9pzcPtj+IANHEKrC/3fGoPGObwcB75/Z3fvTVv46DwLHTRqbnOzEw8QfdN/3sF9xvGYOTlXglrQ7li9bGMDv3Bd/91hP/vj8YwHtwOWLjq5TGX3r0D/+uHEBsqDzxSh/alVjcQAC68a4JuggQX90NyqHg05eDAd754Z1AshdQWfgzxV4lxjeN4dbbwQALe1/ByDZOvQcBhMPXUiQ225Qup0MLVWAaryGu/R4CA7zzWqhAwXP3oljsUC62VlFZLrZYp3xjitzGf/xMIwMUhm+munMHDog78RLYWiwPtZZoVmIC5fz1z/oAOJdaUZXkbFL6xc2gBfkwQ+nOygwrFXBM5jjumHYCmI6o+SHAwoWPYwsYy+VBf4d2eWJridzJuwlgbPRRTTwAbrxhI2gBpqvQ6bJbhflVNGDhV+a9AFqImsUtsqD2W3AD4glceRsdtqow2RIlfOmeCfYoUxTqafWVeeO7ppLEgtjCqbQZzBfgLTsW6HRKAX5TOt7Ahi0tUBbMwnybso1ZxKLzgsv7KN/5v49/JY7hm1MVWIClzQpM4mX21m9bXw2oLMOTK880ZRuL0O6gklwB4vue/dO7lG8Ol4MxU5acprB2m5LF7gKZC22n8oqLG1g5sDUH/e2yoLmGJ0TlB1xZ7U2MZVSOmN4gM6hqsNxFpYidLYwlSg5cC1551Rfrm5S9sAeso3KMKYw6r99EpYg5nLFNycZNVCP57CqhpAUMdrBS5LKLtcJYpOw1gLWSYGOuXjCBK8VYANGmXDG+Rq0D54JTCfLcHJjqOZUROBG86iQmlym3tYzE/A6lOsYw6ix4glBKp4Og2y1FrnOaUCsKTlGmbE8A/VAOC1OobmNYCflGSZe3rWbG6ZZTGTbE+1LgBJ56i9lFSrBqOM6hmqH2pTIAGzjQKEO28jihbi0eo1QHGE87UEbg8iKqm/FY5lWGDTz3SWXAPXjqLs5NUoZ3GDwLWTR5nSSB1j1binNgHECUOHuBUD/PIco0B5QTOLdhql/geMerBAb3U+qdeOovLt2iBGnAlyDfOk5IgesfKc/K4NqVJGA8gMULYaBMcV/wpDBwdNkpWj+gUuS5lzSKhXFiyXoMZiVw/QwhCXgeJESCLAx0y7jQdkoDnMIrGiDaWLyHMNIYODFj0foG0MEURw2NkUqxvkT0jME2RiQmxwiJwHEDxWqBRLNL9NUtlArjaizZJoZotmKJSRzpXMPiwAaDrU68C1hCWkSWTWFAr4/iGDOktI3Fgdkhe3tENlaTshPLWAFEtxVJjo2kdECRVhm6Gwl21lFCdmXElN9rIjCWUBSxuZIQ0ekRx5a7w2aJvblNSlvdOLAZoJz2HkqGWN9BcbYxAaxGErsyEtpqE1XMYAwu4qLAFknp9+PAmSHi+oYpzjpJleIY1xgUk/NEWsWSJ7d7Cw1YN9osSVUWh+mJIRiXibyWmBBprmU5Y7G6KVEsuIxj+AReUfopMYzIxxgeuDpLHKUE8Drkw80csXiT26HVwuQNwhAcUyiKNYuKeqabpmHGGHGLZrFa4DqO/AksSqdZik49Zyk6H5xijJplfVSHsVhArGwRda9JxMEUi9EuAL1enE08JbO2RwAVesZT4sxo1HUiozvTDLH9ZEXZxFMyoU7nWgYcIBtNDNQwHgHO4RmXETH7XSwZzlkUZTvDuUDc8YB0OgfUKfbHrhLF1iEWQaxNsWTAOopy5pAEx5ejwKhJXCPqVOydyrjUyWLIixHJFO1+LThXSN8grjNsDmi164En4CWRx9X2pJR0O/WI08QF+fgQi0JaRn0UA7Y2EGA85mxt+9IhpkNqFQcXMUBcIsSydEC3VVMo9liMXKF2n5Lo9eBsJo5RrJCS26EmcR0H0d6m9r2UPHCrJriyALtbKFY3HWJnN5KYLRhXJ05co5MOaLVRFBgNEeI0UVHkWEtJp0NcMd1COHOcyO0mSoXodyPB+k7JFjWLjZV0YGEzltsQcHZQPTCxnBIWURQ53ZIpNYuWHAm5QvQOi31UD3RI6nS8oqRD7WewlCzgFCkMCbGMCRIqJtaNyJ0h3UhyYTItk3MohhwtwGijOCxOEhJi/WYcaK0ijCVizy2idGBcJKpoLgyZRlHENRxJOR0HtjYZXMWiwMNYSmACryg7mQlYiiMfLpDUwJVbxBDrGEOcYjB2kZASjENR4MqAmNskprjU90qK5w+JKW7AwNIaqgHuJLGer8YiOBaHbbeIKN96HKXF8Zqm00hyvRkEmKZRtcDFcUsMxjhhNOZuDWOKqMdwqfFcIuZKswzHHSTXcy82krgqx9DlCMFuXCCkxnF2zWkUuIINm8V5FXF0wys12ORFwmhPYqiY3jaqGneQ4IITjGyM5y2s4xXkFo+hFN2FG217GPS6VA0cXfAhPeLcJQvFZFodJvZGM+4lyb59BRWDvRYawML2KHK7j6AUwf2M3N4mfwfPC5yaSJM43PYqJJrrKKdN5aM00mTXjxMKQavNcGNvFM/dBJLkOMmoe3s5cH+FwPWLKEmIj/W9ioieUM7DlY5v+2SNXaAQdDFyTyo47ifV8u0jo2QUPMFz5LYfRYkCjuJGsTwjO/DYrCVLnNs2ZYmCBcqBx/AJW5mkWCjSJVc+3E8gWX7ryAgqMsrj1lWULGAcy7KUs5YVOLLjEyaO7DnPaeFl0M9yHMNI2c05sjpktlFKbusBQsrcxskiooOXOR0yA+cnUcJw3CK7JVSCtXLEYRpJE6ewnMIoFa1ejuMqIm2Pt+QZo2EZbM9QQm77WPJWbpESszlaME7NSIubM4mj4EcIObA2KYNZ4UoEjvdd4lp8F8uRtyYkN4gkjes40l7w5gJEDlL7pN1zASXOuLznlANPwxecCxmwcpGQOLHfIl/cIC5EjlDCWV4n9WK8VejoHAbGhRtZ5/tOySsWUV6YPBqBeMlGyJnASL1YKAC8DIfAqxCZrdvCw2Qan/PcoIKnPilH3KLx5QxznF7x6Ri8thUywJoP10YOga+F0HkWIu108MajPUIZxhtxDg+zYIMVaC3yHeLMmFxxCm8+DxUyRAdXBoxWQXg4SzRx/vkBeVZgBZ7ciWfAOcQ//S/5f4Y1XsFfkf9fwO3beIb4Q5q/xb9XGAOtDkq5/ftvEhuvYKfCDeDsnGw5jS92X4NliMvAk3tBKcWdl2FN1+L9+1EZMB2fcEi28xpiw0n8Ik6m2D2C63nGM6+7NZtx9i4sB+/t0VpDOQr9F6Fma/FJj8qRs0NP5ItXKjRa4MMzjnzxNvb3KmD8rnzCgp96EFkePJ/5HOUFO3o/IV1wHKNylzvvp/p9e17pOrXuNIpxlL/+a7yCXPcQlihx4zpixOAm7uD2b1UicPEsIUmy9jhi9MVlY051Yy5DCRLWIeorXxY3Ho8qIZyRYGOFmMYLXsqjz9SB6PfSY9z8BVwEaBzkeQcUg0zfgU9NwVcP9htR2h2W+qY4H8alxvgpjIiyqYwbi0QNOmpYYgp+iCyYRXgIP3ueMJrU1ztwJNa4MvcSWRBg4NiCGq3/wvG35EYJF8IMW/mU9CA++6u/9ROfwnAj+pA7cH3uO+P7WQYyIsZgOPKPr8JIr6b+2r3x7Z/ymv2jG+OTv++dAeTvvRfJhZ+62HAe/N8H69x/jY0jp5tn9zBS7Hy48h7A7pjf+qveM579imzhoQwLBDv1+d/xR/8Q/v33fmt2VX91OQCYM1JthUlky1g0KpqDINIuKwqpMDMrRLmKwhBRwgP/zQtWUDggaCkAAPCIAJ0BKoUApAE+PRqLQ6IhoRP5XlggA8Syt3PZL9K2AADLoc5rd2OfL/uvpe8g98vvqHjyX5cHl37l58PSN/X/UO/sPQi8yH7T/tB7q//X9Vf9W9Qv9b/WF/8Hs0/1n/h///3Uf4Z/kOs9/qv/M/dj4Df49/hP/h1gH/V9g3+Adjb/h/5P6nPCX8f4b/jf03+Q/un7Uf4H3AMz/YZmk+5f6z+3ejv/J8N+AX+Xf0n/YfmV6JOzxtP/2fUI7pf6780P876Wv9d/k/Uf9L/uX+1/xHwA/zP+c/5j+4fvR/gPlX/Kf4DyHvt3+29gX+Rf0//L/5P/Of+X+5fIf/w/7X/Q/tf7p/0f/I/9z/O/Af/Lf6n/tP7z/nv/X/lf///8fvg9i3obfrWg4DWyqK/04mnjD8M8KWlhi0GwEeXOckECO7/6NMsPdSK99BUiDNBCSDDx9lL4nShUXo7bspZTfh03tAVub82Sj2X6pbIevWc2Au1K4k9nf7siDeLJDgCx1rYdJ0IhXCgjcsJV1YMr0Zo1TrpM0EIlfBbgInjvlbvm92ig6k1pjf5mQK2X7eoquZRNCE9Vw+mLxx7CqbTOpPw/9LrbKWrW1WrlKmwrxQvx7jqAlGcqgr7p0yuPZRkuoTRJZTbXevjCITn8f3kkOMM+YmbarAfmBMjhnypWfi1sa/6p91sdA111jLcVHEcqSXZLam1XsEmNDvVzS+ubhfOhi8EQBRsroyVx0aHvuvOjH4CoAfbTashGNiqyNF6CTp236cshPbrSN6rnowj3F82ElWdAla29pv746LQF3EeOQDvECWWqT3A7q7rPk2Ct8+iSI/tM+w1xXLPlv0XkXpc58kBJKe5qPX2UNlpfehlg2o8KY1SXO0sUq57VjRFWZezg7qjb3Onn8ig+1UQuVRLIi+3oyAHwuqAmlmHkWocoqhGf5YjAF0nP1y7EOtDTZhvifHuQJb7/MyMfdsJR3ZbRD1ObQoO9fT1JNC9IxbljDi7jK3JXv8p0SARc5dZnDpwWYCkg3/gwda359Pk0a0FHJxdTLTScKUkSyGgNWLe1LkFnK+NpCT9F7CMER2i17gUc1p4jSLebJ27xWZ9vnssE12zteMhz623OWNUWLyMVKhg9fqs7rdjf9e7KLqy64ApEqhy3xuQGbFIDkvhCk4T4zMoNCTHQyoJ3C39fGT5h865bEdLL23SGq7BLXKW4EdWI23EXsuXQx1z/R+pv+PuEd7mogeHiCttmFBBldeGe2P6Ah3NQ36Web+N4uVJiP+R0pKMe4pxwyn9Xn7resR/Go+Un54V680soqbWk/fdOzADnOMm//63gjVMb2BBDBbGlg6+400//+DnepZfCjqTNi/iOpaenbmi1yI6pSes8sZK+K9ZCXTbV/P79zoCv7bSeGP5LPala+aPdc3aozVliwIjZQe2kc0FFLL8c2h1I8rQMGwkWf0iB0KUq/Dgu4AD+7EIUfMsxzC7UsjY7+v6qXYSb/08S4YV3zAi2ZyndmaQZ7gRPken7FSYqPk67hgNVvLZJuqgvSiddSpkRMblkqhYajnNWh277hj4dHOS3XLwZ5S1lU3VRBQtvMGwjfYEkEzv+sIyhxx/ZD/Z1RYJx1PtmHGQRHFyKAibpsERFWR2fqoIjKdsGt6+qYPmacuL2osDzKmV/0FWjyGIU7D/47SPQtDvTGlCYu2/xlNPXV4rr6Qq+V8oA1jveN3BfDyHqE2NQucTTquHHGQVljbDd7OAq2subtm8WVd4/SJ1o+K/p5KbMC8FJRFCA7w9niK/ynA+Z1mU1S6MChZmGfOQUZz7bjAFMq7kVYc7es+3iU82VqlRrOhuytJ64S4zCeFJWBGauX1aDTRgMVZKUE2LzdgFb/ZN+BajiHkySCUEqt9vePYcaBciYVEcLn1Dtln4fzbaUZLOFyzwKfAjydOxGgHHRIffkCJOcFE6HHodsLeovq9AZbbAbYwJCqx6eLsKG0cgI/wy6XfHaEViE+I2e3o+IkbYFf0yo2XXV5Kq7TbQh33ImSf/zHuzyYTEPs25QxV91Wz6e2EmzJ+AaK2qhe1vYDLDurElic1tioarBJ6ynosV/g8r9n1zr0P3ReKDNq1lxVH4b0fRAI3wB+elLe715FK2aGipKmAgCSllqWRMDN/KojtMLLzGK5oZUxmbVKPoaFxpe/Vxl2A6Y7ib9pWgUK679rrxeiPS1kD92NtbYHlEOfSolgtU1aPSgX/ryVQCA/HivNJ5iMLH5mr5grijsly3JLIPhOHuo70UWExIponcznVkxuYbyDRTDZe5h/9KqMqyl88oQDv7J9vqeAju/J/VLCixwWASr3+ZvhWlzVcb+JeWVAa9x8lpuhNEfw6gFlLDDtvhfd29vNLo46icd+rgA5+eNIzrcgOc3pLgmkT/cUKm6+H8uCZoEhOwfhZD1mrU4sUZlS7Qad0JAB+8JQRzkZzwCgwCjQJDnAQbSZWGL4pVF3UKHBeRJXkTUvHuzsqgDlh9zJ8Tkhw0TIr6WW8zx5vhO2ZJt/tm4NBsEcm5LXr8dgw89aaY3EFX5Hqnk6op/cgt9BBY5mIMxNt47GCjFkGR0UqUD/l/SwJRYWnuv0ywdNUAJOXkwpbSX+vh7mx6UlzHFxEXROgIG/K84WAoVEZEXVJXodj7HnWrpnUHw7qaqNX5WNqHKfQoqZLiSfgK2Pv83E6RYXSjThz6ury0Q2qYRdzPWrefVqP71EaHa3UKxLo3rPjH1oro/O104THsMiTJGCkelKO7t3GB+ZZSFdwQEOBILfDkzEOuImkClw5E2PKrrsjYMOyMvfhDhV+tYZE9Fl7cQKjfWTC/QwPN6LOZrobiIlINsppkCYPp9s06jyu+u9S8x3tF18FMERubsOLeJq8jwvCojXk/uY+57OS7HikgitDwPX+QIjA7rVniDSwSdOt22a73mwAYzjI2xvUWdrb+YXa/MddYBQoGGSgDel65aBUM7oxT2Bjm9sPfmLQo9NSUVUXS7x7zfDJrjI6lk4zTelApv/OHUZH81hMU5GY/DPHMLdY1qdf/LUxip8oCasEtPKJNpFRwcA9pAhH9CTYcHfxrd4ScP1pnUkrVcZA/0GdbvD7g74ei112wQ6x1saJLroLeeXQ8BLbDpt73wHNoFa1ofQ9qI/SYJhuKsBO6aJVD65s5Orgj4BdaxTB9a8gBi6lNe27UknbtObx3lI8OMcEe2HL1kTu51IgQb7B1wsbXbJNniciq9m+kJkKMv9jdicXDBOfawgPCrPTXnT26Z/qKxnqQpeHTFEJEg3xynYVFTnFN40DDUkFyQx9s0NohvZZOjsbwDHtIt/Dd2USebbuW/3mqWUV+x882msze0gUcuk1dJvqZmq0DF+C8NaRotb6lIOxWpr6REqFGE1g24CBnxeKtsJXhB64NJnvEgoWGeKFZ4ABk4sZxsZP/qdt6Ly8FVw5AdUh/mt1v2PTmuvfc3nd4LxR80npvU1BmXelPWIKa9P34ItpvEpjfZS24PTi5iz9ajJ94zq56uNEJwXmh05DHhn1vF10Qajqalm5ESU+9Ubcq0l16wXyNOxb2xe37T/iXkqFCi3oEzU47v/0l6wsG2hLzMCIKKlIUruy+/PPVM3D76MA+ShByq2vjLP/z0r+Wqq9uNyyAhydylkV+uoqtNZZRp2u+z2lgiXptTsMCpgpe/aIMiQHmlOQ46aOxjiWwv0wk41sD8h2LHH6q22VBqrby6DnQII/2OtzvsRsBknwZz2A5WFE/YQmn9g9OEMg9MxZ4MG1mVKvBEF0Jpe1Pkpog4SCDUZPOXdtzgc9hiUaZWXggvHjszry76V5u3N8p7UIEBc0wS7sQ3l7EwWWtNJw2NKCh5HvaKUZrXAPij+JeCPeVmGLyVlspjrOohViqQqhur8kjW+CtOaGaBzeipyUc3ePphc7J5XTkyCEVqQj05IiH6Nln67iOCRsQb4nSrQGuA+rCnH6okgZlzlsOK5kGrSeTaOxSquyeH379/xf2g+F1+OWy8swjVP+bpmirhsOPq6zlZ+wpp+XVlckmXjeDwpLBnds4TYIKesQ3cmMlxCLxISy87YdF9uNMvW1O69wbZp2nIJgt9e1WuYQyvC+p8q6Lo4o4MllpfTm4/EfdVdaxG06MJntSsU1rtNOHbBy/qLdE6nH5N/r45lJyRquVJoorc1kmtJvdeY0VFbkQvfRTp67wzRqjy1rAkDlwgXwjqRxZ+gHDsXk+tMV2cIq8HqTXOnHhTcAos7PZGL5/CwmbZmhKuW2O4mwVt4DUBWw++cfoGme4mYF2cmzO+XDlvlyKioz4e+pq7i1bHI8MzE7tkwPQQt79fMokIBIreyiNLDkdRCkPmc1nYbJ9y6Viv2Efe0cP1k6bLMC5eB3dp0cwlBw1B5gm14oW0vxcZvuuQOtxochdz2D/xgP3K6DYaSfwXx9NBW2CbBkW2+5QBinLhiLmyqtD90sxaz8BJGY3VIV72a/xvbGl+IFCddCBCBfnaSCdHKSxHh/mNUSLmuK8c7Za3U3hFv0BNaKAdYCVwczNYvCaJVZAFThuLi2i9L2Ax8G3u4GbXX5bXab78YGv+kweBLtIm4dBScqx/P93K8OKny9KuX+y3/w7DZQ7J/FGf5WZ4pFSaGV0E1xXbQ2SvqkNaNVnWDjzjIvnHb7g1ypmRfh7kvH5EKz4upAjmREcCJXIoDeFHvdPP0fh1I/k3sYXjacjig9wk13wD+Yag6VJC95vuorpcmI3P6lneS1L+m/pt3dU39s2s48DmNfxOIxJF0/7fvvAxiRyq5baCL1xJMNsrtHKbKZg6Vvlr/pEvqOAIujtz3/SwrFfjYxBDyf/FR4ueS5PwRL9XD+3832mLLRe9IXpmXWqR6zxN53dOM26wBXOII2P2F642LGyyxfzwrtWiveHxe/gfA3a5SBbDRnbCTTo66HS9jMQzlELX6w12BNBner4EcMHq0ReULEiyYoKGhYRokV7xCYngybOcmjSgnQzIrFGCk5tEAYeAxf+PlShtIs7p9N31ShoMi6Ub4zpz5g9VMXpq7UedYlltWPLiBHDwNSYSFN90qk3P3P/xMmvD/8jzv74z1CKV+HI5joUf5o9HlbK9/Y/PKDBwW9Y6Eubn2huFha4X3DAxPNM+CxwIGyKulocS/IApmfNESvY8kSIQsGLtmgldYLbQQ+RW4OUA8yvftbTT5ku18a2BxjlI7N0kqQiccBScdrNFfh+i7LA4/hmSKLOKoq2+NExOjEfn8phZCuq+/iod+7R+HYv4MFH+6tTPPcrHFxwjLpW59nYLC0IvevQ9kGeRJHnhIgZ3XC4Tmn6ltfEbTqTU/RNuDgt4iNjpHH77r4lwJPmaPvG34qMZ1d4m1Pg+uU3FgfVHDKtM2qtpXtMqXdw4DMe/omiVXl8nb8SpNOfBdbrIbNjStcmBre5T0HJK84I0aoMCCxsoK2cmBpZ4BgEK8mWIkw3hVnZZhrWt11/x3YDid4CXocQvsw3RGt3i3TCQe/GCwIZ9HobNJlWVOhTBXSfXFsmAdfQHNwigsPxpB+akdp0lLcCJ4fDE0/z6orOFZ+Sfx5pm9dmfAJwlDVK6GYuxz89PJw6/26iajp1IzOUp0gMmN8cufRkkSpoEQyZ9jdQ59gEZRmO3iVLaW46IPYDdE8AmCrJ9ru5AXPS0pWeq/C5/xilnFz5k7tdRMPRi8p4XOOHVTGqfgA9LKe6ReH0DLq1WOxUr0dCcLdGRG3nt7UudY3W7JUSh8LFzVo8rXlQoBo0vqs05FT4FePgWCXLWm80Xb3/0nT+PdzfIkPMj5BpkEbgElM5kuGW7Z1tVTpx3hrr+0ZkAcJqExxlMcvrzn36uvQtZbdCctSD5oYZHcOg9I2M3T3DmgKYl7v9c/sPM+D05lXfoZMyeSTWRzFvqdWAuV0v92genA1lc9wy4LZ4wuVVgTrhcoTpCZjgXfmlAFBrBuQ6qWZBYu03NWPFmhpXUSYf3ZDecaHfDClCCT1BuG44VGKYKNSU9AxdpvnbGKqzSC8N8aV0PdI/k7caOrEufz8ya1x3fROGwhwkEvlh5Dh2tEKnu25wicpOtTfFGSyPQDU1g6toppROLCj1G8R+gf7NRChcy4dqNF38IJ+uEBx3Oh50iWdhW32eAfBk+UyiNNcA/3hlDmvWvSU/WqvCBK6iJw3Nvis3hqcirNrlJqC4hbyugAjYlZU7WI0TykHDLziLCUO466g310xLcXAAxB7U15vY0MDmR5lwY5ix3g24+G2gU1UyvFx/qNPtz2QyyFH572/EDsBPJBAsB1yNE1VSePRL4LYffl/kcKsC8Gjm/0MW2EWILCkQ/Bqt545+Ynft6FxuxAoCz/1qNKvFe6/KGba08HwodxpPtUYG1MdMAKB/4DSC8djGmp/NDAbG3q9bx411UhKRz/wggNeULLnzd5CwWzR/fb/V6updDyTXEPcofS8iUI/R/8QQ2kBBgRJd2kutpsNP6AblYT0GWJchAXSwgGGKxdrWZ7lURMZgnlEh5kgAIn+SGEmnQCU9q3Gx7OZylIP9U0OL93yVTS9wPuFDbvdGfetZE8aBJCu+fO2EHicHGQ4as5zKaFvx8k9bkrmdb20QWIr8YRzJbdWlR5eSKH/0h6n+auYVarPMkuUqyRpildRQmDd/uzs5SqUk23YHjx6M1LWFgwQ9ZkyST2D4l0F1YWWLUJ3QytY3jQSfMQRfzgNcoGvAVaEjTy8IlxSipmkWSa397xqVQt1IsiIllCq7q+DkBqM9WJV3HwewBjZGaGt94pj3tT30DGB4r/Od5n/4rB+e10ECVNL6RSR8dO5E5Qqz9CaBHlD1Y36JmjKlAjNE7HgY/HN4SXsWASf4mNRSEA5fVD2NQcvO+SZYxwg2aagucu3krsMHdLVrzTv2aFoYM15uI55wv3Yjs2+FyHrftKpqMdHACSZnMvxQsXl/gZ/iNg7kOetFef4+PCMGJbYFjGEHMB/4lTpSDArsuDM+3uSCXqatVPUpNv0GHj5LEoRngzIjb6D8zQd6PG9IUmxJEzjJruiB+D92NWWv74R1ve6FAb7w/lkv7g1ungIw0/WDTi3104HQQ2GUU8BWWSwv1h51LK+wqLznHYmSYYmzL6Df0bBHuMVi9fOzm3D1z/e5IOz5us5PaMPB1Ry4vE/wkT2toFCKJttxYYUTzGd57O9EG8T64BW+JS3x4Z4MpT8P1585EAOxdrD2yfizvnwy3UGLqLvuxPkJ3kNp1WtGEC6qT/v/1qKbEfhUVzt70N9QpfF+VqkJSFjMi7rAWDmdgzg/aoLLoNYt2XTYpL6cSPurIq/JLLfezZf6QoHoE7axJ8YJlQVpavUeFg1SP+lPXhlSVtK2CeK/Agh2AISdQ62OL0f3yGVstZ4s4Of5As/bh/dCUcCRMvb9lPkfqdKSrT4x6Tu66dYexffOsyjPJGxIbYhJ01iXaqkDkOhDLUz0L+nDWjy45gcWvqiYCiS0Z1/jyIeSWOd1UZW5/alqy+osBtQDb1KXsrlWNmAkT/Z6NT6IK+gS+3ReaPArFq4pARGVgcZ+96opfsvnlSdj/gr9kARyGXG3qymkZVYxFd78n+qcTLYbyFXfQX9vJUm2re04613a/bXkjxCK7gPdWLQ7hJ3mUY6dvB9V3+RKFN4LNNg6zc8R702PQBkxwZIl6G30/oLQM6uURqhgVKXlUWC83TBqK4Lvr/nVM8/GuVBBN1Wv1s/l3HGa4fzVZAjTcVHK4NiOFL7x7CeqImCA0MPD8mLrrOdQHBlyyfReTxrKtnv9bTkNb3DGaR+jw18AyUNIiFsoVbHSadRD61igJQ4ZFSGQkoTV3hEErVLfeD7G8Y6mSLAFIql4jnoNU9NjiVCk5jCA0Q3voW8WUCws9X8h6syNFkcmaJe4we48DNUiVmbUSPgdSNhTwbWylhrcARotdJKZLYPGDJ0fiHHMFdmsfDMBCEweQ3skyTrtYDWdrPDSSNfnV3AF8c0Urn9KVuRWkgZvwto8zdOuQk96tE3gZ0kUEUbciVBzgmgdfSwoCTTF4MIjFrukvSEy2HrP9YTG3cvk6rtfbrNXv374BUAoiZ8W0WZUZhwC8VW/FT8sxftwFPLLOPuPRXN5ScjLvn6URlOCdIdfA9LRA8n7V0s+HpwCvp+wuGMD1MwoXDi0d7mQrf684a24y72y2Pz0F3UIgPANnlZuhyZWFOsbnAiPHiqpsFv6Q6G9ceLd6pKZpxiKgcP8W1p3o3BBAxGLheHW534Mxvqbak9sTjZavw3uqWLqyy2fujFWBPr9oIb7L+ODtmEoFDAs/J/P9RSD+oYIYSbCciv09SQU7wkw8j1Ub4OfIP1bcYiSeJmZEF+am3m1BuwCpd2s7fi/SmVPmRlUf5MwzE97iJaCfOOzmybI9CGswwRtmozCkrM8J0Y5H3LRCeI6GR/mMGGnaKmrZDVAgY0pYdiRm7PhqMIRN2EoUb8H7lTkYX/ymgiCWp0Ez4CjrOcKVYDKJWgPoPrLyEDbi243eRR9E5iYrFD+GtliUazYPwSeX+ZxXgcVVm8q9UPOAjSLrSXKf/58czIAA82/Q4YisL1ZbhwbHV70vvsuI2CRO6Qsboi03288yV8gJlZcWHBIfmOnINEvqQoo+JUdBFizep5ZfvVRY2+XhjUM9sYINIDOC0Fg4uXNyNnQaPo8anixRTrtV/QuOhv4Cg3SvORx6jpaiX2MB3ww9RwghLKlgN9rpMYmk0Kscljs2Ky1HMxjHL63R7ZikvY+yhS357nbqxB5TArkYxzzGsLKg5bduyd8qX1HI0cR4/VEv23qzMB9i0p+tBHyuUEv/GNWfK43Fc2ZrBa6UnQbrZiuVXOCNIndN0J7fdJpDkHh9jsSZYxxhEwrnP3I6/sOY6mIdTf3WvpQRHXk3X/fvHboMgZfgJC/redRyKpkWRsVtqpRCwaPyei1YNDmlZHv8bR7kOmvS5J511fTsoeFUXQ9jTBobTczzZ15uLymVSU0HE95VQV4Mb38sZg5WzlXyi5ODPbvkBwy7BeFmCiAfAMtzM8I8BUZBuuSOLbdCZ12MJ6awcM+1nMFLjp77RuZ4HOmbciuAD36EZAE9OUwrHKZobaJCrmXzO/HUWFICVdS0IEzUXxayZezIj3WB7u7SwK21eLzXw1bCcGhmcBc8WRkYnJ3WF/2jZZSvXOOUNHDneaHR1ombwqefhiceamirw8V/av98eBE6lyf8pOHC4LP7N6QnxZHH0aGYDEBnDtIFgDUUxkPDq3qGZKGDAVlpin3QncDBsNHtoC+Mzvu8fw1z+AbsHD2q9z/dHuTc65Cn4DSOWTHc2UaAmEk0XIJS39PNujuKK1Goi2bll/7tuzXntiq98/0pq119TBrdJCDh5lqR8cG+4SgrWZNW6WxuJThzDts84lib989/lq4vgUJEvVxZ3Jf83FwVgVfLqLmAb9YZKSbIen/uW2ziQVFs2taC6294NWod8jpKIA+IgvCxZp5Aa8eWoUK0I4H7PE5c2lq1ZQZjYRpDHaWYSfGuSs+pYaNEEboCm6JXplAAnKnJVVZBsDkFBoeu+WWg7gSlyPKGjn/zOX785BnmaW2icdQlHQtJtINhWTNlutfqbIwWHTew+Hr4sRTnGfKN/OJgWDDqEvgNWjPe7UZgmX1F73DC2Fj++9+8RTgwdv2Oo32L+jysiOpqxkGaEgfQIHf51AZXjWPE3uFw/ug/NfztHp0NLXq4HTNsJwR7uuMHWulMAjP/u4muqK8xsiS/LaqaIaYNew5FRVXjpyCVdLvUmtqd0TTkfJK4OMXhztR+NqCbf/81bfnhul6Kc4TP7p7xiDXaw97EDnUIFk1GNJ4ylRZ4l7R9qHISmiF8ANsiFVs/bceTkSh0SB1sUYoZllxKMsP8rgmqwOhMGxJ+85UDcmbYAVqaiiDP2Z/eA3L+2ZNxta2+ZALtAe/hPotxQ4Hv0ksnWBHJ7S4EpCqLQUk1cT1Bp/b4XKBwhNyrc0nagOi+TFvQT5nzpfAPv+qOjppIcFI/bj9u6CX14yNeMVFXXF8NXaWfX/8Bwh4QrsSfK7Q3oHjaO8UJSfZaRtGY+E+zEd/LDC+zzESv3GbvbD3uNsE/3+6GQ9b9FSlwjZCWo5CcSlQ0NIm1BdwJdtv4Lf+0RJiQF+b1SaGotKjZrWNQ6huCCaz9wq9nZknU1ccIvnCxf4pCyhU2TB+RwD9noOTfUmqCQUy0yzHOwI8Kp41rNCJRmGbyKIHtkQadR8BYlPHz/MMw5TiU8eli3aijAKxOjOWQ5jwoLa9gGSCSnhGlxdv2CPsYB4l5xsXk76JEHmhJAAQ92bBlsu8GBl259qEnQypZrCkeP1Ef8aW1pyLKjFzoQ9WF2jMMrvYqOuH+5JPKH9QBeBQFCm+OxaiSII1zgHkiaABnOipZQVKf+dLwjGNJsry98/02v+uhLMh1Y1ju16zqSB69RA2wGe6LL4mhCezYcAcUXBIfz7pWxuXiOz9/tZjrUO/i48N87GqgaCJKSEmfWsyIGuTDfjEyO3vS0KIKYCd+K21fRfAFYXLq3yfyptQkQz50TAr/Es2I+6wO1/SVyd2KEOzW8KQSONhU8xc+wc5QbNDq52zUS9xyFNLuHVvYpOR1F52/g70Bzqo+/GRI3xU9g50VFhXxqO46B0W+voauoEdljSd1V3Qir68AsUMqqOqvfcVEzO24d31uEk3tBHDnIwf+LSlLF036Rdeo7Qs1hB5wjy01csCBAoxPbSokwwlhQM/aBmfhb6Urj4YP4E+sAeVOelSZt/JDdtAADttGG5xLHCBCdTp1Xg5z8Zwe+SdtUiygm1kNGlHseMLFu7JNu5hl/FV/tLhK3sFFiUjf1WxXXG99xpQ9ZkBD/UspCgwCryYAxjwOKUpdD6e4G014BWBxbSVaC69uOuZFyvJI70FVgJ29R05rYdRY2WfQ3mPZIzi5+bwTdM6hq/CoZlU3FR3KSP2QrjZyCWRU7tjFUku3dfoyN84aROQPuZBTQ6X8pP2aQd0F7XR3UF27BrkJwGQr/6z15AYqo9TCb4KBtNFnD4pBQZd/RIppDF0e3DI8HmQZJoFQiDRLp8uLD9JWAaEJ9X0yOZhtnzX2e4HbK4AF+dCKjg7TvJVewCXYrZ2GI+QF4jDZxzrCRg7sGmmzyJK3gIDhCWdZglzLDEHWX2A/wV0dCESS3ksj9YbhVXtIY4OpEKKs2DS2zET13I3rP68qY7V/9nToDfYF8RpuJlSBe7KT5FtsUaycAD3fdIcvLEzpkai4uESa3tzLk8EMw7vIgWLaZD7g01QH1SJTuGVUqc6/pkz+8ZTFxbxREoZhjKA170+jF+TJkfwS2nUIsisP81uuN5nRY06uKvrep47s84vWQ34iSUTmHAAla5zmFZiUqM1Tu2Wd8Y93Q/2WlmVhAo5fGQfiqsn8pAoAdbKnUmTNNz93aSBPAqHe7wuw7S5hxc17lF2HlSHRj21xKNyfC9DW30TVBZ/NFHkBL1uEQ1XsebDYkjRT/9Xet6JmOJ8OGETuI1bCQ0lfqIbqKvq3g+mm04pi6HHuImH94Nhj1lwAAlUasbfBDq3GkKhYQ4BED4UQwZy6oYz+3YG0bb45TOc8yaedTMjL9ij1esVhdLUtvDNF02riEdKbc2lfyqW8S3sRX1AA6IVAuECP2I2042vRvrDdiWJ2dG/tlBttiSuIpwi1q+kTVC9yHQldxtC0AbkRkp4Nsw9GPL9TLyYrNwW1QxVtxS2jhgIU/hDHrk/bbg8tQHZVXFGv/OvP451IKN+ACXGVO2YmNXczeBzQCxFOVxnh3uQWBNq43/e82Axkz3xDHRWdl2z+FFEDuYrBH4cLur/sf52bucqseTGV6OwoPA40DAUART5zRJ2ziLefpvdT3UCMq2ZI4Fcf9u0x74MS9oUwVPfOgeIlq0T0W5SHYW/LmG7fDU5dsyquB8Mf39xWOuQViUdYTwojEkNmqfEDDGcNXj4jvcPz+HpthCzgZ3NVjn+vgkPGjS6GbASPiQXAhFyngo7djkSOTNYqWfszfNlPqUxO1+bD0VAD59mX8Muc3HhoWAfkcUMQL4eFZT5rrqjPegxZrF8XQWd8L2xaGji0VyTqeXIvE0pgcC/tloMIYtNgvAfbLE3/yxnfVkvRyJlAQuxQD2rtXesioeHVexuQaUCB7nJ49OfVEYDfeufhrT6IpvxLVxEIOHUkF08lcELdKaO7OvVByUSj8cg9PHvblYdUtWlm+tVv0hUfEnkhefx3TzsK3+lBkiytL1Hp+r9/hzAZk/Jrj9O3KyguP9fFTKow8pDUq+jngDpXdglfEX0B957Kgx59YOf218G0VUQ1aldSFZYC0T0HivzCdUSSb3urqAiTs+5fDxSI6YmDEA8bnz6TqS7wu4jJWdsAC+uyi4wUCQ2fw+lqAfvmzcWiL4J2q02J5009CeP9J5kmMlE+pxOYl/EyWui33hq30On7KiGOy7r5lTqasdE2nqEpe7Tswi7j5CBTdJ1sayPdYMMLeZuNlw3oUPj5Pyk4eR8yGZuEnur/62rysr9GQyp7m+zA+24f8uF2mUGCHkWR1mN9jW+rAhqd8o4NcyWipOdnCLyPvO1VjJO0qfML8TSxxLY6sRPlvokmPveT/ImoRvqZQldLf7ijmmUwfuojyTIsFulo0ybBeMQamZfxTJp7mc0WKwKQvGBi27nGm1XInI5vWqRMZG9G8MsO/wSvehP7f74tgpWmV3l6eJZsw9PL5ICQVD2SMKaWbKEGuEYj3fp6/6Ilwh1Rxgxl7HFpgslg9327FL5Pjmpp6SaMaVDNacxaW7IIUJ9gPexLybmugBONVCb51SELWaq+9v/aI0iGTLMJ0+tTkscUiAukhQygLY2xZAA24yP/q+/N8aZxqlfUUkFIzp87W/35RtuiCGXOSKtYWhiV1ZczVMEwWxPm2HZhCMEg9ZwepPzGUFbHWaaR25sizgU9uOfTGwWbkrIZ/4i3aBeK4lzkmEUQ70towzABtKAqASxtQTQOEIN2v/dSL9tW8pWz0RlnaGTjnDlDAv06VExGBdGg6xjWnTorJ+TJzfbs1zuRufzoR7jidblJtGSWx7LKcsWeSxI+6F2b27vEiJuAHN14/9kN3CPwqLVRW9b95D3vaQKlI4AM0dp+1IIA8mk3Kh37P1MZFfH3gSoYMjLPt+vO/w4IdUGu4eqNxBEwBNuibsYtysAD8cL/s18zJ9ullrCnvkYjdIGEVKqL22OIaWR61NgBPdZpPQZFixdwhYGJ1FuD92Hi1BAkJmarDLhJiGpgSJn+sZFYd1cxf8MgeoCCZcyCSdzsDz1Zzx9Lr3iUV/4Vj6PQuYg6aVNgJoEgs858E2Hz6V78ZH1guHIQVe323tDrNTNE+jmgIz3lEfZIpMNTMvg0NKB4wfCcS8a1nHAFKtF+lvbWvasqqyc5lS+g3Zm0CeD2ITRJLiESZUdOHG8377utZWv6s+HRzhuG77Sxi817V42fKxcsGr9lxZc7yBtGt8O1iwAL46p7EO5Hyf7ThW16NktC3tCmy4rZPwjsFJEdNVEPQrpDZHKeRz/mKAjZ6WlKbEETa685b2vvoD0XJZY7PI2DGH7EgJBZpBJ0svrmQ1ibasNHBVmhEAvjHEPNmhzp/T3vqKdbKbSOsPU/vdzSZ8M2tnDtRA3fOI6hiWP2qrTlVHrSGEV3ogAgy9j6glwGDdPJao+JVHsNlHVqfBimC4vjAh6bSL2C5wszleOMm6JwULPBnjC7Je+6EEk/aiFWiDdS4qylajJkTwYMUql0XvXostlHicUkXDLxRvTdPoG1bHWt97sZ7QxRz1cqgEWvVDd6lEvEev46OuEnLURBbLt/Bp5awE7CO/5R7oiO+7mZKt6k3RMXzyrlB6MdYUpVGm3zcGUXMH73k+jIOheuv4AZKrnx1ii5PgDnEX1fC0ZXVIDRPglm1VpYYPHf1GWPT2gB3TN6/l/jYICNrWZWzwyS6tiXDcVfOX9Cn6YvZLcM5OuIKkdinzfP8j+DvN5el6V7LAeoXujxDHDR6CsN9QcaQba50PIPjRhU0AALh2EAvSFM0IIrjOKvr7tnwy68wAc2v4AAAAA=">
+        <span class="lvl-badge num" id="lvlBadge" aria-hidden="true">1</span>
+      </div>
+      <div class="char">
+        <div class="app-name">🧘 Yoga Journey</div>
+        <div class="char-top"><h1>Quamay</h1><span class="char-title" id="charTitle">Level 1 · Seeker</span></div>
+        <div class="bars">
+          <div class="gbar xp" id="xpBar" role="progressbar" aria-label="XP to next level" aria-valuemin="0" aria-valuemax="100"><span class="gbar-l">XP</span><span class="gbar-t"><span class="gbar-f" id="xpBarF"></span></span><span class="gbar-n num" id="xpBarN"></span></div>
+          <div class="gbar prana" id="pranaBar" role="progressbar" aria-label="Prana: sessions this week" aria-valuemin="0" aria-valuemax="100"><span class="gbar-l">Prana</span><span class="gbar-t"><span class="gbar-f" id="pranaBarF"></span></span><span class="gbar-n num" id="pranaBarN"></span></div>
+          <div class="gbar body" id="bodyBar" role="progressbar" aria-label="Body: recovery and pain" aria-valuemin="0" aria-valuemax="100"><span class="gbar-l">Body</span><span class="gbar-t"><span class="gbar-f" id="bodyBarF"></span></span><span class="gbar-n num" id="bodyBarN"></span></div>
+        </div>
+        <div class="body-tip" id="bodyTip" hidden></div>
+        <div class="counters">
+          <span title="Weeks in a row at 3+ sessions">🔥 <b class="num" id="cStreak">0</b> wk streak</span>
+          <span title="Rest tokens: earn 1 every 4 goal weeks in a row, bank up to 2">🪶 <b class="num" id="cTokens">0</b>/2 rest tokens</span>
+          <button class="counter-btn" type="button" id="cBadgesBtn" title="See all badges">🏅 <b class="num" id="cBadges">0</b> badges</button>
+        </div>
+        <div class="recent-badges" id="recentBadges"></div>
+        <div class="quest-line" id="questLine"></div>
+      </div>
     </div>
     <div class="today-box">
       <div class="today-label" id="todayLabel">Today</div>
@@ -441,6 +542,10 @@
   <!-- TODAY: glance + this week + log -->
   <section class="view" id="view-today" role="tabpanel" aria-labelledby="tab-today">
     <div class="view-narrow stack">
+      <div class="token-offer" id="tokenOffer" hidden>
+        <p id="tokenText"></p>
+        <div class="acts"><button class="save" type="button" id="tokenUse">Use rest token 🪶</button><button class="ghost" type="button" id="tokenSkip">Not now</button></div>
+      </div>
       <div class="glance">
         <div class="g"><span class="g-n num" id="gStreak">0</span><span class="g-l">week streak</span></div>
         <div class="g"><span class="g-n num" id="gWeek">0/3</span><span class="g-l">this week</span></div>
@@ -582,6 +687,20 @@
       <div class="stat"><div class="stat-n num"><span id="sBest">0</span> <span class="stat-u">wk</span></div><div class="stat-l">Best Streak</div><div class="stat-h" id="hBest"></div></div>
       <div class="stat"><div class="stat-n num" id="sMonth">0</div><div class="stat-l">This Month</div><div class="stat-h" id="hMonth"></div></div>
       <div class="stat"><div class="stat-n num" id="sRate">–</div><div class="stat-l">Goal Weeks</div><div class="stat-h" id="hRate"></div></div>
+    </div>
+    <div class="two">
+      <section class="section" id="questSection">
+        <div class="sec-head"><h2 id="questName">🗺️ Quest</h2><span id="questMeta"></span></div>
+        <p class="quest-theme" id="questTheme"></p>
+        <div class="qbar" aria-hidden="true"><div id="questBar" style="width:0%"></div></div>
+        <div class="blocks" id="questBlocks"></div>
+        <p class="sub-note" id="questFoot"></p>
+      </section>
+      <section class="section" id="badgeSection">
+        <div class="sec-head"><h2>🏅 Badges</h2><span class="sub-note" id="badgeCount"></span></div>
+        <div class="badges" id="badges"></div>
+        <div class="xp-break" id="xpBreak"></div>
+      </section>
     </div>
     <div class="two">
       <section class="section">
@@ -795,7 +914,8 @@
     if (!S.mcp) return;
     if (!quiet) { S.problem = null; syncNote('Syncing with Notion…'); }
     try {
-      const [rows, gr] = await Promise.all([readAll(), readGoals().then(g => ({ g }), e => ({ e }))]);
+      const [rows, gr, gg] = await Promise.all([readAll(), readGoals().then(g => ({ g }), e => ({ e })), readGame().then(g => ({ g }), e => ({ e }))]);
+      if (gg.g) applyGame(gg.g); else console.warn('Game data unavailable', gg.e);
       if (gr.g) { S.goals = gr.g; S.goalsProblem = null; try { localStorage.setItem(GOALS_CACHE, JSON.stringify(gr.g)); } catch {} }
       else S.goalsProblem = 'Pose goals: ' + describe(gr.e);
       const list = rows.map(fromRow).filter(Boolean);
@@ -803,6 +923,8 @@
       renderForm();
       S.mode = 'live'; S.problem = null; S.syncedAt = new Date();
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(list)); } catch {}
+      renderGame();
+      syncGame();
     } catch (e) {
       S.problem = { text: describe(e), retry: canRetry(e) };
       if (S.mode !== 'live') S.mode = S.logs.size ? 'cached' : 'offline';
@@ -833,6 +955,7 @@
       log.linked = true;
       if (oldDate && oldDate !== log.date) S.logs.delete(oldDate);
       S.logs.set(log.date, log);
+      G.armed = true;
       renderAll();
       S.busy = false; syncNote();
       setTimeout(() => refresh(true), 1500);
@@ -859,6 +982,7 @@
   }
 
   async function connect() {
+    loadGameCache();
     try { const g = JSON.parse(localStorage.getItem(GOALS_CACHE) || '[]'); if (Array.isArray(g)) S.goals = g; } catch {}
     try { const c = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]'); if (Array.isArray(c) && c.length) { setLogs(c); S.mode = 'cached'; } } catch {}
     syncNote();
@@ -882,15 +1006,16 @@
     const thisWeek = key(monday(now));
     const weekCount = perWeek.get(thisWeek) || 0;
 
+    const ok = k => (perWeek.get(k) || 0) >= GOAL_MIN || G.restUsed.has(k);
     let cur = weekCount >= GOAL_MIN ? 1 : 0;
     let c = add(monday(now), -7);
-    while ((perWeek.get(key(c)) || 0) >= GOAL_MIN) { cur++; c = add(c, -7); }
+    while (ok(key(c))) { cur++; c = add(c, -7); }
 
     let best = 0, run = 0, met = 0, total = 0;
     if (days.length) {
       for (let w = monday(parse(days[0])); w <= monday(now); w = add(w, 7)) {
         const k = key(w), n = perWeek.get(k) || 0, isCur = k === thisWeek;
-        if (n >= GOAL_MIN) { run++; best = Math.max(best, run); } else if (!isCur) run = 0;
+        if (ok(k)) { run++; best = Math.max(best, run); } else if (!isCur) run = 0;
         if (!isCur || n >= GOAL_MIN) { total++; if (n >= GOAL_MIN) met++; }
       }
     }
@@ -907,7 +1032,7 @@
   }
 
   // ---------- render ----------
-  function renderAll() { renderHeader(); renderStats(); renderCal(); renderFilters(); renderEntries(); renderGoals(); renderInsights(); }
+  function renderAll() { renderHeader(); renderStats(); renderCal(); renderFilters(); renderEntries(); renderGoals(); renderInsights(); renderGame(); }
 
   function renderHeader() {
     const t = today(), done = S.logs.has(t);
@@ -1236,7 +1361,8 @@
       steps: steps.length ? steps : [r.Pose || 'Goal'],
       step: Math.max(1, Math.round(Number(r['Current Step']) || 1)),
       status: r.Status || 'Active',
-      focus: text(r.Focus)
+      focus: text(r.Focus),
+      lastStepUp: dateOf(r, 'Last Step Up')
     };
   }
   async function readGoals() {
@@ -1254,13 +1380,15 @@
     S.busy = true; syncNote('Saving to Notion…');
     try { await fn(); toast(okMsg); return true; }
     catch (e) { toast(describe(e) + ' It may still have saved, so check Pose Goals before trying again.'); return false; }
-    finally { S.busy = false; syncNote(); renderGoals(); renderForm(); setTimeout(() => refresh(true), 1200); }
+    finally { S.busy = false; syncNote(); renderGoals(); renderForm(); renderGame(); setTimeout(() => refresh(true), 1200); }
   }
   function stepUp(g) {
     const last = g.step >= g.steps.length;
     return goalWrite(async () => {
-      await S.mcp.callTool(NOTION, 'notion-update-page', { page_id: g.pageId, command: 'update_properties', properties: last ? { 'Status': 'Achieved' } : { 'Current Step': g.step + 1 } });
+      await S.mcp.callTool(NOTION, 'notion-update-page', { page_id: g.pageId, command: 'update_properties', properties: { ...(last ? { 'Status': 'Achieved' } : { 'Current Step': g.step + 1 }), 'date:Last Step Up:start': today(), 'date:Last Step Up:is_datetime': 0 } });
       if (last) g.status = 'Achieved'; else g.step += 1;
+      g.lastStepUp = today();
+      G.armed = true;
     }, last ? `${g.pose} achieved! 🎉` : `${g.pose}: on to “${g.steps[g.step]}”`);
   }
   async function addGoal() {
@@ -1595,6 +1723,380 @@
     toast('Timer details added. Check them, then save.');
   }
 
+
+  // ---------- game layer: XP, levels, bars, rest tokens, quest, badges ----------
+  const STATS_VIEW = 'view://6b8deca1-be60-4ecb-87e9-26fe9d388fd5';
+  const QUESTS_VIEW = 'view://41bda0eb-6b0e-819c-bf2c-000c3210d46a';
+  const BADGES_DS = '41bda0eb-6b0e-81e2-94a2-000b75beda43';
+  const BADGES_VIEW = 'view://41bda0eb-6b0e-8157-b25d-000c85c46da9';
+  const GAME_CACHE = 'yogaJourney.gameCache';
+  const TOKEN_EVERY = 4, TOKEN_MAX = 2;
+  const XP = { goalDay: 15, otherDay: 10, checkIn: 5, reflect: 5, reflectMax: 15, week: 25, step: 50, checkpoint: 100, quest: 250 };
+  const TITLES = [[1, 'Seeker'], [5, 'Student'], [10, 'Practitioner'], [15, 'Adept'], [20, 'Yogi'], [30, 'Guide'], [40, 'Master']];
+  const AURA = ['#ffffff', '#dc2626', '#9ca3af', '#ffffff', '#dc2626'];
+  const G = {
+    loaded: false, syncing: false, armed: false, last: null,
+    stats: null,               // values last read from / written to the Stats row
+    restUsed: new Set(),       // Mondays of weeks covered by a rest token
+    quest: { key: 'foundations', name: 'Foundations', theme: '', start: '2026-11-23', cp1: '2026-12-20', cp2: '2027-01-17', end: '2027-02-14', status: 'Upcoming', passed: 0, pageId: null, url: null },
+    badgeKeys: null            // Set of badge keys already in Notion (null until read)
+  };
+  const numOr = (v, d) => typeof v === 'number' && isFinite(v) ? v : d;
+  const parseUsed = s => new Set(String(s || '').split(/[\s,]+/).filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x)));
+  const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const dateOf = (r, p) => typeof r[`date:${p}:start`] === 'string' ? r[`date:${p}:start`].slice(0, 10) : null;
+
+  function saveGameCache() {
+    try { localStorage.setItem(GAME_CACHE, JSON.stringify({ stats: G.stats, restUsed: [...G.restUsed], quest: G.quest })); } catch {}
+  }
+  function loadGameCache() {
+    try {
+      const c = JSON.parse(localStorage.getItem(GAME_CACHE) || 'null');
+      if (!c) return;
+      if (c.stats) G.stats = c.stats;
+      if (Array.isArray(c.restUsed)) G.restUsed = new Set(c.restUsed);
+      if (c.quest && c.quest.start) G.quest = c.quest;
+    } catch {}
+  }
+
+  async function viewRows(view_url) {
+    const res = await S.mcp.callTool(NOTION, 'notion-query-data-sources', { data: { mode: 'view', view_url, page_size: 100 } }, { cache: false });
+    const p = res && res.payload;
+    if (!p || !Array.isArray(p.results)) throw { code: 'tool_error', message: 'Unexpected response from Notion.' };
+    return p.results;
+  }
+  async function readGame() {
+    const [st, qs, bs] = await Promise.all([viewRows(STATS_VIEW), viewRows(QUESTS_VIEW), viewRows(BADGES_VIEW)]);
+    return { st, qs, bs };
+  }
+  function applyGame({ st, qs, bs }) {
+    const row = st.find(r => pageIdOf(r.url) === pageIdOf(STATS_PAGE)) || st[0];
+    if (row) {
+      G.stats = { xp: numOr(row.XP, null), level: numOr(row.Level, null), tokens: numOr(row['Rest Tokens'], null), used: text(row['Rest Tokens Used']).trim() };
+      G.restUsed = parseUsed(G.stats.used);
+    }
+    const quests = qs.map(r => ({
+      key: String(r.Key || '').trim(), name: r.Quest || 'Quest', theme: text(r.Theme),
+      start: dateOf(r, 'Start'), cp1: dateOf(r, 'Checkpoint I'), cp2: dateOf(r, 'Checkpoint II'), end: dateOf(r, 'End'),
+      status: r.Status || 'Upcoming', passed: numOr(r['Checkpoints Passed'], 0), pageId: pageIdOf(r.url), url: r.url
+    })).filter(q => q.start && q.end).sort((a, b) => a.start.localeCompare(b.start));
+    const t = today();
+    const q = quests.find(q => q.start <= t && q.end >= t) || quests.find(q => q.start > t) || quests[quests.length - 1];
+    if (q) G.quest = q;
+    G.badgeKeys = new Set(bs.map(r => String(r.Key || '').trim()).filter(Boolean));
+    G.loaded = true;
+    saveGameCache();
+  }
+
+  function sessionXP(l) {
+    const wd = parse(l.date).getDay();
+    const checks = Object.values(l.goals || {}).filter(v => v && v.ability).length;
+    const refl = Math.min(XP.reflectMax, (String(l.notes || '').trim() ? XP.reflect : 0) + ((l.felt || []).length ? XP.reflect : 0) + (String(l.questions || '').trim() ? XP.reflect : 0));
+    return (GOAL_DAYS.includes(wd) ? XP.goalDay : XP.otherDay) + XP.checkIn * checks + refl;
+  }
+  // T(L) = total XP needed to reach level L. Each level costs 100, +20 per level, capped at 300.
+  const need = n => Math.min(300, 100 + 20 * (n - 1));
+  function levelFor(xp) {
+    let L = 1, base = 0;
+    while (xp >= base + need(L)) { base += need(L); L++; }
+    return { level: L, into: xp - base, span: need(L) };
+  }
+  const titleFor = L => TITLES.filter(([n]) => L >= n).pop()[1];
+  const isGentle = l => l.style === 'Yin' || l.style === 'Restorative' || (l.duration && l.duration <= 45);
+
+  function questEval(gm) {
+    const q = G.quest, t = today(), start = parse(q.start);
+    const active = activeGoals().map(g => g.pose);
+    const all = [...S.logs.values()].filter(l => l.date <= t);
+    const blocks = [0, 1, 2].map(i => {
+      const bs = add(start, 28 * i), bk = key(bs), ek = key(add(bs, 27));
+      const weeks = [0, 1, 2, 3].map(j => {
+        const w = key(add(bs, 7 * j)), we = key(add(bs, 7 * j + 6));
+        const L = all.filter(l => l.date >= w && l.date <= we);
+        return {
+          w, over: we < t, started: w <= t,
+          sessions: L.length >= GOAL_MIN || G.restUsed.has(w),
+          checks: active.length ? active.every(p => L.some(l => l.goals && l.goals[p] && l.goals[p].ability)) : L.length > 0,
+          gentle: L.some(isGentle)
+        };
+      });
+      const pain = all.filter(l => l.date >= bk && l.date <= ek && l.pain).length;
+      const weekly = (label, f) => ({ label, n: weeks.filter(f).length, of: 4, fail: weeks.some(x => x.over && !f(x)), done: weeks.every(f) });
+      const conds = [
+        weekly('3+ sessions every week (rest token counts)', x => x.sessions),
+        weekly('Check in on every pose goal each week', x => x.checks),
+        { label: 'Pain-flagged sessions, max 1', n: pain, of: 1, fail: pain > 1, done: pain <= 1, inverse: true },
+        weekly('A gentle session each week (Yin, Restorative or ≤45 min)', x => x.gentle)
+      ];
+      const ended = ek < t, failed = conds.some(c => c.fail);
+      const state = bk > t ? 'upcoming' : failed ? 'failed' : ended ? 'passed' : 'active';
+      return { i, bk, ek, conds, state };
+    });
+    const stepped = S.goals.some(g => g.lastStepUp && g.lastStepUp >= q.start && g.lastStepUp <= q.end);
+    const passedCps = blocks.slice(0, 2).filter(b => b.state === 'passed').length;
+    const complete = blocks.every(b => b.state === 'passed') && stepped;
+    const status = t < q.start ? 'Upcoming' : complete ? 'Complete' : t > q.end ? 'Missed' : 'Active';
+    const days = Math.round((parse(q.end) - start) / 864e5) + 1;
+    const el = Math.max(0, Math.min(days, Math.round((parse(t) - start) / 864e5) + 1));
+    const week = t < q.start ? 0 : Math.min(12, Math.floor((parse(t) - start) / (7 * 864e5)) + 1);
+    return { blocks, stepped, passedCps, complete, status, frac: el / days, week };
+  }
+
+  function game() {
+    const s = stats(), t = today(), thisW = s.thisWeek;
+    const logs = [...S.logs.values()].filter(l => l.date <= t).sort((a, b) => a.date.localeCompare(b.date));
+    const parts = { sessions: 0, weeks: 0, steps: 0, quest: 0 };
+    logs.forEach(l => { parts.sessions += sessionXP(l); });
+    const byWeek = new Map();
+    logs.forEach(l => { const w = key(monday(parse(l.date))); if (!byWeek.has(w)) byWeek.set(w, []); byWeek.get(w).push(l.date); });
+    const earned = new Map();                       // badge key -> date earned
+    const earn = (k, d) => { if (!earned.has(k)) earned.set(k, d); };
+    let tokens = 0, run = 0, streak = 0;
+    if (logs.length) {
+      for (let w = monday(parse(logs[0].date)); key(w) <= thisW; w = add(w, 7)) {
+        const k = key(w), ds = byWeek.get(k) || [], n = ds.length, isCur = k === thisW;
+        const cov = n < GOAL_MIN && G.restUsed.has(k);
+        if (n >= GOAL_MIN) parts.weeks += XP.week;
+        if (n >= GOAL_MAX) earn('full-week', ds[GOAL_MAX - 1]);
+        if (n >= GOAL_MIN || cov) {
+          streak++;
+          const d = n >= GOAL_MIN ? ds[GOAL_MIN - 1] : key(add(w, 6));
+          MILESTONES.forEach(m => { if (streak === m) earn('streak-' + m, d); });
+        } else if (!isCur) streak = 0;
+        if (cov) tokens = Math.max(0, tokens - 1);
+        else if (n >= GOAL_MIN) { if (++run >= TOKEN_EVERY) { run = 0; tokens = Math.min(TOKEN_MAX, tokens + 1); } }
+        else if (!isCur) run = 0;
+      }
+    }
+    S.goals.forEach(g => {
+      const done = g.status === 'Achieved' ? g.steps.length : Math.max(0, Math.min(g.step, g.steps.length) - 1);
+      parts.steps += XP.step * done;
+      if (done > 0) earn('step-up', g.lastStepUp || t);
+      if (g.status === 'Achieved') earn('summit-' + slug(g.pose), g.lastStepUp || t);
+    });
+    // reflection + practice badges, in date order
+    let noted = 0, qs = 0;
+    logs.forEach(l => {
+      if (String(l.notes || '').trim() && ++noted === 10) earn('reflective', l.date);
+      const before = qs; qs += String(l.questions || '').split('\n').filter(x => x.trim()).length;
+      if (before < 10 && qs >= 10) earn('curious', l.date);
+      if (/(^|\n)Tabata:/.test(l.notes || '')) earn('tabata', l.date);
+    });
+    // pain-free month: a finished calendar month with 8+ sessions and no pain flags
+    const months = new Map();
+    logs.forEach(l => { const m = l.date.slice(0, 7); const v = months.get(m) || { n: 0, pain: 0 }; v.n++; if (l.pain) v.pain++; months.set(m, v); });
+    [...months.entries()].sort().forEach(([m, v]) => {
+      const [y, mo] = m.split('-').map(Number), last = key(new Date(y, mo, 0));
+      if (last < t && v.n >= 8 && !v.pain) earn('pain-free-month', last);
+    });
+    const q = questEval();
+    if (q.blocks[0].state === 'passed') { parts.quest += XP.checkpoint; earn(G.quest.key + '-1', q.blocks[0].ek); }
+    if (q.blocks[1].state === 'passed') { parts.quest += XP.checkpoint; earn(G.quest.key + '-2', q.blocks[1].ek); }
+    if (q.complete) { parts.quest += XP.quest; earn(G.quest.key + '-complete', q.blocks[2].ek); }
+
+    const xp = parts.sessions + parts.weeks + parts.steps + parts.quest;
+    const lv = levelFor(xp);
+    const ms = MILESTONES.filter(m => s.best >= m).length;
+    const prevW = key(add(parse(thisW), -7)), prev2 = key(add(parse(thisW), -14));
+    const prevN = s.perWeek.get(prevW) || 0;
+    const alive = (s.perWeek.get(prev2) || 0) >= GOAL_MIN || G.restUsed.has(prev2);
+    const offer = G.loaded && tokens > 0 && logs.length && prevN < GOAL_MIN && !G.restUsed.has(prevW) && alive ? { w: prevW, n: prevN } : null;
+    return { s, xp, parts, ...lv, tokens, offer, earned, quest: q, ms, body: bodyScore(), badges: badgeList(earned) };
+  }
+
+  // Body: a 60-day running score. Pain costs 8 × severity (20 if no severity), a pain-free
+  // session adds 10, Yin or Restorative adds 20, a rest day adds 5.
+  function bodyScore() {
+    let b = 70;
+    const t = parse(today());
+    for (let i = 59; i >= 0; i--) {
+      const l = S.logs.get(key(add(t, -i)));
+      if (!l) { if (i > 0) b += 5; }
+      else if (l.pain) b -= l.severity ? 8 * l.severity : 20;
+      else b += (l.style === 'Yin' || l.style === 'Restorative') ? 20 : 10;
+      b = Math.max(0, Math.min(100, b));
+    }
+    return Math.round(b);
+  }
+
+  function badgeList(earned) {
+    const qk = G.quest.key, qn = G.quest.name;
+    const defs = [
+      ...MILESTONES.map((m, i) => ({ key: 'streak-' + m, icon: ['🔥', '🔥', '☀️', '🌕', '👑'][i], name: `${m}-Week Streak`, cat: 'Streak', desc: `${m} weeks in a row at 3+ sessions` })),
+      { key: 'full-week', icon: '🌟', name: 'Full Week', cat: 'Practice', desc: 'All 4 goal days in one week' },
+      { key: 'tabata', icon: '⏱️', name: 'Tabata Tested', cat: 'Practice', desc: 'Logged a Tabata round from the timer' },
+      { key: 'step-up', icon: '🪜', name: 'First Step Up', cat: 'Skill', desc: 'Moved up a pose ladder' },
+      ...S.goals.filter(g => g.status !== 'Paused').map(g => ({ key: 'summit-' + slug(g.pose), icon: '⛰️', name: `${g.pose} Summit`, cat: 'Skill', desc: `Reached the top of the ${g.pose} ladder` })),
+      { key: 'pain-free-month', icon: '🌿', name: 'Pain-Free Month', cat: 'Body', desc: 'A month with 8+ sessions and no pain flags' },
+      { key: 'reflective', icon: '📓', name: 'Reflective', cat: 'Reflection', desc: 'Notes on 10 sessions' },
+      { key: 'curious', icon: '❓', name: 'Curious Mind', cat: 'Reflection', desc: '10 questions to explore' },
+      { key: qk + '-1', icon: '🧱', name: `${qn} I`, cat: 'Quest', desc: 'Passed Checkpoint I' },
+      { key: qk + '-2', icon: '🧱', name: `${qn} II`, cat: 'Quest', desc: 'Passed Checkpoint II' },
+      { key: qk + '-complete', icon: '🏛️', name: `${qn} Complete`, cat: 'Quest', desc: `Finished the ${qn} quest` }
+    ];
+    return defs.map(d => ({ ...d, date: earned.get(d.key) || null }));
+  }
+
+  function auraSVG(gm) {
+    const rings = Math.min(5, 1 + Math.floor(gm.level / 5));
+    const op = Math.min(1, .35 + .13 * gm.ms);
+    let out = '';
+    for (let i = 0; i < rings; i++) {
+      const rx = 34 + 7 * i, ry = 84 + 4 * i;
+      out += `<ellipse cx="66" cy="98" rx="${rx}" ry="${ry}" stroke="${AURA[i]}" stroke-width="${i === 0 ? 3 : 2}" stroke-opacity="${(op * (1 - i * .12)).toFixed(2)}"${i === rings - 1 ? ' class="pulse"' : ''}/>`;
+    }
+    return `<defs><radialGradient id="auraGlow"><stop offset="0" stop-color="#ffffff" stop-opacity="${(.08 + .05 * gm.ms).toFixed(2)}"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><ellipse cx="66" cy="98" rx="62" ry="96" fill="url(#auraGlow)"/>` + out;
+  }
+
+  function setBar(id, frac, label) {
+    $(id + 'F').style.width = Math.round(Math.max(0, Math.min(1, frac)) * 100) + '%';
+    $(id + 'N').textContent = label;
+    $(id).setAttribute('aria-valuenow', Math.round(Math.max(0, Math.min(1, frac)) * 100));
+  }
+
+  function renderGame() {
+    const gm = game();
+    G.gm = gm;
+    // hero
+    $('aura').innerHTML = auraSVG(gm);
+    $('lvlBadge').textContent = gm.level;
+    $('charTitle').textContent = `Level ${gm.level} · ${titleFor(gm.level)}`;
+    setBar('xpBar', gm.into / gm.span, `${gm.into} / ${gm.span}`);
+    const n = gm.s.weekCount;
+    setBar('pranaBar', n / GOAL_MIN, `${n} / ${GOAL_MIN} this wk`);
+    $('pranaBar').classList.toggle('glow', n >= GOAL_MAX);
+    setBar('bodyBar', gm.body / 100, `${gm.body} / 100`);
+    $('bodyBar').classList.toggle('low', gm.body < 40);
+    $('bodyTip').hidden = gm.body >= 40;
+    $('bodyTip').textContent = 'Body is low. Your next session could be Yin or Restorative, or take a rest day.';
+    $('cStreak').textContent = gm.s.cur;
+    $('cTokens').textContent = gm.tokens;
+    const got = gm.badges.filter(b => b.date).sort((a, b) => b.date.localeCompare(a.date));
+    $('cBadges').textContent = got.length;
+    $('recentBadges').innerHTML = got.slice(0, 3).map(b => `<span class="rb" title="${esc(b.desc)} · ${esc(short(b.date))}">${b.icon} ${esc(b.name)}</span>`).join('');
+    const q = gm.quest, Q = G.quest;
+    $('questLine').textContent = q.status === 'Upcoming' ? `🗺️ Quest: ${Q.name} starts ${parse(Q.start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`
+      : q.status === 'Active' ? `🗺️ ${Q.name} · week ${q.week} of 12`
+      : `🗺️ ${Q.name} · ${q.status.toLowerCase()}`;
+
+    // rest token offer (Today tab)
+    const o = gm.offer;
+    $('tokenOffer').hidden = !o || tokenSkipped(o.w);
+    if (o) $('tokenText').textContent = `Last week (from ${short(o.w)}) had ${o.n} session${o.n === 1 ? '' : 's'}. Use 1 of your ${gm.tokens} rest token${gm.tokens === 1 ? '' : 's'} to keep your streak alive? It won’t earn the weekly bonus.`;
+
+    renderQuest(gm);
+    renderBadges(gm);
+    popGains(gm);
+  }
+
+  function popGains(gm) {
+    const last = G.last;
+    G.last = { xp: gm.xp, level: gm.level, badges: gm.badges.filter(b => b.date).map(b => b.key) };
+    if (!G.armed || !last) return;
+    G.armed = false;
+    const gain = gm.xp - last.xp, fresh = gm.badges.filter(b => b.date && !last.badges.includes(b.key));
+    if (gain <= 0 && !fresh.length) return;
+    let msg = gain > 0 ? `+${gain} XP` : '';
+    if (gm.level > last.level) msg += `${msg ? ' · ' : ''}Level ${gm.level}!`;
+    if (fresh.length) msg += `${msg ? ' · ' : ''}${fresh[0].icon} ${fresh[0].name}`;
+    document.querySelectorAll('.xp-pop').forEach(x => x.remove());
+    const el = document.createElement('div');
+    el.className = 'xp-pop num'; el.setAttribute('role', 'status'); el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2800);
+  }
+
+  function renderQuest(gm) {
+    const q = gm.quest, Q = G.quest;
+    $('questName').textContent = `🗺️ ${Q.name}`;
+    $('questMeta').innerHTML = `<span class="state-chip ${q.status === 'Complete' ? 'good' : q.status === 'Missed' ? 'bad' : q.status === 'Active' ? 'warn' : 'idle'}">${q.status}</span>`;
+    $('questTheme').textContent = Q.theme || '';
+    $('questBar').style.width = Math.round(q.frac * 100) + '%';
+    const names = ['Checkpoint I', 'Checkpoint II', 'Final'];
+    $('questBlocks').innerHTML = q.blocks.map(b => {
+      const chip = b.state === 'passed' ? '<span class="state-chip good">Passed ✓</span>' : b.state === 'failed' ? '<span class="state-chip bad">Missed</span>'
+        : b.state === 'active' ? '<span class="state-chip warn">In progress</span>' : '<span class="state-chip idle">Upcoming</span>';
+      const rows = b.conds.map(c => {
+        const mark = c.fail ? '<span class="no">✗</span>' : (c.done && b.state !== 'upcoming' && (c.inverse ? b.state === 'passed' : true)) ? '<span class="ok">✓</span>' : '<span class="wait">○</span>';
+        return `<li>${mark}<span>${esc(c.label)}</span><span class="n num">${c.inverse ? `${c.n} / ${c.of}` : `${c.n} / ${c.of} wk`}</span></li>`;
+      }).join('');
+      return `<div class="block${b.state === 'active' ? ' active' : ''}"><div class="block-head"><span class="block-name">Weeks ${b.i * 4 + 1}–${b.i * 4 + 4} · ${names[b.i]}</span>${chip}</div>
+        <div class="block-dates">${esc(short(b.bk))} – ${esc(short(b.ek))}</div><ul class="conds">${rows}</ul></div>`;
+    }).join('');
+    $('questFoot').textContent = `Each checkpoint passed: +${XP.checkpoint} XP. Pass all three and step up at least one pose ladder${q.stepped ? ' (done ✓)' : ''} to complete the quest: +${XP.quest} XP.`;
+  }
+
+  function renderBadges(gm) {
+    const list = gm.badges;
+    $('badgeCount').textContent = `${list.filter(b => b.date).length} of ${list.length} earned`;
+    $('badges').innerHTML = list.map(b => `<div class="badge ${b.date ? 'earned' : 'locked'}" title="${esc(b.desc)}"><span class="bi" aria-hidden="true">${b.icon}</span><span class="bn">${esc(b.name)}</span><span class="bd">${b.date ? esc(short(b.date)) : esc(b.desc)}</span></div>`).join('');
+    const p = gm.parts;
+    $('xpBreak').innerHTML = [['Sessions', p.sessions], ['Weekly goal bonuses', p.weeks], ['Ladder step-ups', p.steps], ['Quest checkpoints', p.quest], ['Total XP', gm.xp]]
+      .map(([a, b]) => `<span>${a}</span><span class="num">${b}</span>`).join('');
+  }
+
+  // Keep Notion in step: earned badges, XP/level/tokens on the Stats row, quest status.
+  async function syncGame() {
+    if (!S.mcp || !G.loaded || G.syncing || S.busy || S.mode !== 'live') return;
+    const gm = G.gm || game();
+    G.syncing = true;
+    try {
+      const missing = gm.badges.filter(b => b.date && !G.badgeKeys.has(b.key));
+      if (missing.length) {
+        await S.mcp.callTool(NOTION, 'notion-create-pages', { parent: { data_source_id: BADGES_DS }, pages: missing.map(b => ({
+          icon: b.icon,
+          properties: { 'Badge': b.name, 'Key': b.key, 'Category': b.cat, 'Icon': b.icon, 'Description': b.desc, 'date:Earned:start': b.date, 'date:Earned:is_datetime': 0 }
+        })) });
+        missing.forEach(b => G.badgeKeys.add(b.key));
+      }
+      const used = [...G.restUsed].sort().join(', ');
+      const want = { xp: gm.xp, level: gm.level, tokens: gm.tokens, used };
+      const have = G.stats || {};
+      if (have.xp !== want.xp || have.level !== want.level || have.tokens !== want.tokens || (have.used || '') !== used) {
+        await S.mcp.callTool(NOTION, 'notion-update-page', { page_id: pageIdOf(STATS_PAGE), command: 'update_properties',
+          properties: { 'XP': want.xp, 'Level': want.level, 'Rest Tokens': want.tokens, 'Rest Tokens Used': used } });
+        G.stats = want;
+      }
+      const Q = G.quest, q = gm.quest;
+      if (Q.pageId && (Q.status !== q.status || Q.passed !== q.passedCps)) {
+        await S.mcp.callTool(NOTION, 'notion-update-page', { page_id: Q.pageId, command: 'update_properties', properties: { 'Status': q.status, 'Checkpoints Passed': q.passedCps } });
+        Q.status = q.status; Q.passed = q.passedCps;
+      }
+      saveGameCache();
+    } catch (e) {
+      console.warn('Game sync to Notion failed', e);
+    } finally { G.syncing = false; }
+  }
+
+  async function useToken() {
+    const o = G.gm && G.gm.offer;
+    if (!o || S.busy) return;
+    if (!S.mcp || S.mode !== 'live') return toast('Connect Notion to use a rest token.');
+    G.restUsed.add(o.w);
+    G.armed = true;
+    renderAll();
+    const gm = G.gm, used = [...G.restUsed].sort().join(', ');
+    S.busy = true; syncNote('Saving to Notion…');
+    try {
+      await S.mcp.callTool(NOTION, 'notion-update-page', { page_id: pageIdOf(STATS_PAGE), command: 'update_properties',
+        properties: { 'Rest Tokens Used': used, 'Rest Tokens': gm.tokens, 'XP': gm.xp, 'Level': gm.level } });
+      G.stats = { xp: gm.xp, level: gm.level, tokens: gm.tokens, used };
+      saveGameCache();
+      toast('Rest token used. Streak kept 🔥');
+    } catch (e) {
+      G.restUsed.delete(o.w);
+      toast(describe(e) + ' It may still have saved, so reload before trying again.');
+      renderAll();
+    } finally { S.busy = false; syncNote(); }
+  }
+  function skipToken() {
+    const o = G.gm && G.gm.offer;
+    if (!o) return;
+    try { localStorage.setItem('yogaJourney.tokenSkip', o.w); } catch {}
+    $('tokenOffer').hidden = true;
+  }
+  const tokenSkipped = w => { try { return localStorage.getItem('yogaJourney.tokenSkip') === w; } catch { return false; } };
+
   // ---------- views ----------
   const VIEWS = ['today', 'practice', 'progress', 'journal'];
   const VIEW_KEY = 'yogaJourney.view';
@@ -1647,6 +2149,9 @@
   $('fNotes').addEventListener('input', notesBadge);
   $('fQuestions').addEventListener('input', notesBadge);
   $('gSave').addEventListener('click', addGoal);
+  $('tokenUse').addEventListener('click', useToken);
+  $('tokenSkip').addEventListener('click', skipToken);
+  $('cBadgesBtn').addEventListener('click', () => { showView('progress'); $('badgeSection').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   $('qCopy').addEventListener('click', () => {
     const fail = () => toast('Couldn’t copy. Select the list and copy it instead.');
     try { navigator.clipboard.writeText(S.questionsText || '').then(() => toast('Questions copied'), fail); } catch { fail(); }
@@ -1659,6 +2164,12 @@
     renderAll();
     if (S.mcp && !S.busy && (!S.syncedAt || Date.now() - S.syncedAt > 60000)) refresh(true);
   });
+  // Pick up edits made in Notion while the page stays open.
+  setInterval(() => {
+    if (document.hidden || !S.mcp || S.busy) return;
+    if (S.problem && !S.problem.retry) return;
+    if (!S.syncedAt || Date.now() - S.syncedAt > 60000) refresh(true);
+  }, 60000);
 
   // ---------- start ----------
   let startView = (location.hash || '').slice(1);
